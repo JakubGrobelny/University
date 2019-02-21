@@ -1,0 +1,83 @@
+#container {
+    width: 900px;
+    height: 750px;
+    margin-left: 0%;
+    margin-right: 0%;
+    border: 5px dotted black;
+}
+
+#board {
+    position: relative;
+    width: 600px;
+    height: 600px;
+    background-color: lightblue;
+    float: right;
+}
+
+#timer {
+    width: 600px;
+    height: 150px;
+    background-color: black;
+    color: white;
+    float: right;
+}
+
+#scores {
+    position: relative;
+    width: 300px;
+    height: 750px;
+    overflow-y: scroll;
+    background-color: gray;
+    color: white;
+}
+
+#scores > h1 {
+    text-align: center;
+}
+
+#timer > h1 {
+    position: relative;
+    left: 10px;
+    clear: right;
+}
+
+#slider {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#scores > h2 {
+    float: right;
+    margin-right: 20px;
+}
+
+ul {
+    font-size: 150%;
+}
+
+#central {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: purple;
+    border: 1px solid white;
+    left: 275px;
+    top: 275px;
+}
+
+#central:hover {
+    background-color: rgb(61, 5, 28);
+}
+
+div.target {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border: 1px dotted black;
+    background-color: red;
+}
+
+div.visited {
+    background-color: green;
+    border: 1px solid black;
+}

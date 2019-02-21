@@ -1,0 +1,44 @@
+/* type & descendant */
+header h1 {
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+/* id & descendant */
+#container h2 {
+    font-size: 100%;
+    color: darkblue;
+}
+
+/* class & child */
+#container > h2 {
+    text-align: center;
+    font-size: 150%;
+    color: gold;
+    background-color: darkblue;
+}
+
+/* adjacent */
+h2 + p {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 
+                 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.links {
+    background-color: darkblue;
+}
+
+.links a:visited {
+    color: gold;
+}
+
+.links a:link {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+}
+
+.links a:hover {
+    background-color: gold;
+    color: darkblue;
+}

@@ -1,0 +1,45 @@
+
+zad1.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <incr>:
+   0:	55                   	push   %rbp
+   1:	48 89 e5             	mov    %rsp,%rbp
+   4:	8b 05 00 00 00 00    	mov    0x0(%rip),%eax        # a <incr+0xa>
+			6: R_X86_64_PC32	.bss+0x4
+   a:	83 c0 01             	add    $0x1,%eax
+   d:	89 05 00 00 00 00    	mov    %eax,0x0(%rip)        # 13 <incr+0x13>
+			f: R_X86_64_PC32	.bss+0x4
+  13:	90                   	nop
+  14:	5d                   	pop    %rbp
+  15:	c3                   	retq   
+
+0000000000000016 <swap>:
+  16:	55                   	push   %rbp
+  17:	48 89 e5             	mov    %rsp,%rbp
+  1a:	48 83 ec 10          	sub    $0x10,%rsp
+  1e:	b8 00 00 00 00       	mov    $0x0,%eax
+  23:	e8 d8 ff ff ff       	callq  0 <incr>
+  28:	48 8d 05 00 00 00 00 	lea    0x0(%rip),%rax        # 2f <swap+0x19>
+			2b: R_X86_64_PC32	buf
+  2f:	48 89 05 00 00 00 00 	mov    %rax,0x0(%rip)        # 36 <swap+0x20>
+			32: R_X86_64_PC32	.bss-0x4
+  36:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 3d <swap+0x27>
+			39: R_X86_64_PC32	bufp0-0x4
+  3d:	8b 00                	mov    (%rax),%eax
+  3f:	89 45 fc             	mov    %eax,-0x4(%rbp)
+  42:	48 8b 15 00 00 00 00 	mov    0x0(%rip),%rdx        # 49 <swap+0x33>
+			45: R_X86_64_PC32	.bss-0x4
+  49:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 50 <swap+0x3a>
+			4c: R_X86_64_PC32	bufp0-0x4
+  50:	8b 12                	mov    (%rdx),%edx
+  52:	89 10                	mov    %edx,(%rax)
+  54:	48 8b 05 00 00 00 00 	mov    0x0(%rip),%rax        # 5b <swap+0x45>
+			57: R_X86_64_PC32	.bss-0x4
+  5b:	8b 55 fc             	mov    -0x4(%rbp),%edx
+  5e:	89 10                	mov    %edx,(%rax)
+  60:	90                   	nop
+  61:	c9                   	leaveq 
+  62:	c3                   	retq   

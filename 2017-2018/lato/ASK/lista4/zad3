@@ -1,0 +1,14 @@
+mov %r8, %edi
+mov %r9, %edi
+and %r8, $0xFF00FF00
+and %r9, $0x00FF00FF
+rol %r8, $0x1
+ror %r9, $0x1
+or %r9, %r8
+mov %eax, %r9
+
+Wyrażenie w C, które zostanie przetłumaczone do rol/ror:
+
+uint32_t ror(uint32_t a) {
+    return (a >> 1) | (a << 31);
+}

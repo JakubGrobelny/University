@@ -1,0 +1,12 @@
+input {
+    width: 25%;
+}
+
+input.invalid {
+    background-color: rgba(255, 0, 0, 0.767);
+    color: white;
+}
+
+#submit {
+    font-size: 125%;
+}

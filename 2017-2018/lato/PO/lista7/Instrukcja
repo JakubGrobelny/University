@@ -1,0 +1,32 @@
+Autor: Jakub Grobelny
+Data: 2018-04-14
+
+Pracownia w czwartek, s. 108
+Lista 7
+
+Opis programu:
+    Edytor obiektów klasy „Triangle” i „Circle”, który umo¿liwia
+    zapisywanie obiektów do pliku i odczytywanie ich.
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego JDK (Java Development Kit).
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program nale¿y u¿yæ polecenia "java Main «nazwa pliku» «klasa», 
+    gdzie «nazwa pliku» oznacza œcie¿kê do pliku z którego wczytany zostanie
+    obiekt, «klasa» jest nazw¹ klasy, która ma byæ edytowana („Circle” lub „Triangle”).
+    Je¿eli wczytywany plik nie istnieje, to zostanie utworzony nowy, o takiej
+    samej nazwie.
+
+    Po uruchomieniu programu wyœwietlone zostanie okno z polami, do których
+    mo¿na wpisywaæ wartoœci pól obiektu, oraz z przyciskiem „Save”, który s³u¿y
+    do zapisywania edytowanego obiektu do pliku.
+
+    W przypadku podania b³êdnych danych, program wyœwietli ostrze¿enie i nie
+    zapisze obiektu.

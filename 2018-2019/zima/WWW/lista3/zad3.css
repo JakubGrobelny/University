@@ -1,0 +1,39 @@
+div {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+div.static {
+    position: static;
+    /* właściwości top/bottom/right/left nie mają wpływu */
+    right: 10px;
+    left: 20px;
+}
+
+/* Względem normalnej pozycji */
+div.relative {
+    position: relative;
+    right: -25px;
+    top: 10px;
+    color: aquamarine;
+    background-color: black;
+}
+
+/* Względem viewportu */
+div.fixed {
+    position: fixed;
+    right: 0;
+    top: 20%;
+    background-color: yellow;
+    color: darkblue;
+}
+
+/* Względem przodka */
+div.absolute {
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    color: black;
+}
+

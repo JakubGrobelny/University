@@ -1,0 +1,20 @@
+sekcja: A B C D
+1)
+zasada wyznaczania najrzadziej używanego:
+dostępne bity: a b c d
+
+tworzymy drzewo:
+
+       a
+      / \
+     b   c
+    / \  /\
+   A  B C  D
+
+Drzewo zainicjowane jest 
+Aby znaleźć LRU element przechodź przez drzewo zgodnie z wartościami węzłów (1 == prawo)
+Aby zaktualizować drzewo przejdź przez drzewo zmieniając wartości węzłów.
+2) jeden bit na każdą linię cache'u
+Bity zainicjowane na zero.
+Przy każdym dostępie ustaw na 1.
+Jeżeli wszystkie ustawione są na 1 to zmieniamy wszystkie poza zmienianym na zero.

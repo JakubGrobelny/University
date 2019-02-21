@@ -1,0 +1,38 @@
+1. (x > 0) || (x - 1 < 0)
+Nie, weźmy najmniejszą liczbę 10000000.
+10000000 > 0 --> fałsz
+10000000 - 1 = 01111111 > 0
+
+2. (x & 7) != 7 || (x << 29 < 0)
+(x & 7) != 7 gdy chociaż jeden z trzech skrajnych bitów nie jest 
+włączony. 
+Weźmy xxxxx111 i przesuńmy o 29 w lewo, wtedy skrajnie prawa jedynka
+znajdzie się na miejscu najbardziej znaczącym, czyli otrzymamy
+najmniejszy możliwy int32_t
+
+3. (x * x) >= 0
+
+x = -2147437307
+10000000000000001011010100000101
+1111111111111111111111111111111110000000000000001011010100000101
+
+x * x = -2147479015
+10000000000000000001001000011001
+
+4. x < 0 || -x <= 0
+prawda, ujemnych jest o jedną więcej
+
+5. x > 0 || -x >= 0
+fałsz, kontrprzykład: INT_MIN
+
+6. (x | -x) >> 31 == -1
+fałsz, kontrprzykład: 0
+
+7. x + y == (uint32_t)y + (uint32_t)x
+prawda, rzutowanie to unsigned nie powoduje zmian w bitach.
+Przy porównaniu x + y zostanie zrzutowane do unsigned
+
+8. x * ~y + (uint32_t)y * (uint32_t)x == ~x
+kontrprzykład x = -100, y = 100
+
+

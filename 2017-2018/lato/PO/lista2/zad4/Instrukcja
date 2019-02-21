@@ -1,0 +1,46 @@
+Jakub Grobelny 300481
+7 marca 2018
+Programowanie Obiektowe - Lista 2, zadanie 4
+
+Program implementuje listy leniwe losowych liczb całkowitych oraz listy
+leniwe liczb pierwszych. 
+
+Kompilacja i uruchamianie:
+
+    W celu kompilacji programu należy użyć w terminalu polecenia "make".
+    Kompilacja wymaga zainstalowanego pakietu mono-devel.
+
+    Aby uruchomić skompilowany program należy użyć polecenia "mono list.exe"
+
+Instrukcja obsługi:
+
+    Po uruchomieniu programu wyświetlona zostanie lista opcji do wyboru.
+    
+    1) Pobieranie elementu z listy klasy LazyList.
+
+        Po wybraniu opcji 1) należy wpisać liczbę naturalną, będącą indeksem
+        elementu w liście. Program wypisze element znajdujący się pod podanym
+        indeksem. Jeżeli taki element nie istnieje, to lista zostanie powiększona
+        i uzupełniona losowymi wartościami.
+
+    2) Pobieranie elementu z listy klasy Prime.
+
+        Po wybraniu opcji 2) należy wpisać liczbę naturalną 'i' , będącą indeksem
+        elementu w liście. Program wypisze i-tą liczbę pierwszą, która znajduje
+        się pod indeksem 'i' w liście. Jeżeli element nie istnieje, to lista zostanie
+        powiększona i uzupełniona kolejnymi liczbami pierwszymi.
+
+    3) Wyjście z programu.
+
+        Po wybraniu opcji 3) program zakończy działanie.
+
+Struktura programu:
+
+        przestrzeń nazw LazyLists
+                              \
+                               \ 
+                        klasa LazyList
+                                 \ 
+                                  \ (dziedziczenie)
+                            klasa Prime
+

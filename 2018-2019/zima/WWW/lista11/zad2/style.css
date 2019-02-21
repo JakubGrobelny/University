@@ -1,0 +1,9 @@
+#carousel-example {
+    background-color: gray;
+}
+
+img {
+    max-height: 768px;
+    min-width: auto;
+    margin: auto;
+}

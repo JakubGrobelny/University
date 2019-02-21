@@ -1,0 +1,13 @@
+zamiana «x» i «y»
+
+/*
+normalnie:
+x += y
+y = x - y
+x -= y
+*/
+
+x ^= y // x staje się maską, która przechowuje bity, na ktorych x i y się różnią
+y ^= x // z y usuwane są bity, na których różnił się x i y i ustawiane te, które były w x
+x ^= y // x zawiera bity, które miał x lub y. Po xor z y (który jest teraz dawnym x)
+       // w x będą tylko bity wspólne oraz te z oryginalnego y

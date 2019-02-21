@@ -1,0 +1,48 @@
+#colors {
+    float: left;
+}
+
+#colors > div {
+    width: 100px;
+    height: 100px;
+    border: dotted black 1px;
+    margin-right: 10px;
+}
+
+#black {
+    background-color: black;
+}
+
+#white {
+    background-color: white;
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+#blue {
+    background-color: blue;
+}
+
+#red {
+    background-color: red;
+}
+
+#green {
+    background-color: green;
+}
+
+#picture {
+    display: flex;
+    flex-direction: row;
+    height: 600px;
+    width: 600px;
+    position: relative;
+}
+
+div.picture_field {
+    border: solid black 2px;
+    height: 200px;
+    width: 200px;
+}

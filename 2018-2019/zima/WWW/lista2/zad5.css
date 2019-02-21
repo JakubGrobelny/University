@@ -1,0 +1,80 @@
+div {
+    border: 1px solid black;
+}
+
+div:last-of-type::after {
+    content: " last-of-type ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+div:first-of-type::after {
+    content: " first-of-type ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+div:nth-of-type(3)::after {
+    content: " nth-of-type(3) ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+div p:nth-last-of-type(4)::after {
+    content: " nth-last-of-type(4) ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+p:nth-child(2n)::after {
+    content: " nth-child(2n) ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+p:nth-last-child(2)::after {
+    content: " nth-last-child(2) ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+p:only-of-type::after {
+    content: " only-of-type ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+article:last-child::after {
+    content: " last-child ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+div:empty::after {
+    content: " empty ";
+    color: white;
+    background-color: darkblue;
+    color: yellow;
+}
+
+:root {
+    margin-left: 42px;
+    background-color: lightblue;
+}
+
+article:not(.last)::after {
+    content: " not(.last) ";
+    background-color: darkblue;
+    color: yellow;
+}
+
+::selection {
+    color: green;
+    background-color: gold;
+}
+
+div:empty {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+}

@@ -1,0 +1,12 @@
+1. Kompilacja:
+
+	Aby skompilować program należy użyć polecenia "make".
+
+2. Obsługa programu:
+
+	Po uruchomieniu programu należy wybrać odpowiednią
+	opcję z tych, ktore zostały wyświetlone na ekranie.
+	
+	Aby dodać nowy element do tablicy należy wprowadzić
+	dwie liczby -- «indeks» oraz «wartość» nowego
+	elementu.

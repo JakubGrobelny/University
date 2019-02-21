@@ -1,0 +1,71 @@
+#lang racket
+
+(define (neg f)
+  (list 'neg f))
+
+(define (conj f1 f2)
+  (list 'conj f1 f2))
+
+(define (disj f1 f2)
+  (list 'disj f1 f2))
+
+(define (neg-subf f)
+  (second f))
+
+(define (disj-left f)
+  (second f))
+
+(define (disj-rght f)
+  (third f))
+
+(define (conj-left f)
+  (second f))
+
+(define (conj-rght f)
+  (third f))
+
+(define (var? t)
+  (symbol? t))
+
+(define (neg? t)
+  (and (list? t)
+       (= 2 (length t))
+       (eq? 'neg (car t))))
+
+(define (conj? t)
+  (and (list? t)
+       (= 3 (length t))
+       (eq? 'conj (car t))))
+
+(define (disj? t)
+  (and (list? t)
+       (= 3 (length t))
+       (eq? 'disj (car t))))
+
+(define (prop? f)
+  (or (var? f)
+      (and (neg? f)
+           (prop? (neg-subf f)))
+      (and (disj? f)
+           (prop? (disj-left f))
+           (prop? (disj-rght f)))
+      (and (conj? f)
+           (prop? (conj-left f))
+           (prop? (conj-rght f)))))
+
+(define (fun i)
+  (let ([ls '()])
+    (if (= i 10)
+        ls
+        (append ls (list (fun (+ 1 i)) i)))))
+
+(define (free-vars f)
+  (define (aux f ls)
+    (cond [(var? f) (list f)]
+          [(neg? f) (append ls (aux (neg-subf f) '()))]
+          [(conj? f) (append ls (aux (conj-left f) '()) (aux (conj-rght f) '()))]
+          [(disj? f) (append ls (aux (disj-left f) '()) (aux (disj-rght f) '()))]))
+  (aux f '()))
+
+
+                           

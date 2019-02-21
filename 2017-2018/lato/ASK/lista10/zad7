@@ -1,0 +1,14 @@
+1. średni czas dostępu:
+	a) L1av
+		t = 0.66ns + 2/25 * 70ns = 6,26ns = 9.5 cykli
+	b) L1_L2av
+		t = 0.66ns + 2/25 * (5.62ns + 5/1000 * 70ns) = 1,1376ns = 1.7 cykli
+
+2. CPI (clocks/cycles per instruction - jeden z aspektów wydajności CPU,
+średnia liczba cykli na instrukcję. Odwrotność instrukcji na cykl.) = 1.0
+
+	// alternatywa: CPI = BASE + (number_of_accesses_per_instruction - ideal) * 36%
+	CPI_L1 = CPI + L1av * 36%
+
+	CPI_L1_L2 = CPI + L1_L2av * 36%
+	

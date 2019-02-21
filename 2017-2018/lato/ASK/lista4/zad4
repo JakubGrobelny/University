@@ -1,0 +1,9 @@
+addq %rdx, %rdi
+setc %r8b
+addq %rcx, %rsi
+addq %rcx, %r8b
+mov %rax, %rcx
+
+uproszczona wersja:
+adcxq %rdx, %rdi
+adcq %rax, %rcx

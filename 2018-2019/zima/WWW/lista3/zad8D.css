@@ -1,0 +1,45 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    background-color: lavender;
+    flex-grow: 2;
+}
+
+header > #logo {
+    flex-basis: 20%;
+    background-color: powderblue;
+}
+
+nav {
+    flex-basis: 10%;
+    background-color: pink;
+    flex-grow: 1;
+}
+
+#main {
+    display: flex;
+    flex-grow: 20;
+}
+
+#main > #content-area { 
+    background-color: lightcoral;
+    flex-grow: 6;
+}
+
+#main > aside {
+    flex-basis: 20%;
+    background-color: lightsalmon;
+    flex-grow: 0;
+}
+
+footer {
+    flex-basis: 20%;
+    flex-grow: 2;
+    background-color: rgb(190, 224, 190);
+}

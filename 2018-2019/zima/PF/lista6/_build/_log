@@ -1,0 +1,36 @@
+### Starting build.
+# Target: PC.ml.depends, tags: { extension:ml, file:PC.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -modules PC.ml > PC.ml.depends
+# Target: Lexer.mli.depends, tags: { extension:mli, file:Lexer.mli, ocaml, ocamldep, quiet }
+ocamldep.opt -modules Lexer.mli > Lexer.mli.depends
+# Target: Parser.mly, tags: { extension:mly, file:Parser.mly, infer, ocaml, ocamlyacc, parser, quiet }
+ocamlyacc Parser.mly
+# Target: Parser.mli.depends, tags: { extension:mli, file:Parser.mli, ocaml, ocamldep, quiet }
+ocamldep.opt -modules Parser.mli > Parser.mli.depends
+# Target: Syntax.ml.depends, tags: { extension:ml, file:Syntax.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -modules Syntax.ml > Syntax.ml.depends
+# Target: Syntax.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Syntax.cmo, file:Syntax.ml, implem, ocaml, quiet }
+ocamlc.opt -c -o Syntax.cmo Syntax.ml
+# Target: Parser.cmi, tags: { byte, compile, extension:mli, file:Parser.mli, interf, ocaml, quiet }
+ocamlc.opt -c -o Parser.cmi Parser.mli
+# Target: Lexer.cmi, tags: { byte, compile, extension:mli, file:Lexer.mli, interf, ocaml, quiet }
+ocamlc.opt -c -o Lexer.cmi Lexer.mli
+# Target: PC.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:PC.cmo, file:PC.ml, implem, ocaml, quiet }
+ocamlc.opt -c -o PC.cmo PC.ml
+# Target: Lexer.mll, tags: { extension:mll, file:Lexer.mll, lexer, ocaml, ocamllex, quiet }
+ocamllex.opt -q Lexer.mll
+# Target: Lexer.ml.depends, tags: { extension:ml, file:Lexer.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -modules Lexer.ml > Lexer.ml.depends
+# Target: Parser.ml.depends, tags: { extension:ml, file:Parser.ml, ocaml, ocamldep, quiet }
+ocamldep.opt -modules Parser.ml > Parser.ml.depends
+# Target: Syntax.cmx, tags: { compile, extension:cmx, extension:ml, file:Syntax.cmx, file:Syntax.ml, implem, native, ocaml, quiet }
+ocamlopt.opt -c -o Syntax.cmx Syntax.ml
+# Target: Parser.cmx, tags: { compile, extension:cmx, extension:ml, file:Parser.cmx, file:Parser.ml, implem, native, ocaml, quiet }
+ocamlopt.opt -c -o Parser.cmx Parser.ml
+# Target: Lexer.cmx, tags: { compile, extension:cmx, extension:ml, file:Lexer.cmx, file:Lexer.ml, implem, native, ocaml, quiet }
+ocamlopt.opt -c -o Lexer.cmx Lexer.ml
+# Target: PC.cmx, tags: { compile, extension:cmx, extension:ml, file:PC.cmx, file:PC.ml, implem, native, ocaml, quiet }
+ocamlopt.opt -c -o PC.cmx PC.ml
+# Target: PC.native, tags: { dont_link_with, extension:native, file:PC.native, link, native, ocaml, program, quiet }
+ocamlopt.opt Syntax.cmx Parser.cmx Lexer.cmx PC.cmx -o PC.native
+# Compilation successful.

@@ -1,0 +1,52 @@
+Autor: Jakub Grobelny
+Data: 2018-04-05
+
+Pracownia w czwartek, s. 108
+Lista 6, zadanie 2
+
+Opis programu:
+    Program wczytuje liczby typu float z pliku tekstowego, a nastêpnie
+    zapisuje je w liœcie dwukierunkowej implementuj¹cej interfejs
+    „Collection<E>”.
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego JDK (Java Development Kit).
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program nale¿y u¿yæ polecenia "java Main «nazwa pliku»", 
+    gdzie «nazwa pliku» oznacza œcie¿kê do pliku, z którego wczytywane
+    bêd¹ dane.
+
+    Po uruchomieniu program wypisze liczby zmiennoprzecinkowe, wczytane
+    z pliku, w postaci listy.
+
+    Pliki z danymi powinny zawieraæ liczby zmiennoprzecinkowe, w których
+    czêœæ ca³kowita oddzielona jest kropk¹ „.”, liczby w notacji naukowej
+    lub liczby ca³kowite.
+
+3) U¿ywanie kolekcji „List<E>”
+
+    W celu iteracji przez kolejne elementy kolekcji mo¿na u¿yæ nastêpuj¹cej sk³adni:
+
+        „for («typ» «element» : «kolekcja»)”
+
+    „List<E>” implementuje wszystkie metody z interfejsu „Collection<E>” (wed³ug
+    wersji 7 Javy) oraz dodatkowo poni¿sze:
+
+        set(indeks, wartoœæ) - ustawia element o danym indeksie na dan¹ wartoœæ.
+
+        get(indeks) - zwraca wartoœæ elementu o danym indeksie.
+
+        popBack() - usuwa i zwraca element z koñca listy.
+
+        popFront() - usuwa i zwraca element z pocz¹tku listy.
+
+        pushBack(element) - dodaje element na koniec listy.
+
+        pushFront(element) - dodaje element na pocz¹tek listy.

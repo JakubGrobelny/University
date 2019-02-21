@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>3</title>
+        <script src="zad3.js"></script>
+        <link rel="stylesheet" href="zad3.css">
+    </head>
+    <body>
+        <div id="colors">
+            <div id="black"  draggable="true" ondragstart="on_drag(event)"></div>
+            <div id="white"  draggable="true" ondragstart="on_drag(event)"></div>
+            <div id="yellow" draggable="true" ondragstart="on_drag(event)"></div>
+            <div id="blue"   draggable="true" ondragstart="on_drag(event)"></div>
+            <div id="red"    draggable="true" ondragstart="on_drag(event)"></div>
+            <div id="green"  draggable="true" ondragstart="on_drag(event)"></div>
+        </div>
+        <div id="picture">
+            <div class="row">
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+            </div>
+            <div class="row">
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+            </div>
+            <div class="row">
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+                <div class="picture_field" ondragover="allow_drop(event)" ondrop="on_drop(event)"></div>
+            </div>
+        </div>
+        </html>
+    </body>

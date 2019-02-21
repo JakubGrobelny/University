@@ -1,0 +1,16 @@
+Mapowanie bezpośrednie (direct mapping) - każdy blok w pamięci
+głównej jest odwzorowywany na tylko jeden możliwy wiersz pamięci
+(tj. jeśli blok jest w cache'u to jest tylko w ściśle określonym miejscu)
+
+1. długość offsetu: 4,3,2,1,0 = 5
+11111 = 31
+Słowo w bloku ma 32 bajty, czyli 8 32-bitowych słów.
+
+2. ilość wierszy: 9, 8, 7, 6, 5 = 5
+11111 = 31
+Pamięć ma 31 wierszy.
+
+3. długość tagu: 22 bity
+   bit valid:    1  bit
+   dane:         8*32 bitów
+   stosunek:     256/23 ~= 11.13

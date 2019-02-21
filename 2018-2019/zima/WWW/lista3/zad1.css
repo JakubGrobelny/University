@@ -1,0 +1,21 @@
+div {
+    /*  góra prawo dół lewo */
+    margin: 5% 5% 5% 5%;
+    padding: 5% 5% 5% 5%;
+    background-color: gray;
+    color: white;
+    border: 2px red dotted;
+}
+
+span {
+    background-color: lightblue;
+    color: darkred;
+    padding: 2% 2% 2% 2%;
+    margin: 100% 2% 100% 2%;
+    /* float: left; nie działa */
+    border: 4px red dotted;
+}
+
+div.inline {
+    display: inline;
+}

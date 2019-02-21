@@ -1,0 +1,20 @@
+Autor: Jakub Grobelny
+Data: 2018-04-20
+
+Pracownia w czwartek, s. 108
+Lista 8, zadanie 3
+
+Opis programu:
+    Klasy szyfruj¹ce i odszyfrowuj¹ce podany napis.
+    - Unencrypted - klasa przechowuj¹ca napis, który nie jest zaszyfrowany.
+        - initialize(text) – konstruktor.
+        - to_s() – zamiana obiektu na napis.
+        - encrypt(key) – szyfrowanie napisu przy u¿yciu podanego klucza.
+    - Encrypted - klasa przechowuj¹ca napis zaszyfrowany.
+        - initialize(text) – konstruktor.
+        - to_s() – zamiana obiektu na napis.
+        - decrypt(key) – odszyfrowuje napis przy u¿yciu podanego klucza.
+    Algorytm dzia³a z za³o¿eniem, ¿e podany klucz jest poprawny.
+
+Aby uruchomiæ program nale¿y u¿yæ polecenia „ruby test.rb”. Po uruchomieniu
+programu nale¿y wprowadziæ klucz, a nastêpnie napis do zaszyfrowania i odszyfrowania.

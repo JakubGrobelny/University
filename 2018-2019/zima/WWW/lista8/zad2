@@ -1,0 +1,47 @@
+https://petstore.swagger.io/v2/pet/2137
+
+POST - tworzenie
+
+{
+    "id": 2137,
+    "category": {
+        "id": 0,
+        "name": "Królik"
+    },
+    "name": "Andrzej",
+    "photoUrls": [
+        "string"
+    ],
+    "tags": [
+        {
+            "id": 0,
+            "name": "ssak"
+        }
+    ],
+    "status": "available"
+}
+
+PUT - tworzenie lub edytowanie (PUTowanie tych samych danych kilkukrotnie
+nie powinno skutkować utworzenien nowych zasobów)
+
+DELETE <link>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Pet>
+	<id>666</id>
+	<Category>
+		<id>0</id>
+		<name>string</name>
+	</Category>
+	<name>Pluto</name>
+	<photoUrl>
+		<photoUrl>string</photoUrl>
+	</photoUrl>
+	<tag>
+		<Tag>
+			<id>0</id>
+			<name>string</name>
+		</Tag>
+	</tag>
+	<status>available</status>
+</Pet>

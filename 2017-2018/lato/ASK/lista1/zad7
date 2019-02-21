@@ -1,0 +1,25 @@
+		i := 0				#b1
+FOR:		if i == length goto END		#b2
+		j := i
+		j1 := ~j
+		if j1 goto WHILE_END		
+		j2 := j * 4			#b3
+		arr1 := arr + j2
+		arr2 := arr - 4
+		arr12 := *arr1
+		arr22 := *arr2
+		if arr1 > arr2 goto WHILE_END
+		temp := arr11			#b4
+		*arr1 := arr22
+		*arr2 := temp
+		j := j - 1
+WHILE_END:	i := i + 1			#b5
+		goto FOR
+END:						#b6
+
+blok podstawowy - ciąg instrukcji, który ma tylko jedno wejście i tylko jedno wyjście, przy 
+	czym wejście do bloku znajduje się na jego poczatku, a wyjście na końcu.
+
+
+graf przepływu sterowania (control flow graph) - wierzcholkami grafu sa bloki podstawowe, a skierowane
+	krawiędzie wskazują powiązania między blokami

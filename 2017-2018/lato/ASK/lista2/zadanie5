@@ -1,0 +1,17 @@
+/* Oblicz x * 3 / 4 zaokrąglając w dół. */
+int32_t threefourths(int32_t x)
+{
+    int32_t overflow;
+    int32_t temp_x = (x >> 1) + (x >> 2); // 2x + x shifted to the right by two
+
+    overflow = 0xC0000000 & temp_x; // saving the last two bits that could've overflown
+
+    int32_t temp = x;
+    temp <<= 1; // multiplying by 2
+    temp += x; // adding one more x 
+    temp >>= 2; // dividing by 4
+
+    temp ^= overflow;
+
+    return temp;    
+}

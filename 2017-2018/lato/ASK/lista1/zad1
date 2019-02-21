@@ -1,0 +1,12 @@
+uint32_t mask1 = x & (1 << i);
+
+mask >>= i;
+mask <<= k;
+
+uint32_t mask2 = 1 << k;
+
+mask2 = ~mask2;
+
+x &= mask2;
+
+x |= mask1;

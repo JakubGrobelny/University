@@ -1,0 +1,33 @@
+Autor: Jakub Grobelny
+Data: 2018-04-04
+
+Pracownia w czwartek, s. 108
+Lista 6, zadanie 5
+
+Opis programu:
+    Program sortuje liczby ca³kowite wczytywane z pliku u¿ywaj¹c
+    wielow¹tkowego sortowania przez scalanie.
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego JDK (Java Development Kit).
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program nale¿y u¿yæ polecenia "java Main «flaga» «nazwa pliku»,
+    gdzie «flaga» jest opcjonalnym argumentem, który decyduje o tym, czy
+    program ma wypisaæ zawartoœæ posortowanych tablic. Je¿eli chcemy, ¿eby
+    zosta³y one wypisane, nale¿y podaæ argument „-p”; w przeciwnym razie
+    nale¿y go pomin¹æ. «nazwa pliku» oznacza œcie¿kê do pliku, z którego
+    odczytywane bêd¹ dane. Mo¿na podaæ dowoln¹ iloœæ plików.
+
+    Po posortowaniu danych program wypisze informacjê o tym, czy sortowanie
+    siê powiod³o, oraz zawartoœæ posortowanej tablicy, je¿eli podana zosta³a
+    flaga „-p”.
+
+    Pliki z danymi powinny zawieraæ liczby ca³kowite, z których ka¿da
+    powinna znajdowaæ sie w oddzielnej linii. 

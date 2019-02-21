@@ -1,0 +1,30 @@
+C:
+
+«a», «b», «c» to wskaźniki na tablice elementów typu «uint32_t».
+
+1) s += b[j+1] + b[--j];
+	
+	t1 := j + 1  	  ; j+1
+	t1 := t1 * 4
+	j := j - 1	  ; --j
+	t2 := j * 4  	  
+	t1 := t1 + b 	  ; b[j+1]
+	t2 := t2 + b 	  ; b[--j]
+	t1 := *t1    	  ; wartość b[j+1]
+	t2 := *t2    	  ; wartość b[--j]
+	s := s + t1
+	s := s + t2
+
+2) a[i++] -= b * (c[j*2] + 1);
+
+	t1 := a + i 	; i++ wykonuje się dopiero po uzyskaniu wartości
+	i := i + 1 	; i++
+	t2 = j * 2
+	t2 := c + t2
+	t2 := *t2
+	t2 := t2 + 1
+	t2 := t2 * b
+	t3 := a + t1
+	t3 := *t1
+	*t1 = t3 - t2
+

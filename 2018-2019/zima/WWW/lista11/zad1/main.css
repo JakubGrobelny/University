@@ -1,0 +1,41 @@
+#news > article:nth-of-type(2n-1)
+{
+    background-color: beige;
+}
+
+.lview {
+    border: solid lightgray 1px;
+    margin: 5px;
+}
+
+.lview > img {
+    margin: 5px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    background-color: rgb(245, 220, 0);
+    margin-top: auto;
+}
+
+.footer {
+    background-color: rgb(245, 220, 0);
+    /* height: 60px; */
+}
+
+#news {
+    border: solid black 1px;
+}
+
+#recommendations {
+    border: solid black 1px;
+
+}
+
+#last-viewed {
+    border: solid black 1px;
+}

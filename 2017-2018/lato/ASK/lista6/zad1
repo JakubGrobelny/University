@@ -1,0 +1,29 @@
+set_val:
+    movslq 8(%rsi),  %rax      
+    addq   32(%rsi), %rax      
+    movq   %rax,     184(%rdi) 
+    ret
+
+4 * A * B + offset1 = 184
+
+B > 4 ∧ B <= 8
+
+8 + 4 + 2 * A + offset2 = 32
+12 + 2*A + offset2 = 32
+2*A + offset2 = 20
+
+A = 9
+B = 5
+offset1 = 4
+offset2 = 2
+
+int x[9][5] = 4 * 45 = 180 bitów
+180 + offset(4) = 184 (podzielne przez 8 dla long y)
+
+char array[5] = 8 * 5 = 40 bitów
+int t = 32 bity; 40 + offset(24) + 32 = 96 bitów
+short s[9] = 16 * 9 = 144 bity; 144 + 96 = 240 bitów
+long u = 64 + offset(16) + 240 = 320 bitów; (zaczyna się na 256 bicie)
+
+
+

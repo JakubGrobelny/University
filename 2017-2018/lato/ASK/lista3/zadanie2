@@ -1,0 +1,37 @@
+a)
+
+1.5625 * 10^(-1)
+
+Zmiennopozycyjne liczby 16 bitowe:
+
+«znak» 5 bitów «wykładnik» 10 bitów «ułamek»
+
+bias = 2^(5 - 1) - 1 = 2^(4) - 1 = 16 - 1 = 15
+
+część ułamkowa = (1).5625
+
+1 + 0.5 + 
+
+wykładnik -> -1 = exp - 15 --> exp = 14
+
+0  0 1 1 1 0  1 0 0 0 1 0 0 0 0 0
+
+b)
+
+zakres:
+
+max: 0 11110 1111111111
+wykładnik: 30 - 15 = 15
+ułamek: 1,9990234375
+liczba: 1,9990234375 * 2^(15)
+
+min: 1 11110 1111111111
+to samo co max tylko na minusie
+
+najmniejsza możliwa (dokładność):
+
+0 00000 0000000001 (zdenoormalizowana) = 0,0009765625 * 2^(-15)
+
+float: «znak» 8 bitów «wykładnik» 23 bity «ułamek»
+1/2^(23) ~= 1.1920929e-7
+(mało)

@@ -1,0 +1,38 @@
+ul {
+    border-bottom: 1px dotted black;
+}
+
+/* właściwość */
+#l1 {
+    margin-left: 10px;
+    list-style-image: url('dot.png');
+}
+
+
+/* pseudoklasa before */
+#l2 {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#l2 li::before {
+    content: url('dot.png');
+}
+
+
+/* tło elementu wypunktowania */
+#l3 {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#l3 li {
+    background-image: url('dot.png');
+    background-repeat: no-repeat;
+    background-position: 0 .4em;
+    padding-left: 55px;
+    padding-bottom: 25px;
+    padding-top: 25px;
+}

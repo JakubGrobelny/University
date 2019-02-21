@@ -1,0 +1,6 @@
+int sign(int x)
+{
+    int mask = x & (1 << (N-1)));
+    mask >>= (N-1); // arithmetic bit shift makes it -1 if the number is negative
+    return (mask == 0 & (x != 0)) + mask;
+}

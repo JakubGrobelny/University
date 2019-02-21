@@ -1,0 +1,53 @@
+/*
+    Zastosowania: 
+    krasimirtsonev.com/blog/article/CSS-before-and-after-pseudo-elements-in-practice 
+*/
+
+header h1 {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+header h1:before {
+    display: inline-block;
+    margin: 0 20px 8px 0;
+    height: 3px;
+    content: " ";
+    text-shadow: none;
+    background-color: black;
+    width: 140px;
+}
+
+header h1:after {
+    display: inline-block;
+    margin: 0 0 8px 20px;
+    height: 3px;
+    content: " ";
+    text-shadow: none;
+    background-color: black;
+    width: 140px;
+}
+
+div {
+    margin: 5%;
+}
+
+div:after {
+    content: url(kot.jpeg);
+    display: block;
+}
+
+div:before {
+    content: url(kot.jpeg);
+    display: block;
+}
+
+#quote:before {
+    content: '„';
+}
+
+#quote:after {
+    content: '”';
+}

@@ -1,0 +1,38 @@
+int x;
+float f;
+double d;
+
+1) x == (int32_t)(double) x
+tak, można zrzutować każdego inta do double, gdyż ma
+53 bity na część ułamkową
+
+2) x == (int32_t)(float) x
+nie, float ma tylko 23 bity na część ułamkową
+kontrprzykład: INT_MAX
+2147483647 != 2147483648.000000
+(int) -> overflow
+
+3) d == (double)(float) d
+nie, d może być spoza zakresu float
+kontrprzykład: 2147483649.0
+
+4) f == (float)(double) f
+tak, rzutowanie na double ma 100% dokładności
+
+5) f == -(-f)
+tak, jest tyle samo wartości ujemnych co dodatnich
+
+6) 1.0 / 2 == 1 / 2.0
+tak, wszystko zostaje konwertowane na double
+
+7) d * d >= 0.0
+prawda, nie ma overflow do ujemnych wartości. Jeżeli liczby będą za
+duże to wyjdzie +inf. Jak będą bardzo małe to wyjdzie też dodatnia.
+Im większe tym gorsza dokładność.
+
+8) (f + d) - f == d
+nie, kontrprzykład:
+f = FLT_MAX
+d = DBL_MIN
+double straci precyzję po dodani FLT_MAX
+

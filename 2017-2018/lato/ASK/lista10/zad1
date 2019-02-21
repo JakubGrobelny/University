@@ -1,0 +1,24 @@
+Cytat:
+	Cytat oznacza, że nie należy próbować optymalizować programu zbyt wcześnie, gdyż
+	nie jest jeszcze wiadomo, które fragmenty programu wymagają optymalizacji. Programiści
+	spędzają dużo czasu nad zastanawianiem się nad prędkością nieistotnych części
+	przez co programy stają się mniej czytelne i trudnejsze w utrzymaniu.
+
+1. Programy profilujące służą do sprawdzania, które miejsca w programie wykonywane
+  są najczęściej co umożliwia optymalizację w kluczowych miejscach.
+
+2. Profil płaski: -p
+	Informacje o calkowitym/pojedynczym czasie wywołań funkcji, % udziału w czasie,
+	ilość wywołań.
+   Call graph:    -q
+	 Graf wywołań pokazuje informacje o przepływie programu, tj. jaka funkcja wywołała
+     daną funkcję. Dla każdej funkcji wymienione są wywołane funkcje oraz funkcja,
+	 która tę funkcję wywołała.
+
+3. -pg udostępnia informacje programowi gprof (-p dla prof). Gdy kod jest kompilowany
+z opcją -pg, kompilator na początku wywołania funkcji umieszcza kod, który sprawdza,
+która funcja wywołała tę funkcję i zlicza te wywołania (mcount, _mcount, __mcount).
+Procedura mcount (z biblioteki profilowania) jest odpowiedzialna za zapisywanie w 
+pamięci grafu wywołań, który zapisuje frompc i selfpc
+(biblioteka standardowa nie jest skompilowana z -pg więc w wyniku nie pojawiają
+się informacje o funkcjach takich jak printf)

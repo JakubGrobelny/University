@@ -1,0 +1,93 @@
+Autor: Jakub Grobelny
+Data: 2018-03-30
+
+Pracownia w czwartek, s. 108
+Lista 5, zadanie 2
+
+Opis programu:
+    Program oblicza wartoœci wyra¿eñ arytmetycznych wczytywanych z pliku.
+    Wyra¿enia musz¹ byæ w postaci tzw. S-wyra¿eñ.
+    (https://en.wikipedia.org/wiki/S-expression)
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego JDK (Java Development Kit).
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program nale¿y u¿yæ polecenia „java Main «nazwa pliku»”, gdzie
+    «nazwa pliku» oznacza œcie¿kê do pliku zawieraj¹cego wyra¿enia, które
+    program ma obliczyæ.
+
+    Struktura plików obs³ugiwanych przez program jest nastêpuj¹ca:
+
+        definitions:
+        «nazwa zmiennej» «wartoœæ»
+        ...
+        examples:
+        «wyra¿enie»
+        ...
+
+        „...” oznacza, i¿ podana zostaæ mo¿e w tym miejscu dowolna iloœæ
+        wyra¿eñ b¹dŸ definicji.
+        Linie zaczynaj¹ce siê znakiem '#' s¹ pomijane przez program.
+
+    Wyra¿enia arytmetyczne mog¹ byæ nastêpuj¹cych postaci:
+
+        a) «zmienna»
+
+            Gdzie «zmienna» jest dowolnym napisem. Je¿eli zmienna nie zosta³a
+            wczeœniej nigdzie zdefiniowana, to program zwróci wyj¹tek przy
+            obliczaniu wyniku.
+
+        b) «sta³a»
+
+            Gdzie «sta³a» jest dowoln¹ liczb¹ zmiennoprzecinkow¹, która
+            mo¿e byæ reprezentowana przez typ float.
+
+        c) («operator» «lewe podwyra¿enie» «prawe podwyra¿enie»)
+        
+            Gdzie «operator» jest operatorem binarnym ze zbioru {+, -, *, /},
+            zaœ «lewe podwyra¿enie» oraz «prawe podwyra¿enie» s¹ dowolnymi
+            wyra¿eniami, które zosta³y zbudowane zgodnie z powy¿szymi regu³ami.
+
+            Program zwraca uwagê na spacje, tak¿e przy zapisywaniu
+            wyra¿eñ nale¿y zachowaæ ostro¿noœæ.
+
+        Po uruchomieniu program wypisze listê wyra¿eñ przekszta³conych do
+        notacji infiksowej oraz ich wartoœci.
+
+3) Hierarchia klas
+
+    Main - klasa zawieraj¹ca metodê „main”, w której dane s¹ wczytywane 
+        z pliku i przetwarzane.
+
+    Parser - klasa zawieraj¹ca metody s³u¿¹ce do przekszta³cania wyra¿eñ
+        na obiekty typu Expression.
+
+        Expression
+        /    |    \
+    Node Variable Constant
+
+    Expression - klasa abstrakcyjna, z której dziedzicz¹
+        klasy Node, Variable oraz Constant.
+        Zawiera abstrakcyjne metody „evaluate()” i „toString()”.
+
+    Node - klasa reprezentuj¹ca wêze³ drzewa, w którym przechowywany
+        jest operator binarny. Ka¿dy wêze³ zawiera referencje do
+        prawego i lewego podwyra¿enia (obiektów klas, które dziedzicz¹
+        po klasie Expression).
+
+    Variable - klasa reprezentuj¹ca liœæ drzewa, w którym przechowywana
+        jest zmienna, tzn. symbol, który zosta³ (lub nie) powi¹zany z 
+        pewn¹ wartoœci¹.
+        W klasie tej znajduje siê statyczna mapa haszowania, która
+        przechowuje informacje o wartoœciach zmiennych.
+        Aby zdefiniowaæ now¹ zmienn¹ nale¿y u¿yæ metody „addVariable()”.
+
+    Constant - klasa reprezentuj¹ca liœæ drzewa, w którym przechowywana
+        jest liczba typu float. 

@@ -1,0 +1,31 @@
+Jakie jest działanie «volatile» w stosunku do zmiennych?
+
+	Zmienna lub obiekt może zmienić się pomiędzy różnymi odczytami, nawet jeśli wydaje się, jakby nie były zmodyfikowane. Zastosowanie go powstrzymuje kompilator optymalizujący w wypadku
+	kolejnych odczytów lub zapisów zmiennej przed zastąpieniem jej tymczasową stałą, lub pomijaniem nadpisań. Zmienne ulotne pojawiają się przede wszystkim w dostępie do sprzętu, gdzie
+	korzystanie z pamięci jest wykorzystywane do komunikacji pomiędzy urzadzeniami oraz w środowisku wielowątkowym, w którym różne wątki mogą korzystać z tej samej zmiennje.s
+
+Kiedy należy go użyć?
+
+	Należy go użyć kiedy chcemy żeby dostęp do pamięci, którą zajmuje zmienna «volatile» był możliwy przez inne elementy systemu. Bez «volatile» kompilator może zamienić wystąpienia zmiennej 
+	przez stałą.
+	Komunikacja między wątkami.
+
+Jaki jest skutek użycia «static» w stosunku do zmiennych globalnych, zmiennych lokalnych i procedur? Kiedy należy używać?
+
+	zmienne lokalne:
+	Zmienna statyczna zachowuje wartość pomiędzy kolejnymi definicjami tej samej zmiennej. Zmienna statyczna nie zmieni swojej wartości przy ponownym wywołaniu funkcji i inicjalizacji tej zmiennej.
+
+	zmienna globalna:
+	statyczna zmienna globalna jest widoczna jedynie w swojej jednostce kompilacji.
+
+	procedury:
+	procedury statyczne widoczne są jedynie w obrębie swojej jednostki kompilacji
+
+	«static» należy używać aby ograniczyć widoczność zmiennej globalnej lub funkcji albo umożliwić zachowywanie wartości zmiennej lokalnej
+
+Jaką rolę pełni «restrict» odnośnie typów wskaźnikowych?
+
+	Jeżeli jakiś obiekt, który jest dostępny przez wskaźnik p zostaje zmodyfikowany w jakikolwiek sposób, to wszelki dostęp do tego obiektu w tym bloku musi być
+	poprzez wskaźnik p (pośrednio lub bezpośrednio), w przeciwnym razie jest to niezdefiniowane zachowanie.
+	Jeżeli obiekt nie jest modyfikowany to dostęp do niego może byc uzyskany poprzez różne wskaźniki «restrict».
+	Kompilator może obliczyć wartość w czasie kompilacji, bo wie, że dany obiekt może być modyfikowany jedynie poprzez wskaźnik «restrict»	

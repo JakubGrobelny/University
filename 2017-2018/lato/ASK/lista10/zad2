@@ -1,0 +1,17 @@
+8 tag | 2 sekcja | 2 offset
+
+832
+1000 0110 | 00 | 10
+
+hit: CC
+
+835
+1000 0110 | 10 | 01
+
+miss: - (wczyta na miejsce 40)
+
+FFD
+1111 1111 | 11 | 01
+hit: C0
+
+

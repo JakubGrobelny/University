@@ -1,0 +1,10 @@
+long decode(long x, long y)
+{
+    long result = x + y;
+    result ^= x;
+    result ^= y;
+
+    result >>= 63;
+
+    return result;
+}

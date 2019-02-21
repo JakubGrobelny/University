@@ -1,0 +1,51 @@
+div.container {
+    overflow: hidden;
+    background-color: black;
+    padding: 5%;
+    margin: 5% 5% 5% 5%;
+}
+
+div.clear-left {
+    clear: left;
+}
+
+div.clear-right {
+    clear: right;
+}
+
+div.clear-both {
+    clear: both;
+}
+
+div.box {
+    width: 100px;
+    height: 100px;
+    background-color: beige;
+    border: 1px solid black;
+    margin: 1px 1px 1px 1px;
+}
+
+div.smallbox {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    margin: 1px 1px 1px 1px;
+    float: inherit;
+    clear: inherit;
+}
+
+div.none {
+    float: none;
+}
+
+div.left {
+    float: left;
+    background-color: aquamarine;
+    /* clear: left; */
+}
+
+div.right {
+    float: right;
+    background-color: palegreen;
+    /* clear: right; */
+}

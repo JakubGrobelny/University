@@ -1,0 +1,16 @@
+1. Kompilacja:
+	
+	Aby skompilować program należy użyć polecenia "make".
+
+2. Obsługa programu:
+
+	Po uruchomieniu programu należy wprowadzić pierwszy ułamek
+	w postaci dziesiętnej i zatwierdzić klawiszem ENTER, drugi
+	zaś w formacie «licznik» «mianownik».
+	Po wprowdzeniu danych program wypisze wyniki następujących
+	działań na podanych liczbach:
+	
+		1) Dodawanie
+		2) Odejmowanie
+		3) Mnożenie
+		4) Dzielenie

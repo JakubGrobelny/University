@@ -1,0 +1,16 @@
+Autor: Jakub Grobelny
+Data: 2018-04-20
+
+Pracownia w czwartek, s. 108
+Lista 8, zadanie 1
+
+Opis programu:
+    Rozszerzenie klasy Fixnum o nastêpuj¹ce metody:
+        - factors() – zwraca tablicê dzielników danej liczby
+        - ack(y) – oblicza wartoœæ funkcji Ackermanna 
+          («liczba».ack(n) <=> ackermann(«liczba», n))
+        - perfect?() – sprawdza, czy liczba jest liczb¹ doskona³¹.
+        - to_words() – zamienia liczbê na reprezentacjê s³own¹.
+
+Aby uruchomiæ testy nale¿y u¿yæ polecenia „ruby test.rb”. Program
+utworzy pliki, do których zostan¹ zapisane wyniki obliczeñ.

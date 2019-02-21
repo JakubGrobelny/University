@@ -1,0 +1,73 @@
+Autor: Jakub Grobelny
+Data: 2018-03-22
+
+Pracownia w czwartek, s. 108
+Lista 4, zadanie 4
+
+Opis programu:
+    Program generuj¹cy losowe s³owa zgodne z gramatyk¹ bezkontekstow¹
+    podan¹ przez u¿ytkownika.
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego pakietu mono-devel.
+    http://www.mono-project.com/download/stable/#download-lin
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program, nale¿y u¿yæ polecenia „./grammars «nazwa pliku»”,
+    gdzie «nazwa pliku» to opcjonalny argument oznaczaj¹cy nazwê pliku, który
+    zawiera zasady wyprowadzania (produkcje). Je¿eli nazwa pliku nie zostanie
+    podana, to zasady wyprowadzania nale¿y wprowadzaæ rêcznie, zgodnie z 
+    instrukcjami wyœwietlanymi na ekranie.
+
+    Nale¿y podaæ nastêpuj¹ce dane (w przypadku wprowadzania rêcznego):
+    
+    a) Liczba zasad wyprowadzania w gramatyce.
+
+    b) Symbol wyró¿niony, z którego wyprowadzane bêdzie ka¿de s³owo.
+
+    c) Zasady wyprowadzania (oddzielnie nieterminal, z którego wyprowadzane
+        bêdzie s³owo oraz s³owo jakim mo¿e byæ zast¹piony).
+
+    d) Znak 'T' lub 'N' oznaczaj¹cy kolejno odpowiedzi „tak” i „nie” na
+        pytanie czy maj¹ byæ generowane puste s³owa.
+
+    e) Liczba s³ów do wygenerowania.
+
+    Po podaniu powy¿szych informacji program wypisze listê s³ów, które
+    zosta³y losowo wyprowadzone zgodnie z podan¹ gramatyk¹.
+
+3) Za³¹czone testy
+
+    Pliki z gramatykami:
+
+        a) example1_in – plik zawiera gramatykê, która generuje napisy
+            postaci a...ab...b, gdzie iloœæ znaków 'a' i 'b' jest
+            liczb¹ naturaln¹ wiêksz¹ lub równ¹ zero.
+
+        b) example2_in – plik zawiera gramatykê, która generuje proste
+            tzw. S-wyra¿enia, które mo¿na spotkaæ na przyk³ad w jêzykach
+            programowania z rodziny Lisp. Generowanie wyra¿enia w podanym
+            przyk³adzie mog¹ byæ liczbami naturalnymi wiêkszymi od zera, lub
+            wyra¿eniami postaci „(«operator» «liczba1» «liczba2»)”, gdzie 
+            «operator» jest to element ze zbioru {+, -, *, /} a «liczba1» i
+            «liczba2» s¹ liczbami naturalnymi wiêkszymi od zera.
+            (Generowanie wyra¿eñ zawieraj¹cych podwyra¿enia mo¿e potencjalnie
+            trwaæ nieskoñczenie d³ugo, wiêc taka zasada wyprowadzania zosta³a
+            pominiêta w tym przyk³adzie).
+
+        c) example3_in – plik zawiera gramatykê, która generuje wyra¿enia
+            postaci «operand1» «operator» «operand2», gdzie «operand1» 
+            i «operand2» s¹ to liczby naturalne wiêksze od zera, a «operator»
+            jest to element zbioru {+, -, *}.
+            (Uwaga! Generowanie wyrazów mo¿e potencjalnie trwaæ nieskoñczenie
+            d³ugo, wiêc nie zaleca siê prób generowania zbyt wielu wyrazów).
+    
+    W plikach example1_out, example2_out, example3_out mo¿na znaleŸæ przyk³adowe
+    wyrazy wygenerowane przy u¿yciu wy¿ej opisanych gramatyk.
+    

@@ -1,0 +1,59 @@
+header {
+    background-color: #3344ff;
+    height: 12%;
+}
+
+html,body { 
+    height:100%; 
+}
+
+#breadcrumb {
+    float: bottom;
+    background-color: yellowgreen;
+    height: 3%;
+}
+
+#articles {
+    background-color: gray;
+    vertical-align: top;
+    width: 70%;
+    height: 70%;
+    float: left;
+}
+
+
+#articles > :nth-child(2n) {
+    background-color: darkgray;
+}
+
+#menu {
+    float: left;
+    background-color: yellow;
+    width: 15%;
+    height: 70%;
+}
+
+.article {
+    width: 100%;
+    float: bottom;
+}
+
+.blog_entry {
+    float: bottom;
+}
+
+#blog {
+    background-color: pink;
+    float: left;
+    height: 70%;
+    width: 15%;
+}
+
+footer {
+    position: fixed; 
+    bottom: 0;
+    background-color: blueviolet;
+    height: 3%;
+    width: 100%;
+    color: white;
+}

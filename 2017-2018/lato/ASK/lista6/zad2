@@ -1,0 +1,47 @@
+sizeof(A) = 3640
+
+%rdi = i
+%rsi = j
+%rdx = k
+%rcx = *dest
+
+long A[R][S][T];
+
+long store_elem(long i, long j, long k, long* dest)
+{
+    *dest = A[i][j][k];
+    return sizeof(A);
+}
+
+store_elem:
+    leaq (%rsi, %rsi, 2), %rax  # %rax = 3*j
+    leaq (%rsi, %rax, 4), %rax  # %rax = 13*j
+    movq %rdi,            %rsi  # %rsi = i
+    salq $6,              %rsi  # %rsi = i << 6 = i * 64   
+    addq %rsi,            %rdi  # %rdi = i + i*64
+    addq %rax,            %rdi  # %rdi = i + i*64 + 13*j
+    addq %rdi,            %rdx  # %rdx = k + i + i*64 + 13*j
+    movq A(,%rdx,8),      %rax  # %rax = A + 8 * (k + i + i*64 + 13*j)
+    movq %rax,           (%rcx) # %rax = *dest
+    movq $3640,           %rax  # %rax = sizeof(A)
+    ret
+
+adres = A + (i * S * T * 8  +  j * T * 8  +  k * 8) = 
+ = A + 8 * (i * S * T  +  j * T  +  k)
+
+ i * S * T + j * T + k  = i + i*64 + 13*j + k = 65 * i + 13*j + k
+
+ T = 13
+3640 / 8 = 455
+455 / 13 = 35
+
+i * S * T = 65 * i
+i * S * 13 = 65 * i
+i * S = 5 * i
+
+S = 5
+T = 13
+R = 455 / (5 * 13) = 7
+
+
+

@@ -1,0 +1,7 @@
+int abs(int x)
+{
+    // b ? x : y <=> b * x + ~b * y
+
+    int mask = x >> (N-1); // 111...11 when negative, 000...00 when positive
+    return (mask^x) - mask;
+}

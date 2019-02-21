@@ -1,0 +1,52 @@
+Autor: Jakub Grobelny
+Data: 2018-03-14
+
+Pracownia w czwartek, s. 108
+Lista 3, zadanie 1
+
+Opis programu:
+    Program prezentuj¹cy dzia³anie biblioteki
+    implementuj¹cej listy dwukierunkowe, które
+    mog¹ przechowywaæ obiekty dowolnego zadanego typu.
+
+1) Kompilacja biblioteki oraz za³¹czonego programu
+    
+    Uwaga! Kompilacja wymaga zainstalowanego pakietu mono-devel.
+
+    a) Kompilacja biblioteki
+
+        W celu skompilowania biblioteki nale¿y u¿yæ
+        polecenia „make dll”. 
+        W celu usuniêcia powsta³ego pliku nale¿y u¿yæ
+        polecenia „make clean-dll”.
+
+    b) Kompilacja do³¹czonego programu
+
+        Aby móc skompilowaæ program nale¿y wczeœniej skompilowaæ
+        bibliotekê. W folderze z kodem Ÿród³owym programu
+        powinien znajdowaæ siê plik „list.dll”.
+
+        W celu skompilowania programu nale¿y u¿yæ
+        polecenia „make”.
+        W celu usuniêcia powsta³ego pliku wykonywalnego
+        nale¿y u¿yæ polecenia „make clean”.
+
+2) Uruchamianie programu
+
+    W celu uruchomienia programu nale¿y u¿yæ polecenia „./lists-test”.
+
+3) Obs³uga programu
+
+    Po uruchomieniu programu pojawi siê 6 opcji do wyboru. Nale¿y
+    wcisn¹æ klawisz odpowiadaj¹cy numerowi opcji.
+
+    Poszczególne opcje maj¹ nastêpuj¹ce efekty:
+
+        1) Dodawanie nowego elementu na pocz¹tek listy.
+        2) Dodawanie nowego elementu na koniec listy.
+        3) Usuniêcie elementu z pocz¹tku listy i wypisanie go.
+        4) Usuniêcie elementu z koñca listy i wypisanie go.
+        5) Wypisanie i-tego elementu listy.
+        6) Wy³¹czenie programu.
+
+        Po wyborze opcji 1), 2) lub 5) nale¿y wprowadziæ liczbê ca³kowit¹.

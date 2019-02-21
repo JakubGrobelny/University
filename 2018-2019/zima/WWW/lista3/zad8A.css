@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: lavender;
+}
+
+header > #logo {
+    background-color: aquamarine;
+    flex-basis: 20%;
+}
+
+#main {
+    display: flex;
+    flex-grow: 10;
+    flex-shrink: 10;
+}
+
+#main > nav {
+    flex-grow: 0;
+    flex-basis: 20%;
+    flex-shrink: 5;
+    background-color: bisque;
+}
+
+#main > #content-area {
+    flex-grow: 1;
+    background-color: aliceblue;
+}
+
+footer {
+    flex-grow: 1;
+    background-color: rgb(180, 209, 180);
+
+}

@@ -1,0 +1,85 @@
+Autor: Jakub Grobelny
+Data: 2018-03-30
+
+Pracownia w czwartek, s. 108
+Lista 5, zadanie 1
+
+Opis programu:
+
+    Program dzieli siê na dwie czêœci:
+
+        1. Implementacja list wi¹zanych przechowuj¹cych dowolne obiekty, które
+        implementuj¹ interfejs „Comparable<T>”, w kolejnoœci od najmniejszych
+        do najwiêkszych.
+
+        2. Implementacja hierarchii klas, które implementuj¹ interfejs
+        „Comparable<T>” (w podanym przyk³adzie s¹ to ró¿ne rodzaje funkcji).
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego JDK (Java Development Kit).
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program nale¿y u¿yæ polecenia „java Main”.
+
+    Po uruchomieniu wyœwietlone zostanie sto losowo wygenerowanych funkcji, w 
+    kolejnoœci od „najmniejszej” do „najwiêkszej”.
+    Funkcje te po wygenerowaniu przechowywane by³y z liœcie wi¹zanej
+    typu ”AscendingList<T>”.
+
+    Mo¿liwe typy funkcji:
+
+        a) Wielomiany
+
+        b) Funkcje kwadratowe
+        
+        c) Funkcje wymierne
+
+    Zasada sortowania funkcji:
+
+        Funkcje s¹ porównywane poprzez porównywanie ich wartoœci dla pewnych
+        punktów z przedzia³u od 0 do 1000. Funkcja, która jest w tych punktach
+        wiêksza wiêcej razy, jest uznawana za wiêksz¹. (Porównywanie to
+        odpowiada mniej wiêcej porównywaniu szybkoœci przyrostu wartoœci tych funkcji).
+
+3) Hierarchia klas
+
+    AscendingList<T> – klasa generyczna obudowuj¹ca listê wi¹zan¹ sk³adaj¹c¹
+        siê z obiektów klasy „Element<T>”.
+
+        Dostepne metody publiczne:
+
+            a) push() – dodaje nowy element do listy w taki sposób, ¿e jest
+                ona dalej posortowana od elementu najmniejszego do najwiêkszego.
+        
+            b) pop() – metoda usuwaj¹ca najmniejszy element listy i zwracaj¹ca go.
+
+            c) print() – metoda wypisuj¹ca wszystkie elementy listy.
+
+            d) empty() – metoda sprawdzaj¹ca, czy lista jest pusta.
+
+    Element<T> – klasa generyczna zawieraj¹ca wartoœæ dowolnego typu T (takiego,
+        który implementuje interfejs „Comparable<T>”) oraz referencjê do
+        kolejnego elementu listy.
+
+    
+               Function
+               /   |   \  
+              \/   |   \/
+        Quadratic  |  Rational
+                  \/
+               Polynomial
+    
+    Function – klasa abstrakcyjna implementuj¹ca interfejs „Comparable<T>”, z
+        której dziedzicz¹ klasy „Quadratic”, „Polynomial” i „Rational”.
+            
+    Quadratic – klasa reprezentuj¹ca funkcjê kwadratow¹.
+
+    Polynomial – klasa reprezentuj¹ca wielomian.
+
+    Rational – klasa reprezentuj¹ca funkcjê wymiern¹.

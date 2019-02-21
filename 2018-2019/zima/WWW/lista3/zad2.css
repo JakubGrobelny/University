@@ -1,0 +1,19 @@
+span {
+    background-color: rgb(210, 245, 253);
+    display: flex;
+    justify-content: center;
+    /* display: inline-block; */
+    /* width: 100%; */
+    /* text-align: center; */
+}
+
+div {
+    background-color: beige;
+    text-align: center;
+}
+
+div.centered {
+    margin-left: 0%;
+    margin-right: 0%;
+    background-color: lightblue;
+}

@@ -1,0 +1,11 @@
+s = x + y <=> overflow?
+
+// jeżeli x i y mają różne znaki to nie może zajść overflow
+// jeżeli mają takie same, to sprawdź, czy znak sumy jest taki sam, jeżeli jest, to nie ma overflow
+
+int will_overflow(int x, int y)
+{
+    // wyciągnąć pierwszy bit bo przesunięcie arytmetyczne da z lewej jedynki albo dać !!
+    return (((x >> (N - 1)) ^ (y >> (N - 1))) | 
+            ((x >> (N - 1) == ((x + y) >> (N - 1))) & ((y >> (N - 1) == ((x + y) >> (N - 1)))));
+}

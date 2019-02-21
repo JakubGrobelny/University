@@ -1,0 +1,28 @@
+Autor: Jakub Grobelny
+Data: 2018-03-21
+
+Pracownia w czwartek, s. 108
+Lista 4, zadanie 2
+
+Opis programu:
+    Program wyznaczaj¹cy kolejne liczby pierwsze przy u¿yciu
+    kolekcji, która implementuje interfejs „IEnumerable”.
+
+1) Kompilacja
+
+    Uwaga! Kompilacja wymaga zainstalowanego pakietu mono-devel.
+    http://www.mono-project.com/download/stable/#download-lin
+
+    W celu skompilowania programu nale¿y u¿yæ polecenia „make”.
+
+    Aby usun¹æ powsta³y plik wykonywalny nale¿y u¿yæ polecenia „make clean”.
+
+2) Obs³uga programu
+
+    Aby uruchomiæ program nale¿y u¿yc polecenia „./primes «arg»”, gdzie
+    «arg» oznacza opcjonalny argument bêd¹cy liczb¹ naturaln¹ wiêksz¹ od dwóch. 
+    Je¿eli argument zostanie podany, to program wyznaczy liczby 
+    pierwsze mniejsze ni¿ zadany limit, w przeciwnym wypadku wypisze 
+    wszystkie liczby pierwsze, które mo¿na zapisaæ w zmiennej typu 'int'.
+    W przypadku podania niew³aœciwego argumentu program wyœwietli komunikat
+    o b³êdzie.

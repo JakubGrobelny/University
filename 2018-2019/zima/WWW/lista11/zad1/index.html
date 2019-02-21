@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" 
+              content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" 
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" 
+              integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+              crossorigin="anonymous">
+
+        <link rel="stylesheet"
+              href="./main.css">
+
+        <title>Shop</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-primary navbar-light navbar-expand-lg"
+                 style="background-color: rgb(245, 220, 0);">
+
+                <a class="navbar-brand" href="#">
+                    <img src="./logo.png" 
+                         alt="" 
+                         width="50" 
+                         height="50" 
+                         class="d-inline-block mr-2">
+                    <h2 class="d-inline-block align-bottom">
+                        Świat Kaczek
+                    </h2>
+                </a>
+
+                <button class="navbar-toggler" 
+                        type="button" 
+                        data-toggle="collapse"
+                        data-target="#menu">
+                    <span class="navbar-toggler-icon">
+                    </span>
+                </button>
+
+                <div id="menu"
+                     class="collapse navbar-collapse">
+
+                    <form class="form-inline">
+                        <input class="form-control" 
+                               type="search"
+                               placeholder="Wpisz nazwę produktu">
+                        <button class="btn btn-dark"
+                                type="submit">
+                            Znajdź
+                        </button>
+                    </form>
+
+                     <ul class="navbar-nav align-bottom">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="#">
+                                Kontakt
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled"
+                                href="#">
+                                Konto
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="#">
+                                Logowanie
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="#">
+                                Rejestracja
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div id="basket" class="ml-auto text-center">
+                        <img src="./basket.png" 
+                             alt="" 
+                             width="35" 
+                             height="35" 
+                             class="d-inline">
+                        <h5>0.00zł</h5>
+                    </div>
+                </div>
+
+            </nav>
+        </header>
+
+        <main class="container-fluid" role="main">
+            <div class="row">
+                <div id="news"
+                     class="col-sm-6 col-lg-3">
+                    <h4 class="text-center">Aktualności</h4>
+
+                    <article class="col-12">
+                        <h5>Nowa strona sklepu.</h5>
+                        <p>W państwa ręce oddana zostaje nowa strona 
+                            sklepu Świat Kaczek.
+                        </p>
+                        <p>
+                            <h6>Wprowadzone zmiany:</h6>
+                            <ul>
+                                <li>Usunięto możliwość rejestracji.</li>
+                                <li>Usunięto możliwość logowania się.</li>
+                                <li>Usunięto możliwość wyszukiwania produktów.</li>
+                                <li>Usunięto możliwość kupowania produktów.</li>
+                            </ul>
+                        </p>
+                    </article>
+
+                    <article class="col-12">
+                            <h5>Chiny: Wielka żółta gumowa kaczka porwana przez powódź</h5>
+                            <p>
+                                <a href="https://www.bbc.com/news/blogs-news-from-elsewhere-28364613">
+                                    Czytaj tutaj.
+                                </a>
+                            </p>
+                    </article>
+    
+                    <article class="col-12">
+                            <h5>Darmowa dostawa</h5>
+                            <p>
+                                Każde zamówienie powyżej 50zł zostanie
+                                dostarczone za darmo.
+                            </p>
+                    </article>
+
+                </div>
+
+                <div id="recommendations" 
+                     class="col-sm-6 col-lg-6 container">
+                    <h4 class="text-center">Polecane</h4>
+                    <div id="products"
+                         class="row">
+                        <div class="card col-8 col-lg-4 offset-2 offset-lg-0">
+                            <img class="card-img-top" 
+                                    src="./products/duck1.jpg" 
+                                    alt="./logo.png">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    I ❤ You Duck
+                                </h4>
+                                <h4 class="card-text">
+                                    30.00zł
+                                </h5>
+                                <a href="#" class="btn btn-light">
+                                    Do koszyka
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card col-8 col-lg-4 offset-2 offset-lg-0">
+                            <img class="card-img-top" 
+                                    src="./products/duck2.jpg" 
+                                    alt="./logo.png">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    Tulip Duck
+                                </h4>
+                                <h4 class="card-text">
+                                    34.99zł
+                                </h5>
+                                <a href="#" class="btn btn-light">
+                                    Do koszyka
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card col-8 col-lg-4 offset-2 offset-lg-0">
+                            <img class="card-img-top" 
+                                    src="./products/duck3.jpg" 
+                                    alt="./logo.png">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    Colorful Hearts Duck
+                                </h4>
+                                <h4 class="card-text">
+                                    27.89zł
+                                </h5>
+                                <a href="#" class="btn btn-light">
+                                    Do koszyka
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card col-8 col-lg-4 offset-2 offset-lg-0">
+                            <img class="card-img-top" 
+                                    src="./products/duck4.jpg" 
+                                    alt="./logo.png">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    Donald Trump Duck
+                                </h4>
+                                <h4 class="card-text">
+                                    49.99zł
+                                </h5>
+                                <a href="#" class="btn btn-light">
+                                    Do koszyka
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card col-8 col-lg-4 offset-2 offset-lg-0">
+                            <img class="card-img-top" 
+                                    src="./products/duck5.jpg" 
+                                    alt="./logo.png">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    Unicorn Duck
+                                </h4>
+                                <h4 class="card-text">
+                                    42.99zł
+                                </h5>
+                                <a href="#" class="btn btn-light">
+                                    Do koszyka
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card col-8 col-lg-4 offset-2 offset-lg-0">
+                            <img class="card-img-top" 
+                                    src="./products/duck6.jpg" 
+                                    alt="./logo.png">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    Chef Duck
+                                </h4>
+                                <h4 class="card-text">
+                                    <s>42.99zł</s>
+                                    <span style="color: red;">30.00zł</span>
+                                </h5>
+                                <a href="#" class="btn btn-light">
+                                    Do koszyka
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="last-viewed"
+                     class="col-12 col-lg-3">
+                    <h4 class="text-center">Ostatnio oglądane</h4>
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="lview col-12">
+                                <img class="d-span"
+                                      src="./products/duck7.jpg" 
+                                      alt="" 
+                                      width=100 
+                                      height=100>
+                                <a href="#">
+                                    <h5 class="d-inline">
+                                        Pink Hearts Blue Duck
+                                    </h5>
+                                </a>
+                            </div>
+                            <div class="lview col-12">
+                                <img class="d-span"
+                                        src="./products/duck8.jpg" 
+                                        alt="" 
+                                        width=100 
+                                        height=100>
+                                <a href="#">
+                                    <h5 class="d-inline">
+                                        Fire Duck
+                                    </h5>
+                                </a>
+                            </div>
+                            <div class="lview col-12">
+                                <img class="d-span"
+                                        src="./products/duck9.jpg" 
+                                        alt="" 
+                                        width=100 
+                                        height=100>
+                                <a href="#">
+                                    <h5 class="d-inline">
+                                        Harry Potter Duck
+                                    </h5>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+        
+        <!--  navbar-fixed-bottom -->
+        <footer class="footer navbar-fixed-bottom">
+            <div class="row container-fluid">
+                <div class="contact col-sm-4 d-inline-block mb-1">
+                    <span class="text-muted d-block">Dane kontaktowe:</span>
+                    <div>
+                        Numer telefonu: <h6 class="d-inline">021-370-536</h6>
+                    </div> 
+                    <div>
+                        E-mail: <h6 class="d-inline">swiatkaczek@kaczki.pl</h6>
+                    </div> 
+                </div>
+                <div class="d-inline-block col-sm-4 text-center mb-1">
+                    <img src="./logo.png" 
+                        alt=""
+                        width="50"
+                        height="50">
+                </div>
+                <div class="bank col-sm-4 d-inline-block mb-1 text-right">
+                    <span class="text-muted d-block">Konto bankowe:</span>
+                    <div>PL61109010140000071219812874</div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+                integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" 
+                crossorigin="anonymous">
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" 
+                integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" 
+                crossorigin="anonymous">
+        </script>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" 
+                integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" 
+                crossorigin="anonymous">
+        </script>
+    </body>
+</html>

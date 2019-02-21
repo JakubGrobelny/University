@@ -1,0 +1,44 @@
+Końcowa zawartość:
+VPN Valid? PPN
+0   1      5
+1   0      dysk
+2   1      13
+3   1      6
+4   1      9
+5   1      11
+6   0      dysk
+7   1      4
+8   0      dysk
+9   0      dysk
+10  1      3
+11  1      12
+12  0      brak
+
+
+Valid? Tag LRU PPN
+1      2   0   13
+1      4   1   9
+1      11  2   12
+1      7   3   4
+
+Adres:
+
+4669
+miss
+trafienie w tablicę stron
+4669 -> 9669
+
+2227
+miss
+błąd strony, wtoczenie z dysku
+
+13916
+
+
+34587
+48870
+12608
+49225
+
+
+

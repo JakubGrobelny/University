@@ -1,0 +1,31 @@
+union elem // 16 bajtów
+{
+    struct // 16 bajtów
+    {
+	long* p; // 8 bajtów
+	long y;  // 8 bajtów
+    } e1;
+    
+    struct // 16 bajtów
+    {
+	long x; // 8 bajtów
+	union elem* next; // 8 bajtów
+    } e2;
+};
+
+proc:
+    movq 8(%rdi),  %rax  
+    movq (%rax),   %rdx
+    movq (%rdx),   %rdx
+    subq 8(%rax),  %rdx
+    movq %rdx,    (%rdi)
+    ret
+
+union elem* proc(union elem* rdi) {
+    union elem* rax = rdi->next;
+    long rdx = *(rax->p);
+    rdx -= rax->y;
+    rdi->x = rdx;
+    return rax;
+}
+

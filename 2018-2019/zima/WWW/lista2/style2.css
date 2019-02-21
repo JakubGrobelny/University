@@ -1,0 +1,14 @@
+p {
+    color: blue;
+}
+
+div {
+    color: red;
+    background-color: white !important;
+}
+
+/* Przykrywa */
+/* div { */
+    background-color: black !important; zasłonięte
+    /* font-size: 125%; */
+/* } */

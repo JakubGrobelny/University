@@ -1,0 +1,62 @@
+Autor: Jakub Grobelny
+Data: 2018-03-14
+
+Pracownia w czwartek, s. 108
+Lista 3, zadanie 2
+
+Opis programu:
+    Program prezentuj¹cy dzia³anie biblioteki
+    implementuj¹cej s³owniki, czyli tablice
+    indeksowane obiektami dowolnego typu.
+
+1) Kompilacja biblioteki oraz za³¹czonego programu
+    
+    Uwaga! Kompilacja wymaga zainstalowanego pakietu mono-devel.
+
+    a) Kompilacja biblioteki
+
+        W celu skompilowania biblioteki nale¿y u¿yæ
+        polecenia „make dll”. 
+        W celu usuniêcia powsta³ego pliku nale¿y u¿yæ
+        polecenia „make clean-dll”.
+
+    b) Kompilacja do³¹czonego programu
+
+        Aby móc skompilowaæ program nale¿y wczeœniej skompilowaæ
+        bibliotekê. W folderze z kodem Ÿród³owym programu
+        powinien znajdowaæ siê plik „dictionary.dll”.
+
+        W celu skompilowania programu nale¿y u¿yæ
+        polecenia „make”.
+        W celu usuniêcia powsta³ego pliku wykonywalnego
+        nale¿y u¿yæ polecenia „make clean”.
+
+2) Uruchamianie programu
+
+    W celu uruchomienia programu nale¿y u¿yæ polecenia „./dict-test”.
+
+3) Obs³uga programu
+
+    Po uruchomieniu programu wyœwietlona zostaje lista dostêpnych
+    poleceñ, które program mo¿e interpretowaæ.
+
+    Szczegó³owe opisy poszczególnych opcji:
+
+    a) set «key» «value» - ustawia wartoœæ elementu o indeksie «key»
+        na «value». Je¿eli element o podanym indeksie istnieje, to
+        zostanie zmieniona wartoœæ tego elementu. W przeciwnym wypadku
+        utworzony zostanie nowy element.
+
+    b) see «key» - wyœwietla zawartoœæ s³ownika pod indeksem «key».
+
+    c) delete «key» - usuwa element o indeksie «key» ze s³ownika. Je¿eli
+        taki element nie wystêpuje w s³owniku, to s³ownik nie zostaje
+        zmieniony.
+
+    d) print - wypisuje aktualn¹ zawartœæ s³ownika.
+
+    e) clear - czyœci ekran.
+
+    f) exit - wy³¹cza program.
+
+

@@ -1,0 +1,20 @@
+1. sekcyjno-skojarzeniowa, 3-drożna, bloki 2 słowa, 24 bloki, LRU
+
+	24 bloki / 3 drożna = 8 zbiory
+	Ilość bitów potrzebna na ponumerowanie 8 zbiorów: 3
+	Ilość bitów potrzebna na tag: 2 (3 drożna)
+	bloki 2 słowa = 64 bity = 8 bajtów
+
+0    =    0:
+4    =    4:
+16   =   10:
+132  =   84:
+232  =   E8:
+160  =   A0:
+1024 =  400:
+28   =   1C:
+140  =   BC:
+3100 =  C1C:
+180  =   B4:
+2180 =  884:
+

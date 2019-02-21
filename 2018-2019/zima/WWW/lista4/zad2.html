@@ -1,0 +1,31 @@
+<!DOCTYPE htm>
+<html lang="en">
+    <head>
+        <title>2</title>
+        <link rel="stylesheet" href="zad2.css">
+    </head>
+    <body>
+        <script src="zad2.js"></script>
+        
+        Numer konta<br>
+        <input type="text" id="acc_id" onblur="validate_account_number()">
+        <br><br>
+
+        Pesel<br>
+        <input type="text" id="pesel" onblur="validate_pesel()">
+        <br><br>
+
+        Data urodzenia<br>
+        <input type="date" id="birthdate" onblur="validate_birthdate()">
+        <br><br>
+
+        E-mail<br>
+        <input type="text" id="email" onblur="validate_email()">
+        <br><br>
+
+        <button id="submit" onclick="validate_form()">
+            Wyślij
+        </button>
+
+    </body>
+</html>

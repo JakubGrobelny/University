@@ -1,0 +1,196 @@
+Goal modus_ponens_s : A /\ (A => B) => B =
+  [A /\ (A => B) :
+   A;
+   A => B;
+   B];
+  A /\ (A => B) => B
+
+Goal modus_ponens_t : A ∧ (A ⇒ B) ⇒ B =
+  ImplI ([A ∧ (A ⇒ B) :
+    ImplE (ConjEL (Ax (A ∧ (A ⇒ B))),
+           ConjER (Ax (A ∧ (A ⇒ B))))])
+
+Goal modus_ponens_invalid_s : A /\ (A => B) => B =
+  [A /\ (A => B) :
+   B;
+   A => B;
+   B];
+  A /\ (A => B) => B
+
+Goal modus_ponens_invalid_t : A ∧ (A ⇒ B) ⇒ B =
+  ImplI ([A ∧ (B ⇒ A) :
+    ImplE (ConjEL (Ax (A ∧ (A ⇒ B))),
+           ConjER (Ax (A ∧ (A ⇒ B))))])
+
+Goal example_s : (A \/ B) /\ (A => C) /\ (B => C) => C =
+    [(A \/ B) /\ (A => C) /\ (B => C) :
+        (A \/ B) /\ (A => C);
+        A \/ B;
+        [A:
+            A => C;
+            C
+        ];
+        [B:
+            B => C;
+            C
+        ];
+        C
+    ];
+    (A \/ B) /\ (A => C) /\ (B => C) => C
+
+Goal example_s : A /\ B /\ C => A =
+    [ A /\ B /\ C :
+        A /\ B;
+        A
+    ];
+    A /\ B /\ C => A
+
+    Goal modus_ponens_s : A /\ (A => B) => B =
+  [A /\ (A => B) :
+   A;
+   A => B;
+   B];
+  A /\ (A => B) => B
+
+Goal modus_ponens_t : A ∧ (A ⇒ B) ⇒ B =
+  ImplI ([A ∧ (A ⇒ B) :
+    ImplE (ConjEL (Ax (A ∧ (A ⇒ B))),
+           ConjER (Ax (A ∧ (A ⇒ B))))])
+
+Goal example_a : (A \/ B) /\ (A => C) /\ (B => C) => C =
+    [(A \/ B) /\ (A => C) /\ (B => C) :
+        (A \/ B) /\ (A => C);
+        (A \/ B);
+        A => C;
+        (B => C);
+        [A:
+            C];
+        [B:
+            C];
+        C
+    ];
+    (A \/ B) /\ (A => C) /\ (B => C) => C
+
+Goal example_ba : A => A = 
+    ImplI([A:
+            Ax (A)
+    ])
+
+Goal example_bb : A => B = 
+    [A :
+    B];
+    A => B
+
+Goal modus_ponens_s : A /\ (A => B) => B =
+  [A /\ (A => B) :
+   A;
+   A => B;
+   B];
+  A /\ (A => B) => B
+
+Goal modus_ponens_t : A ∧ (A ⇒ B) ⇒ B =
+  ImplI ([A ∧ (A ⇒ B) :
+    ImplE (ConjEL (Ax (A ∧ (A ⇒ B))),
+           ConjER (Ax (A ∧ (A ⇒ B))))])
+
+Goal wrong_a_t : A ∧ (A ⇒ B) ⇒ B = 
+  ImplI ([A ∧ (A ⇒ B) :
+    ImplE (ConjEL (Ax (A ∧ (A /\ B))),
+           ConjER (Ax (A ∧ (A ⇒ B))))])
+
+Goal wrong_a_s : A /\ (A => B) => B =
+  [A /\ (A => B) :
+   A;
+   A \/ B;
+   B];
+  A /\ (A => B) => B
+  
+Goal correct_a_s : (P \/ Q) => (P \/ Q) =
+  [P \/ Q :
+    [P : P \/ Q];
+    (P => P \/ Q);
+    [Q : P \/ Q];
+    (Q => P \/ Q);
+    P \/ Q];
+    (P \/ Q) => (P \/ Q)
+
+Goal correct_a_t : (P \/ Q) => (P \/ Q) =
+  ImplI ([P \/ Q :
+    DisjE (Ax (P \/ Q),
+          [P : DisjIL (Ax (P), Q)],
+          [Q : DisjIR (P, Ax (Q))])])
+
+Goal wrong_a_s : (P \/ Q) => (P \/ Q) =
+  [P \/ Q :
+    [P : P \/ Q];
+    (P => P \/ Q);
+    [Q : Q \/ Q];
+    (Q => P \/ Q);
+    P \/ Q];
+    (P \/ Q) => (P \/ Q)
+
+Goal wrong_a_t : (P \/ Q) => (P \/ Q) =
+  ImplI ([P \/ Q :
+    DisjE (Ax (P \/ Q),
+          [P : DisjIL (Ax (P), Q)],
+          [Q : DisjIR (Q, Ax (Q))])])
+
+Goal correct_b_t : P => (P \/ Q) =
+  ImplI ([P :
+    DisjIL (Ax (P), Q)])
+
+Goal correct_c_t : (P /\ Q) => (P \/ Q) =
+  ImplI ([P /\ Q :
+    DisjIL (ConjEL (Ax (P /\ Q)), Q)])
+
+Goal correct_c_s : (P /\ Q) => (P \/ Q) =
+  [P /\ Q :
+    P;
+    P \/ Q];
+  (P /\ Q) => (P \/ Q)
+
+Goal correct_d_t : (P => Q) /\ (Q => R) => (P => R) =
+  ImplI ([(P => Q) /\ (Q => R) :
+    ImplI ([P :
+      ImplE (ImplE (Ax (P), ConjEL (Ax ((P => Q) /\ (Q => R)))),
+            ConjER (Ax ((P => Q) /\ (Q => R)))
+      )
+    ])
+  ])
+
+Goal correct_d_s : (P => Q) /\ (Q => R) => (P => R) =
+  [(P => Q) /\ (Q => R) :
+    (P => Q);
+    [P :
+      (P => Q);
+      Q;
+      (Q => R);
+      R
+    ];
+    (P => R)
+  ];
+  (P => Q) /\ (Q => R) => (P => R)
+
+Goal wrong_d_s : (P => Q) /\ (Q => R) => (P => R) =
+  [(P => Q) /\ (Q => R) :
+    [P :
+      (P => Q);
+      (Q => R);
+      R
+    ];
+    (P => R)
+  ];
+  (P => Q) /\ (Q => R) => (P => R)
+
+Goal correct_d_s : (P => Q) /\ (Q => R) => (P => R) =
+  [(P => Q) /\ (Q => R) :
+    [P :
+      (P => Q);
+      Q;
+      (Q => R);
+      R
+    ];
+    (P => R)
+  ];
+  (P => Q) /\ (Q => R) => (P => R)
+

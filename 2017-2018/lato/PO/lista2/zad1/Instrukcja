@@ -1,0 +1,36 @@
+Jakub Grobelny 300481
+7 marca 2018
+Programowanie Obiektowe - Lista 2, zadanie 1
+
+Implementacja strumieni liczb naturalnych, liczb pierwszych, losowych liczb
+oraz strumieni losowych łańcuchów znaków.
+
+Kompilacja i uruchamianie:
+
+    W celu kompilacji programu należy użyć w terminalu polecenia "make".
+    Kompilacja wymaga zainstalowanego pakietu mono-devel.
+
+    Aby uruchomić skompilowany program należy użyć polecenia "mono streams.exe"
+
+Instrukcja obsługi:
+
+    Po uruchomieniu programu należy wprowadzić liczbę całkowitą oznaczającą
+    ilość wyrazów do wygenerowania. Jeżeli podana liczba jest mniejsza lub równa zero,
+    to program będzie generował kolejne wyrazy dopóki nie napotka na koniec strumienia.
+
+Struktura programu:
+
+    przestrzeń nazw Streams
+                       |
+                       |
+                _______|_______________
+                |                     |
+    klasa RandomWordStream    klasa IntStream
+                                      |
+                                      | (dziedziczenie)
+                                      |        
+                             --------------------
+                             |                  |
+                             |                  |
+                klasa PrimeStream      klasa RandomStream
+                

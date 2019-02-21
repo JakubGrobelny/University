@@ -1,0 +1,24 @@
+a:link {
+    font-size: 200%;
+    font-style: italic;
+    text-decoration: none;
+}
+
+a:visited {
+    color: brown;
+}
+
+a:hover {
+    color: white;
+    background-color: brown;
+    font-size: 225%;
+}
+
+a:active {
+    background-color: black;
+    color: yellow !important;
+}
+
+a:focus {
+    color: black; 
+}

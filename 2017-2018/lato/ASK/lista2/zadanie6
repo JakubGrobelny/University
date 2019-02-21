@@ -1,0 +1,4 @@
+// wyrażenie porównujące x < y a) bez znaku b) ze znakiem
+
+a) ((x - y) & ((1 << (N-1)) >> (N-1))) == 1
+b) 

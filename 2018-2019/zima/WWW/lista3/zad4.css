@@ -1,0 +1,48 @@
+div.item {
+    position: relative;
+    background-color: lightblue;
+    width: 720px;
+    height: 250px;
+    padding-left: 30px;
+    white-space: nowrap;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 4px solid black;
+}
+
+div.item > img {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 25px;
+    border: 2px solid black;
+}
+
+div.item > div.item_name {
+    position: absolute;
+    font-size: 300%;
+    left: 250px;
+    top: 25px;
+    font-style: oblique;
+}
+
+div.item > div.item_price {
+    color: darkred;
+    position: absolute;
+    font-size: 250%;
+    top: 80px;
+    left: 250px;
+}
+
+div.item > button.add_to_cart {
+    position: absolute;
+    font-size: 150%;
+    top: 150px;
+    left: 250px;
+    height: 80px;
+    width: 200px;
+}
+
+div.item > button.add_to_cart:hover {
+    font-size: 200%;
+}
