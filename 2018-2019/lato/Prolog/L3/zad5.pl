@@ -1,5 +1,5 @@
 append([], []) :-
     !.
-append([L | Ls], Xs) :-
-    append(Ls, Ys),
-    append(L, Ys, Xs).
+append([Xs | Xss], Ys) :-
+    append(Xss, Zs),
+    append(Xs, Zs, Ys).

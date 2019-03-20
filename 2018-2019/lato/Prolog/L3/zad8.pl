@@ -13,6 +13,7 @@ merge_sort(Xs, N, Ys, T) :-
     merge_sort(Rest, NRest, RestSorted, T),
     merge(HalfSorted, RestSorted, Ys).
 
+
 merge([], X, X) :-
     !.
 merge(X, [], X) :-
