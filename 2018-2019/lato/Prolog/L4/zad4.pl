@@ -1,0 +1,2 @@
+solve(N, Result) :-
+    
