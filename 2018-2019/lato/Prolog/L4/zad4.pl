@@ -1,2 +1,0 @@
-solve(N, Result) :-
-    

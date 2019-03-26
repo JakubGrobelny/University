@@ -13,6 +13,16 @@ concat_number([Digit | Digits], N, Pow) :-
     DigitVal is Pow * Digit,
     N is DigitVal + M.
 
+decimal(N, Digits) :-
+    decimal(N, Digits, []).
+decimal(N, [N | Acc], Acc) :-
+    N < 10,
+    !.
+decimal(N, Digits, Acc) :-
+    Digit is mod(N, 10),
+    Div is N // 10,
+    decimal(Div, Digits, [Digit | Acc]).
+
 split_input(Input, PartialResults, FinalResult) :-
     length(FinalResult, 1),
     append(PartialResults, FinalResult, Input),
@@ -21,5 +31,3 @@ split_input(Input, PartialResults, FinalResult) :-
 solve(Input) :-
     Input = [N1, N2, Results],
     split_input(Results, PartialResults, FinalResult),
-    
-
