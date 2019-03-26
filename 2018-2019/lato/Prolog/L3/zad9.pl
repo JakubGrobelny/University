@@ -13,7 +13,7 @@ merge(T, [H | S], [H | R]) :-
 split([], []) :-
     !.
 split([X | Xs], [[X] | Ys]) :-
-split(Xs, Ys).
+    split(Xs, Ys).
 
 merge_sort([], []) :-
     !.
