@@ -1,36 +1,25 @@
-number(_, 0).
-number(Max, N) :-
-    number(Max, M),
-    N is M + 1,
-    N =< Max.
+n_numbers(0, []) :-
+    !.
+n_numbers(N, [N | Ns]) :-
+    M is N - 1,
+    n_numbers(M, Ns).
 
-solve(0, []) :- !.
-solve(N, [Q | Qs]) :-
-    number(N, Q),
-    solve(N, Qs),
-    safe([Q | Qs]).
+solve(N, Qs) :-
+    n_numbers(N, Ns),
+    solve(Ns, Qs, []).
 
-% solve(N, Qs) :-
-%     numlist(1, N, Xs),
-%     permutation(Qs, Xs),
-%     safe(Qs).
+solve([], Qs, Qs) :-
+    !.
+solve(Ns, Qs, Acc) :-
+    select(N, Ns, NsRem),
+    safe(N, Acc, 1),
+    solve(NsRem, Qs, [N | Acc]).
 
-% 0 hetmanów się nie zbija
-safe([]).
-% ustawienie jest OK jeżeli Qs się nie zbijają 
-% i Q nie zbija się z żadnym z Qs
-safe([Q | Qs]) :-
-    safe(Qs, Q, 1),
-    safe(Qs).
-
-% 0 hetmanów nie zbija żadnego hetmana
-safe([], _, _).
-safe([Q | Qs], Queen, Diagonal) :-
-    Queen \= Q, % są w różnych wierszach
-    Abs is abs(Queen - Q),
-    Abs \= Diagonal,
-    NextDiagonal is Diagonal + 1,
-    safe(Qs, Queen, NextDiagonal).
-
-
-
+safe(_, [], _) :-
+    !.
+safe(New, [Q | Qs], X) :-
+    New =\= Q,
+    Diag is abs(Q - New),
+    Diag =\= X,
+    NextX is X + 1,
+    safe(New, Qs, NextX).
