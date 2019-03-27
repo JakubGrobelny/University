@@ -28,6 +28,16 @@ split_input(Input, PartialResults, FinalResult) :-
     append(PartialResults, FinalResult, Input),
     !.
 
+gen_number([], []) :- 
+    !.
+gen_number([s | Xs], [N | Ns]) :-
+    even(N),
+    gen_number(Xs, Ns).
+gen_number([c | Xs], [N | Ns]) :-
+    odd(N),
+    gen_number(Xs, Ns).
+
 solve(Input) :-
-    Input = [N1, N2, Results],
+    Input = [N1, N2 | Results],
     split_input(Results, PartialResults, FinalResult),
+    % ???
