@@ -35,20 +35,47 @@ nominałów jest równy $X = \{1, a, b\}$.
 \section{Rozwiązanie}
 
 \begin{definition*}
-\theoremstyle{remark}\normalfont
-Niech $G(x)$ i $M(x)$ oznaczają kolejno liczbę monet w reprezentacji liczby $x$
-będącej wynikiem algorytmu zachłannego oraz liczbę monet w optymalnej
-reprezentacji liczby $x$. Wówczas będziemy mówić, że zachłanna strategia
-dla problemu wydawania reszty jest niepoprawna, jeżeli $\exists_x\,G(x) > M(x)$.
+\normalfont
+$G(x)$ oznacza liczbę monet w reprezentacji liczby $x$ dla nominałów $\{1, a, b\}$ 
+będącej wynikiem algorytmu zachłannego, $M(x)$ zaś liczbę monet w optymalnej
+reprezentacji liczby $x$.
+\end{definition*}
+
+\begin{definition*}
+\normalfont
+Kontrprzykładem nazywamy taki $x \in \mathds{Z}$, że $G(x) > M(x)$.
+\end{definition*}
+    
+\begin{definition*}
+\normalfont
+Mówimy, że zachłanna strategia dla problemu wydawania reszty jest niepoprawna dla
+jakiegoś zbioru nominałów, jeżeli istnieje kontrprzykład.
+\end{definition*}
+
+
+\begin{definition*}
+\normalfont
+Notacja $x = (i, j, k)$ dla zbioru nominałów $\{1, a, b\}$ oznacza, że reszta $x$ została wydana przy użyciu $i$
+monet nominału 1, $j$ monet nominału $a$ oraz $k$ monet nominału $b$.
 \end{definition*}
 
 \begin{theorem*}\normalfont
 Strategia zachłanna dla problemu wydawania reszty dla zbioru nominałów 
-$\{1, a, b\}$ jest niepoprawna wtedy i tylko wtedy gdy $0 < r < a - q$,
+$\{1, a, b\}$ jest niepoprawna wtedy, i tylko wtedy gdy $0 < r < a - q$,
 gdzie $b = qa + r$.
 \end{theorem*}
 
-\begin{proof}
+
+\begin{proof}$ $\newline
+1) Dowód implikacji w prawą stronę:\\
+Niech $b = qa + r$. Załóżmy, że $0 < r < a - q$. Wówczas istnieje
+kontrprzykład $x = b + a - 1$, dla którego reprezentacja optymalna to
+$(r - 1, q + 1, 0)$, zaś zachłanna $(a - 1, 0, 1)$.
+$$M(x) = r - 1 + q + 1 = r + q$$
+$$G(x) = a - 1 + 1 = a$$
+Z założenia mamy $0 < r + q < a$, więc $G(x) > M(x)$.\\\\
+2) Dowód implikacji w lewą stronę:\\
+%TODO:%
 \end{proof}
 
 \end{titlepage}
