@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{dsfont}
+\usepackage{mdframed}
+\usepackage[bottom]{footmisc}
+\usepackage{abstract}
+\usepackage{titlesec}
+
+\newtheorem*{theorem*}{Twierdzenie}
+\newtheorem*{definition*}{Definicja}
+
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{0em}{}
+
+\title{\bfseries Algorytmy i Struktury Danych\\\Large Lista 2, Zadanie 8}
+\date{}
+\author{\large Jakub Grobelny}
+
+\begin{document}
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
+
+\section{Treść zadania}
+
+8. (2pkt) Ułóż algorytm, który dla danych liczb naturalnych $a$ i $b$, sprawdza,
+czy zachłanna strategia dla problemu wydawania reszty jest poprawna, gdy zbiór
+nominałów jest równy $X = \{1, a, b\}$.
+
+\section{Rozwiązanie}
+
+\begin{definition*}
+\theoremstyle{remark}\normalfont
+Niech $G(x)$ i $M(x)$ oznaczają kolejno liczbę monet w reprezentacji liczby $x$
+będącej wynikiem algorytmu zachłannego oraz liczbę monet w optymalnej
+reprezentacji liczby $x$. Wówczas będziemy mówić, że zachłanna strategia
+dla problemu wydawania reszty jest niepoprawna, jeżeli $\exists_x\,G(x) > M(x)$.
+\end{definition*}
+
+\begin{theorem*}\normalfont
+Strategia zachłanna dla problemu wydawania reszty dla zbioru nominałów 
+$\{1, a, b\}$ jest niepoprawna wtedy i tylko wtedy gdy $0 < r < a - q$,
+gdzie $b = qa + r$.
+\end{theorem*}
+
+\begin{proof}
+\end{proof}
+
+\end{titlepage}
+
+\end{document}
+
+
+
