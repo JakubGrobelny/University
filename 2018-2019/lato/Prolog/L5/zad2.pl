@@ -55,15 +55,14 @@ eval(Expr, Env, Val) :-
     subst(Expr, Env, Substituted),
     Val is Substituted.
 
-
 diff(X, X, 1) :-
-    atom(X),
+    is_var(X),
     !.
 diff(X, _, X) :-
-    atom(X),
+    is_var(X),
     !.
 diff(N, _, 0) :-
-    number(N),
+    is_const(N),
     !.
 diff(X+Y, Var, Derivative) :-
     diff(X, Var, DX),
@@ -82,7 +81,7 @@ diff(X/Y, Var, Derivative) :-
     diff(Y, Var, DY),
     Derivative = DX * Y - X * DY/ (DY ** 2).
 diff(X**C, Var, Derivative) :-
-    number(C),
+    is_const(C),
     !,
     CLess is C - 1,
     diff(X, Var, DX),
@@ -115,7 +114,37 @@ diff(exp(X), Var, Derivative) :-
     diff(X, Var, DX),
     Derivative = DX * exp(X).
 
-
-
+simplify(_*0, 0) :-
+    !.
+simplify(0*_, 0) :-
+    !.
+simplify(X*1, X) :-
+    !.
+simplify(1*X, X) :-
+    !.
+simplify(Var, Var) :-
+    is_var(Var),
+    !.
+simplify(T, Val) :-
+    vars(T, []),
+    !,
+    eval(T, [], Val).
+simplify(C, C) :-
+    is_const(C),
+    !.
+simplify(X+X, Simplified) :-
+    simplify(1*X+1*X, Simplified),
+    !.
+simplify(A*X+X, Simplified) :-
+    simplify(A*X+1*X, Simplified),
+    !.
+simplify(X+A*X, Simplified):-
+    simplify(1*X+A*X, Simplified),
+    !.
+simplify(A*X+B*X, Simplified) :-
+    !,
+    simplify(X, SimplifiedX),
+    simplify(A+B, SimplifiedAB),
+    Simplified = SimplifiedAB * SimplifiedX.
 
 
