@@ -39,6 +39,7 @@ vars(log10(X), Y) :-
 vars(exp(X), Y) :-
     vars(X, Y).
 
+
 eval(pi, _, Val) :-
     Val is pi,
     !.
@@ -100,4 +101,63 @@ eval(exp(X), Env, Val) :-
     eval(X, Env, ValX),
     Val is exp(ValX).
 
+
+diff(X, X, 1) :-
+    atom(X),
+    !.
+diff(X, _, X) :-
+    atom(X),
+    !.
+diff(N, _, 0) :-
+    number(N),
+    !.
+diff(X+Y, Var, Derivative) :-
+    diff(X, Var, DX),
+    diff(Y, Var, DY),
+    Derivative = DX + DY.
+diff(X-Y, Var, Derivative) :-
+    diff(X, Var, DX),
+    diff(Y, Var, DY),
+    Derivative = DX - DY.
+diff(X*Y, Var, Derivative) :-
+    diff(X, Var, DX),
+    diff(Y, Var, DY),
+    Derivative = DX * Y + X * DY.
+diff(X/Y, Var, Derivative) :-
+    diff(X, Var, DX),
+    diff(Y, Var, DY),
+    Derivative = DX * Y - X * DY/ (DY ** 2).
+diff(X**C, Var, Derivative) :-
+    number(C),
+    !,
+    CLess is C - 1,
+    diff(X, Var, DX),
+    Derivative = C * (X ** CLess) * DX.
+diff(X**Y, Var, Derivative) :-
+    diff(X, Var, DX),
+    diff(Y, Var, DY),
+    Derivative = X**Y * (DX*Y/X + DY * log(X)).
+diff(sqrt(X), Var, Derivative) :-
+    diff(X**(0.5), Var, Derivative).
+diff(sin(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = DX * cos(X).
+diff(cos(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = -1 * DX * sin(X).
+diff(tan(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = DX * 1 / (cos(X) ** 2).
+diff(ctg(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = DX * -1 / (sin(X) ** 2).
+diff(log(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = DX / X.
+diff(log10(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = DX / (X * log(10)).
+diff(exp(X), Var, Derivative) :-
+    diff(X, Var, DX),
+    Derivative = DX * exp(X).
 
