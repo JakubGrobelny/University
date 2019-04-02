@@ -1,105 +1,59 @@
-sum_vars(X, Y, Z) :-
-    vars(X, XVars),
-    vars(Y, YVars),
-    append(XVars, YVars, Z0),
-    sort(Z0, Z).
-
-vars(X, []) :-
-    (X = e;
-     X = pi;
-     number(X)),
-    !.
-vars(X, [X]) :-
+is_var(X) :-
     atom(X),
-    !.
-vars(X+Y, Z) :-
-    sum_vars(X, Y, Z).
-vars(X-Y, Z) :-
-    sum_vars(X, Y, Z).
-vars(X*Y, Z) :-
-    sum_vars(X, Y, Z).
-vars(X/Y, Z) :-
-    sum_vars(X, Y, Z).
-vars(X**Y, Z) :-
-    sum_vars(X, Y, Z).
-vars(sqrt(X), Y) :-
-    vars(X, Y).
-vars(sin(X), Y) :-
-    vars(X, Y).
-vars(cos(X), Y) :-
-    vars(X, Y).
-vars(tan(X), Y) :-
-    vars(X, Y).
-vars(ctg(X), Y) :-
-    vars(X, Y).
-vars(log(X), Y) :-
-    vars(X, Y).
-vars(log10(X), Y) :-
-    vars(X, Y).
-vars(exp(X), Y) :-
-    vars(X, Y).
+    \+ is_const(X).
 
+is_const(pi).
+is_const(e).
+is_const(C) :-
+    number(C).
 
-eval(pi, _, Val) :-
-    Val is pi,
+vars(Var, [Var]) :-
+    is_var(Var),
     !.
-eval(e, _, Val) :-
-    Val is e,
+vars(C, []) :-
+    is_const(C),
     !.
-eval(Num, _, Num) :-
-    number(Num),
+vars(T, Vars) :-
+    T =.. [_, Operand],
+    !,
+    vars(Operand, Vars).
+vars(T, Vars) :-
+    T =.. [_, Lhs, Rhs],
+    vars(Lhs, LVars),
+    vars(Rhs, RVars),
+    append(LVars, RVars, LRVars),
+    sort(LRVars, Vars).
+
+find_var(Var, [[Var, Val] | _], Val) :-
     !.
-eval(X, [[X, Val] | _], Val) :-
-    atom(X),
+find_var(Var, [_ | Vars], Val) :-
+    find_var(Var, Vars, Val).
+
+subst(C, _, Val) :-
+    is_const(C),
+    Val is C,
     !.
-eval(X, [_ | Env], Val) :-
-    atom(X),
-    eval(X, Env, Val),
-    !.
-eval(X+Y, Env, Val) :-
-    eval(X, Env, ValL),
-    eval(Y, Env, ValR),
-    Val is ValL + ValR.
-eval(X*Y, Env, Val) :-
-    eval(X, Env, ValL),
-    eval(Y, Env, ValR),
-    Val is ValL * ValR.
-eval(X/Y, Env, Val) :-
-    eval(X, Env, ValL),
-    eval(Y, Env, ValR),
-    Val is ValL / ValR.
-eval(X-Y, Env, Val) :-
-    eval(X, Env, ValL),
-    eval(Y, Env, ValR),
-    Val is ValL - ValR.
-eval(X**Y, Env, Val) :-
-    eval(X, Env, ValL),
-    eval(Y, Env, ValR),
-    Val is ValL ** ValR.
-eval(sqrt(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is sqrt(ValX).
-eval(sin(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is sin(ValX).
-eval(cos(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is cos(ValX).
-eval(tan(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is tan(ValX).
-eval(ctg(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is cos(ValX) / sin(ValX).
-eval(log(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is log(ValX).
-eval(log10(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is log10(ValX).
-eval(exp(X), Env, Val) :-
-    eval(X, Env, ValX),
-    Val is exp(ValX).
+subst(Var, Vars, Val) :-
+    is_var(Var),
+    !,
+    find_var(Var, Vars, Val).
+subst(ctg(X), Vars, Val) :-
+    !,
+    subst(cos(X)/sin(X), Vars, Val).
+subst(T, Vars, Result) :-
+    T =.. [Operator, Operand],
+    !,
+    subst(Operand, Vars, OperandSubst),
+    Result =.. [Operator, OperandSubst].
+subst(T, Vars, Result) :-
+    T =.. [Operator, Lhs, Rhs],
+    subst(Lhs, Vars, LhsSubst),
+    subst(Rhs, Vars, RhsSubst),
+    Result =.. [Operator, LhsSubst, RhsSubst].
+
+eval(Expr, Env, Val) :-
+    subst(Expr, Env, Substituted),
+    Val is Substituted.
 
 
 diff(X, X, 1) :-
@@ -160,4 +114,8 @@ diff(log10(X), Var, Derivative) :-
 diff(exp(X), Var, Derivative) :-
     diff(X, Var, DX),
     Derivative = DX * exp(X).
+
+
+
+
 
