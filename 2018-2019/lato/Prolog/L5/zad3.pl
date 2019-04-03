@@ -3,16 +3,19 @@ insert(E, T, R) :-
     \+ var(R),
     remove(E, R, T),
     !.
-insert(X, leaf, node(leaf, X, leaf)) :-
+insert(E, T, R) :-
+    insert_(E, T, R).
+
+insert_(X, leaf, node(leaf, X, leaf)) :-
     !.
-insert(X, node(L, V, R), node(L0, V, R)) :-
+insert_(X, node(L, V, R), node(L0, V, R)) :-
     X @=< V,
     !,
-    insert(X, L, L0).
-insert(X, node(L, V, R), node(L, V, R0)) :-
+    insert_(X, L, L0).
+insert_(X, node(L, V, R), node(L, V, R0)) :-
     insert(X, R, R0),
     !.
-insert(_, T, R) :-
+insert_(_, T, R) :-
     \+ var(T),
     \+ var(R),
     throw(domain_error).
