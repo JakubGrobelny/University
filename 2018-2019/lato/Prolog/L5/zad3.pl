@@ -30,7 +30,7 @@ remove(E, node(L, V, R), node(L, V, R0)) :-
 remove(E, node(L, E, R), node(L, Min, R0)) :-
     minel(R, Min, _),
     remove(Min, R, R0).
-
+remove(E, node(L, E, _), L).
 
 minel(node(leaf, V, R), V, R) :-
     !.
