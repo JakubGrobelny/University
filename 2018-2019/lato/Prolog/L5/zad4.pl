@@ -30,24 +30,24 @@ e(3,6).
 e(3,7).
 
 
-search(_, Collection, Acc, Acc) :-
+search(Collection, Acc, Acc) :-
     empty(Collection),
     !.
-search(V1, Collection, Result, Acc) :-
+search(Collection, Result, Acc) :-
     get(Collection, V, Rest),
     (member(V, Acc) ->
-        search(V1, Rest, Result, Acc);
+        search(Rest, Result, Acc);
         (addall(U, e(V, U), Rest, RestWithNeighbours),
-         search(V, RestWithNeighbours, Result, [V | Acc]))).
+         search(RestWithNeighbours, Result, [V | Acc]))).
 
 bfs(V1, Vs) :-
     empty(queue(X)),
     put(V1, queue(X), Q),
-    search(V1, Q, RVs, []),
+    search(Q, RVs, []),
     reverse(RVs, Vs).
 dfs(V1, Vs) :-
     empty(stack(X)),
     put(V1, stack(X), S),
-    search(V1, S, RVs, []),
+    search(S, RVs, []),
     reverse(RVs, Vs).
 
