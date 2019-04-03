@@ -5,7 +5,6 @@ empty(queue(Xs-_)) :-
     fail.
 empty(queue(Tail-Tail)).
 
-
 put(E, stack(Xs), stack([E | Xs])) :-
     !.
 put(E, queue(List-[E | NewTail]), queue(List-NewTail)).

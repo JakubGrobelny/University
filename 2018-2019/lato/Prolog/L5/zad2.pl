@@ -132,6 +132,11 @@ simplify(T, Val) :-
 simplify(C, C) :-
     is_const(C),
     !.
+simplify(T, Simplified) :-
+    T =.. [Operator, Operand],
+    simplify(Operand, SimplifiedOp),
+    Simplified =.. [Operator, SimplifiedOp],
+    !.
 simplify(X+X, Simplified) :-
     simplify(1*X+1*X, Simplified),
     !.
@@ -145,6 +150,13 @@ simplify(A*X+B*X, Simplified) :-
     !,
     simplify(X, SimplifiedX),
     simplify(A+B, SimplifiedAB),
-    Simplified = SimplifiedAB * SimplifiedX.
-
+    Simplified = SimplifiedAB * SimplifiedX,
+    !.
+simplify(T, Simplified) :-
+    T =.. [Operator, Lhs, Rhs],
+    simplify(Lhs, SLhs),
+    simplify(Rhs, SRhs),
+    Simplified =.. [Operator, SLhs, SRhs],
+    !.
+simplify(X, X).
 
