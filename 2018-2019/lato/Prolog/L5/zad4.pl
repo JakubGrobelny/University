@@ -1,8 +1,3 @@
-empty_queue(queue(X)) :-
-   empty(queue(X)).
-empty_stack(stack(X)) :-
-    empty(stack(X)).
-
 empty(stack([])).
 empty(queue(Xs-_)) :-
     nonvar(Xs),
