@@ -41,7 +41,7 @@ nominałów jest równy $X = \{1, a, b\}$.
 
 \begin{assumption*}
 \normalfont
-Załóżmy, bez utraty ogólności, że $1 < a < b$.
+Załóżmy bez utraty ogólności, że $1 < a < b$.
 \end{assumption*}
 
 \begin{definition}
@@ -53,7 +53,7 @@ reprezentacji liczby $x$.
 
 \begin{definition}
 \normalfont
-Kontrprzykładem nazywamy taki $x \in \mathds{N}$, że $G(x) > M(x)$.
+Kontrprzykładem nazywamy taki $x \in \mathds{N_+}$, że $G(x) > M(x)$.
 \end{definition}
     
 \begin{definition}
@@ -71,13 +71,12 @@ monet nominału 1, $j$ monet nominału $a$ oraz $k$ monet nominału $b$.
 
 \begin{lemma}\label{lm1}
 \normalfont
-Jeżeli istnieje kontrprzykład $x$ dla nominałów $\{1, a, b\}$, to najmniejszy
-taki $x$ spełnia nierówność $b + 1 < x < b + a$.
+Najmniejszy kontrprzykład $x$ dla nominałów $\{1, a, b\}$ 
+spełnia nierówność $b + 1 < x < b + a$.
 
 \begin{proof}$ $\newline
-Załóżmy, że dla nominałów $\{1, a, b\}$ strategia zachłanna jest niepoprawna.\\
-1) Ograniczenie dolne:\\    
-Niech $x$ będzie kontrprzykładem. Rozpatrzmy przypadki:\\
+1) Ograniczenie dolne:\\
+Rozpatrzmy przypadki:\\
 $1\degree$. $x < b$. Wówczas $M(x) = G(x)$, gdyż mamy do
 wyboru jedynie monety $\{1, a\}$. $x$ nie może być więc kontrprzykładem.\\
 $2\degree$. $x = b$. Wówczas $M(x) = 1 = G(x)$, czyli tak jak w przypadku pierwszym.\\
@@ -85,9 +84,13 @@ $3\degree$. $x = b + 1 $. Wówczas $M(x) = G(x)$, gdyż zachłanna reprezentacja
 identyczna jak optymalna, czyli $(1, 0, 1)$.\\
 Widać w takim razie, iż każdy kontrprzykład musi być większy niż $b + 1$.\\\\
 2) Ograniczenie górne:\\
-Weźmy dowolny $x \geq b + a$. Załóżmy, że $\forall_{y<x}\,G(y) = M(y)$. Wówczas
-$$G(x) = G(x-b) + 1 \stackrel{\text{zał.}}{=} M(x-b) + 1 = M(x)$$
-co daje nam sprzeczność z założeniem, że strategia zachłanna jest niepoprawna.
+Załóżmy, nie wprost, że $x \geq a + b$.
+% TODO:
+% TODO:
+\\...?\\
+% TODO:
+% TODO:
+% TODO:
 \end{proof}
 \end{lemma}
 
@@ -98,18 +101,18 @@ $\{1, a, b\}$ jest niepoprawna wtedy, i tylko wtedy gdy $0 < r < a - q$,
 gdzie $b = qa + r$ (czyli $q = \lfloor \frac{b}{a} \rfloor$ oraz $r = b \bmod a$).
 
 \begin{proof}$ $\newline
-$\Rightarrow$\\
+1) Dowód implikacji w prawą stronę:\\
 Niech $b = qa + r$. Załóżmy, że $0 < r < a - q$. Wówczas istnieje
 kontrprzykład $x = b + a - 1$, dla którego reprezentacja zachłanna to $(a - 1, 0, 1)$.
 Można przedstawić $x$ również jako $(r - 1, q + 1, 0)$, co daje $r-1+q+1=r+q$ monet,
 podczas gdy $G(x) = a - 1 + 1 = a$.\\
 Z założenia mamy $0 < r + q < a$, więc $G(x) > r+q$, czyli zgodnie z definicją
 strategia zachłanna jest niepoprawna.\\\\
-$\Leftarrow$\\
+2) Dowód implikacji w lewą stronę:\\
 Załóżmy, że strategia zachłanna wydawania reszty jest niepoprawna dla nominałów
-$\{1, a, b\}$. Wówczas z lematu \ref{lm1} wiemy, że najmniejszy
+$X = \{1, a, b\}$ ($1 < a < b$). Wówczas z lematu \ref{lm1} wiemy, że najmniejszy
 kontrprzykład $x$ spełnia nierówność $b + 1 < x < a + b$. W takim razie jego 
-reprezentacja zachłanna to $(i, 0, 1)$, gdzie $0 < i < a$. Reprezentacja optymalna
+reprezentacja zachłanna to $(i, 0, 1)$, gdzie $i < a$. Reprezentacja optymalna
 to $(j, k, 0)$, gdzie $k > 0$. Zauważmy, że w oczywisty sposób $j < i$. 
 W takim razie jeżeli $x$ jest minimalny, to $j = 0$, gdyż w przeciwnym 
 razie $x - j$ byłby mniejszym kontrprzykładem.
@@ -118,7 +121,7 @@ $$x = b + i = ka$$
 $$b = ka - i = ka - i - a + a = (k-1)a + (a-i)$$
 W takim razie $q = k - 1$ oraz $r = a - i$.
 Z nierówności $b + 1 < x < a + b$ mamy
-$$0 < (a + b) - x = (a + b) - (b + i) = a - i.$$
+$$0 < (a + b) - x = (a + b) - (b + i) = a - i$$
 $i \neq 0$, więc z powyższej nierówności mamy $0< a - i < a$.
 Skoro $x$ jest kontrprzykładem, to mamy również nierówność 
 $M(x) = k < 1 + i = G(x)$.\\

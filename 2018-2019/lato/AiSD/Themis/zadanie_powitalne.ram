@@ -1,0 +1,35 @@
+# Jakub Grobelny
+# 300481
+# MWa
+       read  1
+       read  2
+       load  1
+       div   =2018
+       mult  =2018
+       store 3
+       load  1
+       sub   3
+       store 4
+       load  1
+       div   =2018
+       store 1
+       load  4
+       jzero noAdd
+       load  1
+       add   =1
+       store 1
+noAdd: load  2
+       div   =2018
+       add   =1
+       store 2
+loop:  load  1
+       sub   2
+       jzero end
+       load  1
+       mult  =2018
+       write 0
+       load  1
+       add   =1
+       store 1
+       jump  loop
+end:   halt

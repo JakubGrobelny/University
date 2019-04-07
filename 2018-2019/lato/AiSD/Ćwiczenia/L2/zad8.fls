@@ -163,8 +163,6 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/doublestroke/dsrom12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/doublestroke/dsrom8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/doublestroke/dsrom8.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0800.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0600.tfm
 OUTPUT /home/jgrobelny/Documents/University/2018-2019/lato/AiSD/L2/zad8.pdf
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbi1200.tfm
@@ -174,7 +172,6 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecit1200.tfm
 INPUT /home/jgrobelny/Documents/University/2018-2019/lato/AiSD/L2/zad8.aux
 INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecit1200.600pk
 INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1200.600pk
-INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk
 INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.600pk
 INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk
 INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk
@@ -184,6 +181,7 @@ INPUT /home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx207
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
+INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/doublestroke/dsrom12.pfb
