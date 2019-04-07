@@ -11,11 +11,14 @@
 \usepackage{abstract}
 \usepackage{titlesec}
 \usepackage{gensymb}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
 
 \newtheorem*{theorem*}{Twierdzenie}
 \newtheorem{definition}{Definicja}
 \newtheorem*{assumption*}{Założenie}
 \newtheorem{lemma}{Lemat}
+\newtheorem*{algorithm*}{Algorytm}
 
 \titleformat{\section}[block]{\Large\bfseries\filcenter}{}{0em}{}
 
@@ -129,14 +132,17 @@ $$0 < r < a - q$$
 
 \end{theorem*}
 
-% TODO: napisać algorytm
-% TODO: napisać algorytm
-% TODO: napisać algorytm
-% TODO: napisać algorytm
-% TODO: napisać algorytm
-% TODO: napisać algorytm
-% TODO: napisać algorytm
-% TODO: napisać algorytm
+\begin{algorithm*}$ $\\
+\begin{algorithmic}
+    \State $r \gets b \mod a$
+    \State $q \gets \lfloor \frac{b}{a} \rfloor$
+    \If {$0 < r$ \texttt{and} $r < a - q$}
+        \Return \texttt{True}
+    \Else $\,$
+        \Return \texttt{False}
+    \EndIf
+\end{algorithmic}
+\end{algorithm*}
 
 \end{titlepage}
 
