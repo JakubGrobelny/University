@@ -69,34 +69,6 @@ Notacja $x = (i, j, k)$ dla zbioru nominałów $\{1, a, b\}$ oznacza, że reszta
 monet nominału 1, $j$ monet nominału $a$ oraz $k$ monet nominału $b$.
 \end{definition}
 
-\begin{lemma}\label{lm0}\normalfont
-Dla każdego $x$ oraz dowolnej monety $y \in \{1, a, b\}$ zachodzi nierówność
-$$M(x) \leq M(x-y) + 1$$
-\begin{proof}$ $\\
-W oczywisty sposób nierówność zachodzi, gdyż z optymalnej reprezentacji
-$x-y$ możemy otrzymać reprezentację $x$ o liczbie monet $M(x-y)+1$ dodając
-jedną monetę $y$.
-\end{proof}
-\end{lemma}
-
-\begin{lemma}\label{lm01}\normalfont
-Dla dowolnego $x$ i dowolnego $y \in \{1, a, b\}$ równość
-$M(x) = M(x-y) + 1$ zachodzi wtedy, i tylko wtedy, gdy
-istnieje optymalna reprezentacja $x$ używająca monety $y$.
-
-\begin{proof}$ $\\
-$\Rightarrow$\\
-Załóżmy, że $M(x) = M(x-y) + 1$. Wówczas reprezentacja optymalna $x$ mogła
-zostać uzyskana poprzez dodanie monety $y$ do optymalnej reprezentacji $x-y$,
-czyli istnieje optymalna reprezentacja $x$ używająca monety $y$.\\
-$\Leftarrow$\\
-Założmy, że istnieje optymalna reprezentacja $x$ używająca monety $y$. Wówczas
-możemy zabrać jedną monetę $y$ i otrzymamy reprezentację $x-y$ o liczbie monet
-$M(x) - 1$. Z lematu \ref{lm0} wynika, że ta reprezentacja $x-y$ jest optymalna,
-więc $M(x) = M(x-y) + 1$.
-\end{proof}
-\end{lemma}
-
 \begin{lemma}\label{lm1}
 \normalfont
 Jeżeli istnieje kontrprzykład $x$ dla nominałów $\{1, a, b\}$, to najmniejszy
@@ -113,32 +85,16 @@ $3\degree$. $x = b + 1 $. Wówczas $M(x) = G(x)$, gdyż zachłanna reprezentacja
 identyczna jak optymalna, czyli $(1, 0, 1)$.\\
 Widać w takim razie, iż każdy kontrprzykład musi być większy niż $b + 1$.\\\\
 2) Ograniczenie górne:\\
-Weźmy dowolny $x \geq b + a$. Załóżmy, że $\forall_{y<x}\,G(y) = M(y)$.\\
-Rozpatrzmy przypadki:\\
-$1\degree$. Moneta o nominale $b$ jest w reprezentacji optymalnej.
-Wówczas
-$$G(x) = G(x-b) + 1 \stackrel{\text{zał.}}{=} M(x-b) + 1 \stackrel{\text{lem.\ref{lm01}}}{=} M(x)$$
-$2\degree$. Moneta o nominale $a$ jest w reprezentacji optymalnej.\\
-$$G(x) = G(x-b) + 1 \stackrel{\text{zał.}}{=} M(x-b) + 1 
-\stackrel{\text{lem.\ref{lm0}}}{\leq} M(x-b-a) + 2 \leq G(x-b-a) + 2=$$
-$$= G(x-a) + 1 \stackrel{\text{zał.}}{=} M(x-a) + 1 \stackrel{\text{lem.\ref{lm01}}}{=} M(x) \leq G(x),$$
-z czego wynika, że $G(x) = M(x)$.\\
-$3\degree$. Moneta o nominale 1 jest w reprezentacji optymalnej.\\
-$$G(x) = G(x-b) + 1 \stackrel{\text{zał.}}{=} M(x-b)+1 \stackrel{\text{lem.\ref{lm0}}}{\leq} M(x-b-1)+2 = $$
-$$ \leq G(x-b-1) + 2 = G(x-1) + 1 \stackrel{\text{zał.}}{=} M(x-1) + 1 \stackrel{\text{lem.\ref{lm01}}}{=} $$
-$$ \stackrel{\text{lem.\ref{lm01}}}{=} M(x) \leq G(x),$$
-z czego wynika, że $M(x) = G(x)$.
-
-Pokazaliśmy, że $G(x) = M(x)$ co daje nam sprzeczność z założeniem, że 
-strategia zachłanna jest niepoprawna, więc istnieją kontrprzykłady mniejsze niż $b + a$.
-
+Weźmy dowolny $x \geq b + a$. Załóżmy, że $\forall_{y<x}\,G(y) = M(y)$. Wówczas
+$$G(x) = G(x-b) + 1 \stackrel{\text{zał.}}{=} M(x-b) + 1 = M(x)$$
+co daje nam sprzeczność z założeniem, że strategia zachłanna jest niepoprawna.
 \end{proof}
 \end{lemma}
 
 
 \begin{theorem*}\normalfont
 Strategia zachłanna dla problemu wydawania reszty dla zbioru nominałów 
-$\{1, a, b\}$ jest niepoprawna wtedy, i tylko wtedy gdy $0 < r < a - q$,
+$\{1, a, b\}$ jest niepoprawna wtedy, i tylko wtedy, gdy $0 < r < a - q$,
 gdzie $b = qa + r$ (czyli $q = \lfloor \frac{b}{a} \rfloor$ oraz $r = b \bmod a$).
 
 \begin{proof}$ $\newline
@@ -168,7 +124,6 @@ Skoro $x$ jest kontrprzykładem, to mamy również nierówność
 $M(x) = k < 1 + i = G(x)$.\\
 
 Ostatecznie mamy więc
-$$0 < a - i < a - (k - 1)$$
 $$0 < r < a - q$$
 \end{proof}
 
