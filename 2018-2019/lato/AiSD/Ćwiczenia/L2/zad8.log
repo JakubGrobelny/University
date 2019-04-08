@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.7)  8 APR 2019 03:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.4.7)  8 APR 2019 17:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -815,6 +815,7 @@ Document Style - pseudocode environments for use with the `algorithmicx' style
 )
 \c@definition=\count275
 \c@lemma=\count276
+\c@fact=\count277
  (/usr/share/texlive/texmf-dist/tex/latex/titlesec/block.tss
 File: block.tss 2016/03/15
 ) (/home/jgrobelny/Documents/University/2018-2019/lato/AiSD/Ćwiczenia/L2/zad8.aux)
@@ -870,16 +871,16 @@ LaTeX Font Info:    ... okay on input line 29.
 \AtBeginShipoutBox=\box50
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count277
+\scratchcounter=\count278
 \scratchdimen=\dimen162
 \scratchbox=\box51
-\nofMPsegments=\count278
-\nofMParguments=\count279
+\nofMPsegments=\count279
+\nofMParguments=\count280
 \everyMPshowfont=\toks31
-\MPscratchCnt=\count280
+\MPscratchCnt=\count281
 \MPscratchDim=\dimen163
-\MPnumerator=\count281
-\makeMPintoPDFobject=\count282
+\MPnumerator=\count282
+\makeMPintoPDFobject=\count283
 \everyMPtoPDFconversion=\toks32
 )
 LaTeX Info: Redefining \celsius on input line 29.
@@ -893,58 +894,63 @@ Package gensymb Info: Using \Omega for \ohm on input line 29.
 
 Package gensymb Warning: Not defining \micro.
 
-LaTeX Font Info:    Try loading font information for U+dsrom on input line 56.
+LaTeX Font Info:    Try loading font information for U+dsrom on input line 55.
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/Udsrom.fd
 File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
-)
-Underfull \hbox (badness 10000) in paragraph at lines 105--120
-
- []
-
-[1
+) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 120--122
+Underfull \hbox (badness 10000) in paragraph at lines 110--125
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 124--127
+Underfull \hbox (badness 10000) in paragraph at lines 110--125
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--161
+Underfull \hbox (badness 10000) in paragraph at lines 125--127
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--132
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--140
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 153--170
 
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 165--169
+Underfull \hbox (badness 10000) in paragraph at lines 174--178
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 177--179
-
- []
-
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 181.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 192.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 ) [3] (/home/jgrobelny/Documents/University/2018-2019/lato/AiSD/Ćwiczenia/L2/zad8.aux) ) 
 Here is how much of TeX's memory you used:
- 13892 strings out of 494815
- 251749 string characters out of 6178285
- 316835 words of memory out of 5000000
- 17077 multiletter control sequences out of 15000+600000
- 543965 words of font info for 54 fonts, out of 8000000 for 9000
+ 13894 strings out of 494815
+ 251739 string characters out of 6178285
+ 317849 words of memory out of 5000000
+ 17080 multiletter control sequences out of 15000+600000
+ 543264 words of font info for 53 fonts, out of 8000000 for 9000
  79 hyphenation exceptions out of 8191
  39i,7n,33p,10493b,334s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecit1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/doublestroke/dsrom12.pfb>
-Output written on /home/jgrobelny/Documents/University/2018-2019/lato/AiSD/Ćwiczenia/L2/zad8.pdf (3 pages, 110464 bytes).
+ </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/jgrobelny/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2074.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/doublestroke/dsrom12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/doublestroke/dsrom8.pfb>
+Output written on /home/jgrobelny/Documents/University/2018-2019/lato/AiSD/Ćwiczenia/L2/zad8.pdf (3 pages, 109268 bytes).
 PDF statistics:
- 242 PDF objects out of 1000 (max. 8388607)
- 62 compressed objects within 1 object stream
+ 234 PDF objects out of 1000 (max. 8388607)
+ 61 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
