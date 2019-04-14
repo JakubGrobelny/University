@@ -82,6 +82,8 @@ alphanum_('') --> [].
 whatever --> valid, whatever.
 whatever --> valid.
 
+valid_sequence([]) --> [].
+valid_sequence([V | Vs]) --> valid(V), valid_sequence(Vs), { \+ whitespace(V) }.
 
 token([]) --> [].
 token(Tokens) --> whitespace, !, token(Tokens).
@@ -89,3 +91,4 @@ token([KW| Tokens])  --> keyword(KW), !, token(Tokens).
 token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
 token([Id| Tokens])  --> identifier(Id), !, token(Tokens).
 % TODO: 1abc nie jest poprawnym tokenem
+% TODO: wszystko
