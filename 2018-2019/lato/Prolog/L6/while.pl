@@ -36,11 +36,12 @@ valid(X) :-
 keyword(KW) :-
     member(KW, [if, then, else, fi, while, do, od, div, mod, or, and, not]).
 
-digit(D) --> [D], { digit(D) }.
-whitespace --> [WS], { whitespace(WS) }.
-valid(Char) --> [Char], { valid(Char) }.
-letter(Char) --> [Char], { letter(Char) }.
-special(Char) --> [Char], { special(Char) }.
+digit(D)      --> [D],    { digit(D)       }.
+whitespace    --> [WS],   { whitespace(WS) }.
+valid         --> [Char], { valid(Char)    }.
+letter(Char)  --> [Char], { letter(Char)   }.
+special(Char) --> [Char], { special(Char)  }.
+
 
 integer_literal(int(N)) --> digit(D), integer_literal_(Digits), !,
     {
@@ -55,7 +56,12 @@ integer_literal_(Digits) --> digit(D), integer_literal_(DTail), !,
     }.
 integer_literal_(D) --> digit(D).
 
+
 keyword(kwrd(KW)) --> alphanum(KW), { keyword(KW) }.
+
+
+identifier(id(Id)) --> alphanum(Id), { \+ keyword(Id) }.
+
 
 alphanum(AlNum) --> letter(L), alphanum_(Tail), !,
     { 
@@ -72,9 +78,14 @@ alphanum_(AlNum) --> digit(L), alphanum_(Tail), !,
     }.
 alphanum_('') --> [].
 
-identifier(id(Id)) --> alphanum(Id), { \+ keyword(Id) }.
+
+whatever --> valid, whatever.
+whatever --> valid.
+
 
 token([]) --> [].
 token(Tokens) --> whitespace, !, token(Tokens).
-token(Tokens) --> ['(', '*'], !, _, ['*', ')'], token(Tokens).
-token([KW| Tokens]) --> keyword(KW), !, token(Tokens).
+token([KW| Tokens])  --> keyword(KW), !, token(Tokens).
+token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
+token([Id| Tokens])  --> identifier(Id), !, token(Tokens).
+% TODO: 1abc nie jest poprawnym tokenem
