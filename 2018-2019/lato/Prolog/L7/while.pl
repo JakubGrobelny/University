@@ -1,3 +1,4 @@
+:- dynamic addend/3.
 char_codes_to_atoms([], []) :-
     !.
 char_codes_to_atoms([Char | Chars], [Atom | Atoms]) :-
@@ -63,19 +64,6 @@ letter(Char)  --> [Char], { is_letter(Char) }.
 
 valid(Char) --> digit(Char); letter(Char); special(Char).
 
-% keyword(kwrd(if))    --> ['i', 'f'].
-% keyword(kwrd(then))  --> ['t', 'h', 'e', 'n'].
-% keyword(kwrd(else))  --> ['e', 'l', 's', 'e'].
-% keyword(kwrd(fi))    --> ['f', 'i'].
-% keyword(kwrd(while)) --> ['w', 'h', 'i', 'l', 'e'].
-% keyword(kwrd(do))    --> ['d', 'o'].
-% keyword(kwrd(od))    --> ['o', 'd'].
-% keyword(kwrd(div))   --> ['d', 'i', 'v'].
-% keyword(kwrd(mod))   --> ['m', 'o', 'd'].
-% keyword(kwrd(or))    --> ['o', 'r'].
-% keyword(kwrd(and))   --> ['a', 'n', 'd'].
-% keyword(kwrd(not))   --> ['n', 'o', 't'].
-
 is_keyword(Atom) :-
     member(Atom, [if, then, else, fi, while, do, od, div, mod, or, and, not]).
 
@@ -115,18 +103,17 @@ comment_tail --> [_], comment_tail.
 comment_tail --> ['*', ')'].
 comment --> ['(', '*'], comment_tail.
 
-operator(less_eq)    --> ['<', '='], !.
-operator(greater_eq) --> ['>', '='], !.
-operator(not_eq)     --> ['<', '>'], !.
-operator(assign)     --> [':', '='], !.
-operator(plus)       --> ['+'], !.
-operator(minus)      --> ['-'], !.
-operator(mult)       --> ['*'], !.
-operator(pow)        --> ['^'], !.
-operator(eq)         --> ['='], !.
-operator(less)       --> ['<'], !.
-operator(greater)    --> ['>'], !.
-operator(semicolon)  --> [';'], !.
+operator(op(less_eq))    --> ['<', '='], !.
+operator(op(greater_eq)) --> ['>', '='], !.
+operator(op(not_eq))     --> ['<', '>'], !.
+operator(op(assign))     --> [':', '='], !.
+operator(op(plus))       --> ['+'], !.
+operator(op(minus))      --> ['-'], !.
+operator(op(mult))       --> ['*'], !.
+operator(op(pow))        --> ['^'], !.
+operator(op(eq))         --> ['='], !.
+operator(op(less))       --> ['<'], !.
+operator(op(greater))    --> ['>'], !.
 
 token(Tokens)                --> whitespace(_), !, token(Tokens).
 token(Tokens)                --> comment, !, token(Tokens).
@@ -134,30 +121,82 @@ token([Int| Tokens])         --> integer_literal(Int), !, token(Tokens).
 token([Kw| Tokens])          --> keyword(Kw), !, token(Tokens).
 token([Id | Tokens])         --> identifier(Id), !, token(Tokens).
 token([Op | Tokens])         --> operator(Op), !, token(Tokens).
-token([lefparen | Tokens])   --> ['('], !, token(Tokens).
+token([semicolon | Tokens])  --> [';'], !, token(Tokens).
+token([leftparen | Tokens])  --> ['('], !, token(Tokens).
 token([rightparen | Tokens]) --> [')'], !, token(Tokens).
 token([])                    --> [].
 
 
-program([Instr | Program]) --> instruction(Instr), !, program(Program).
-program([]) --> [].
+program(Program) --> instruction(Instr), program__([Instr], Program).
+program__(Acc, Res) --> 
+    [semicolon], !, instruction(I1), program__([I1 | Acc], Res).
+program__(Acc, Res) --> [], { reverse(Acc, Res) }.
 
-instruction(assignement(Var, Expr)) --> [id(Var)], !, [assign], arith(Expr).
-instruction(if_statement(Cond, Cons, Alt)) --> 
+instruction(assignement(Var, Expr)) --> [id(Var)], !, [op(assign)], arith(Expr).
+instruction(if(Cond, Cons, Alt)) --> 
     [kwrd(if)], logical(Cond), 
     [kwrd(then)], program(Cons), 
     [kwrd(else)], !, program(Alt), 
     [kwrd(fi)].
-instruction(if_statement(Cond, Cons, [])) --> 
+instruction(if(Cond, Cons, [])) --> 
     [kwrd(if)], !, logical(Cond), 
     [kwrd(then)], program(Cons), 
     [kwrd(fi)].
+instruction(while(Cond, Program)) -->
+    [kwrd(while)], logical(Cond), [kwrd(do)],
+    program(Program),
+    [kwrd(od)].
 
+logical(Expr) --> logical_addend(X1), logical__(X1, Expr).
+logical__(Acc, Res) --> 
+    [op(or)], !, logical_addend(X1), logical__(or(Acc, X1), Res).
+logical__(Acc, Acc) --> [].
 
+logical_addend(Expr) --> logical_factor(X1), logical_addend__(X1, Expr).
+logical_addend__(Acc, Res) --> 
+    [kwrd(and)], !, logical_factor(X1), logical_addend__(and(Acc, X1), Res).
+logical_addend__(Acc, Acc) --> [].
 
+% logical_addend(and(Lhs, Rhs)) --> 
+%     logical_addend(Lhs), [kwrd(and)], !, logical_factor(Rhs).
+% logical_addend(Addend) --> logical_factor(Addend).
 
+logical_factor(not(Boolean)) --> [lwrd(not)], !, logical_factor(Boolean).
+logical_factor(Factor) --> relational(Factor).
 
+relational(Comparison) --> arith(Lhs), relop(Op), arith(Rhs),
+    {
+        Comparison =.. [Op, Lhs, Rhs]
+    }.
 
+arith(ArithExpr) --> addend(X1), arith__(X1, ArithExpr).
+arith__(Acc, Res) --> additive(Op), !, addend(X1), arith__(Expr, Res),
+    {
+        Expr =.. [Op, Acc, X1]
+    }.
+arith__(A, A) --> [].
 
+addend(ArithExpr) --> factor(X1), addend__(X1, ArithExpr).
+addend__(Acc, Res) --> multiplicative(Op), !, factor(X1), addend__(Expr, Res),
+    {
+        Expr =.. [Op, Acc, X1]
+    }.
+addend__(A, A) --> [].
+
+factor(pow(Base, Pow)) --> atomic_expr(Base), [op(pow)], !, factor(Pow).
+factor(Expr) --> atomic_expr(Expr).
+
+atomic_expr(ArithExpr) --> [leftparen], arith(ArithExpr), [rightparen].
+atomic_expr(int(Integer)) --> [int(Integer)].
+atomic_expr(id(Identifier)) --> [id(Identifier)].
+
+relop(Operator) --> [op(Operator)].
+
+additive(plus) --> [op(plus)].
+additive(minus) --> [op(minus)].
+
+multiplicative(mult) --> [op(mult)].
+multiplicative(div) --> [kwrd(div)].
+multiplicative(mod) --> [kwrd(mod)].
 
 
