@@ -30,21 +30,21 @@ is_letter(X) :-
     X @>= 'A',
     X @=< 'Z'.
 
-whitespace(' ')  --> [' '], !.
-whitespace('\r') --> ['\r'], !.
-whitespace('\n') --> ['\n'], !.
-whitespace('\t') --> ['\t'], !.
+whitespace(' ')  --> [' '].
+whitespace('\r') --> ['\r'].
+whitespace('\n') --> ['\n'].
+whitespace('\t') --> ['\t'].
 
-digit('0') --> ['0'], !.
-digit('1') --> ['1'], !.
-digit('2') --> ['2'], !.
-digit('3') --> ['3'], !.
-digit('4') --> ['4'], !.
-digit('5') --> ['5'], !.
-digit('6') --> ['6'], !.
-digit('7') --> ['7'], !.
-digit('8') --> ['8'], !.
-digit('9') --> ['9'], !.
+digit('0') --> ['0'].
+digit('1') --> ['1'].
+digit('2') --> ['2'].
+digit('3') --> ['3'].
+digit('4') --> ['4'].
+digit('5') --> ['5'].
+digit('6') --> ['6'].
+digit('7') --> ['7'].
+digit('8') --> ['8'].
+digit('9') --> ['9'].
 
 letter(Char)  --> [Char], { is_letter(Char) }.
 
@@ -87,17 +87,17 @@ comment_tail --> [_], comment_tail.
 comment_tail --> ['*', ')'].
 comment --> ['(', '*'], comment_tail.
 
-operator(op(less_eq))    --> ['<', '='], !.
-operator(op(greater_eq)) --> ['>', '='], !.
-operator(op(not_eq))     --> ['<', '>'], !.
-operator(op(assign))     --> [':', '='], !.
-operator(op(plus))       --> ['+'], !.
-operator(op(minus))      --> ['-'], !.
-operator(op(mult))       --> ['*'], !.
-operator(op(pow))        --> ['^'], !.
-operator(op(eq))         --> ['='], !.
-operator(op(less))       --> ['<'], !.
-operator(op(greater))    --> ['>'], !.
+operator(op(less_eq))    --> ['<', '='].
+operator(op(greater_eq)) --> ['>', '='].
+operator(op(not_eq))     --> ['<', '>'].
+operator(op(assign))     --> [':', '='].
+operator(op(plus))       --> ['+'].
+operator(op(minus))      --> ['-'].
+operator(op(mult))       --> ['*'].
+operator(op(pow))        --> ['^'].
+operator(op(eq))         --> ['='].
+operator(op(less))       --> ['<'].
+operator(op(greater))    --> ['>'].
 
 token(Tokens)                --> whitespace(_), !, token(Tokens).
 token(Tokens)                --> comment, !, token(Tokens).
@@ -118,12 +118,12 @@ program__(Acc, Res) --> [], { reverse(Acc, Res) }.
 
 instruction(assignement(Var, Expr)) --> [id(Var)], !, [op(assign)], arith(Expr).
 instruction(if(Cond, Cons, Alt)) --> 
-    [kwrd(if)], logical(Cond), 
+    [kwrd(if)],   logical(Cond), 
     [kwrd(then)], program(Cons), 
     [kwrd(else)], !, program(Alt), 
     [kwrd(fi)].
 instruction(if(Cond, Cons, [])) --> 
-    [kwrd(if)], !, logical(Cond), 
+    [kwrd(if)],   !, logical(Cond), 
     [kwrd(then)], program(Cons), 
     [kwrd(fi)].
 instruction(while(Cond, Program)) -->
@@ -141,15 +141,14 @@ logical_addend__(Acc, Res) -->
     [kwrd(and)], !, logical_factor(X1), logical_addend__(and(Acc, X1), Res).
 logical_addend__(Acc, Acc) --> [].
 
-logical_factor(Factor) --> relational(Factor).
 logical_factor(not(Boolean)) --> [kwrd(not)], !, logical_factor(Boolean).
+logical_factor(Factor) --> relational(Factor).
 
 relational(Expr) --> [leftparen], !, logical(Expr), [rightparen].
 relational(Comparison) --> arith(Lhs), relop(Op), arith(Rhs),
     {
         Comparison =.. [Op, Lhs, Rhs]
     }.
-
 
 arith(ArithExpr)  --> addend(X1), arith__(X1, ArithExpr).
 arith__(Acc, Res) --> additive(Op), !, addend(X1), arith__(Expr, Res),
@@ -161,8 +160,7 @@ arith__(A, A) --> [].
 addend(ArithExpr)  --> factor(X1), addend__(X1, ArithExpr).
 addend__(Acc, Res) --> multiplicative(Op), !, factor(X1), addend__(Expr, Res),
     {
-        Expr =.. [Op, Acc, X1],
-        print([Op, Acc, X1])
+        Expr =.. [Op, Acc, X1]
     }.
 addend__(A, A) --> [].
 
@@ -170,7 +168,7 @@ factor(pow(Base, Pow)) --> atomic_expr(Base), [op(pow)], !, factor(Pow).
 factor(Expr)           --> atomic_expr(Expr).
 
 atomic_expr(ArithExpr)      --> [leftparen], !, arith(ArithExpr), [rightparen].
-atomic_expr(int(Integer))   --> [int(Integer)].
+atomic_expr(int(Integer))   --> [int(Integer)], !.
 atomic_expr(id(Identifier)) --> [id(Identifier)].
 
 relop(Operator) --> [op(Operator)],
@@ -181,7 +179,7 @@ relop(Operator) --> [op(Operator)],
 additive(plus)  --> [op(plus)].
 additive(minus) --> [op(minus)].
 
-multiplicative(mult) --> [op(mult)].
+multiplicative(mult)      --> [op(mult)].
 multiplicative(division)  --> [kwrd(div)].
-multiplicative(modulo)  --> [kwrd(mod)].
+multiplicative(modulo)    --> [kwrd(mod)].
 
