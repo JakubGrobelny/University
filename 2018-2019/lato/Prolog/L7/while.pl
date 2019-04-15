@@ -55,18 +55,33 @@ letter(Char)  --> [Char], { is_letter(Char) }.
 
 valid(Char) --> digit(Char); letter(Char); special(Char).
 
-keyword(kwrd(if))    --> ['i', 'f'].
-keyword(kwrd(then))  --> ['t', 'h', 'e', 'n'].
-keyword(kwrd(else))  --> ['e', 'l', 's', 'e'].
-keyword(kwrd(fi))    --> ['f', 'i'].
-keyword(kwrd(while)) --> ['w', 'h', 'i', 'l', 'e'].
-keyword(kwrd(do))    --> ['d', 'o'].
-keyword(kwrd(od))    --> ['o', 'd'].
-keyword(kwrd(div))   --> ['d', 'i', 'v'].
-keyword(kwrd(mod))   --> ['m', 'o', 'd'].
-keyword(kwrd(or))    --> ['o', 'r'].
-keyword(kwrd(and))   --> ['a', 'n', 'd'].
-keyword(kwrd(not))   --> ['n', 'o', 't'].
+% keyword(kwrd(if))    --> ['i', 'f'].
+% keyword(kwrd(then))  --> ['t', 'h', 'e', 'n'].
+% keyword(kwrd(else))  --> ['e', 'l', 's', 'e'].
+% keyword(kwrd(fi))    --> ['f', 'i'].
+% keyword(kwrd(while)) --> ['w', 'h', 'i', 'l', 'e'].
+% keyword(kwrd(do))    --> ['d', 'o'].
+% keyword(kwrd(od))    --> ['o', 'd'].
+% keyword(kwrd(div))   --> ['d', 'i', 'v'].
+% keyword(kwrd(mod))   --> ['m', 'o', 'd'].
+% keyword(kwrd(or))    --> ['o', 'r'].
+% keyword(kwrd(and))   --> ['a', 'n', 'd'].
+% keyword(kwrd(not))   --> ['n', 'o', 't'].
+
+is_keyword(Atom) :-
+    member(Atom, [if, then, else, fi, while, do, od, div, mod, or, and, not]).
+
+keyword(kwrd(Kw)) --> alphanum(AlNum),
+    {
+        atomic_list_concat(AlNum, Kw),
+        is_keyword(Kw)
+    }.
+
+identifier(id(Id)) --> alphanum(AlNum),
+    {
+        atomic_list_concat(AlNum, Id),
+        \+ is_keyword(Id)
+    }.
 
 
 integer_literal(int(N)) --> digit(D), integer_literal_(Digits), !,
@@ -82,31 +97,38 @@ integer_literal_(Digits) --> digit(D), integer_literal_(DTail), !,
     }.
 integer_literal_(D) --> digit(D).
 
-
-identifier(id(Id)) --> alphanum(Id).
-
-
 alphanum([L | Tail]) --> letter(L), alphanum_(Tail).
 
 alphanum_([L | Tail]) --> letter(L), !, alphanum_(Tail).
-alphanum_([L | Tail]) --> digit(L), alphanum_(Tail).
+alphanum_([L | Tail]) --> digit(L), !, alphanum_(Tail).
 alphanum_([]) --> [].
 
-comment_tail --> ['*', ')'].
 comment_tail --> [_], comment_tail.
+comment_tail --> ['*', ')'].
 comment --> ['(', '*'], comment_tail.
+
+operator(plus)       --> ['+'].
+operator(minus)      --> ['-'].
+operator(mult)       --> ['*'].
+operator(pow)        --> ['^'].
+operator(eq)         --> ['='].
+operator(less)       --> ['<'].
+operator(greater)    --> ['>'].
+operator(less_eq)    --> ['<', '='].
+operator(greater_eq) --> ['>', '='].
+operator(not_eq)     --> ['<', '>'].
+operator(assign)     --> [':', '='].
+operator(semicolon)  --> [';'].
 
 token([]) --> [].
 token(Tokens) --> whitespace(_), !, token(Tokens).
 token(Tokens) --> comment, !, token(Tokens).
 token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
-token([Token| Tokens])  --> alphanum(Alnum), !, token(Tokens),
-    { 
-        phrase(keyword(Token), Alnum) -> 
-            !;
-            (atomic_list_concat(Alnum, Identifier),
-             Token = id(Identifier))
-    }.
+token([Kw| Tokens]) --> keyword(Kw), !, token(Tokens).
+token([Id | Tokens]) --> identifier(Id), !, token(Tokens).
+token([Op | Tokens]) --> operator(Op), !, token(Tokens).
+token([lefparen | Tokens]) --> ['('], !, token(Tokens).
+token([rightparen | Tokens]) --> [')'], !, token(Tokens).
 
 
 
