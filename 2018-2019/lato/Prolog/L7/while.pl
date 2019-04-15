@@ -83,33 +83,35 @@ integer_literal_(Digits) --> digit(D), integer_literal_(DTail), !,
 integer_literal_(D) --> digit(D).
 
 
-
 identifier(id(Id)) --> alphanum(Id).
 
 
-alphanum(AlNum) --> letter(L), alphanum_(Tail),
-    { 
-        atomic_list_concat([L, Tail], AlNum)
-    }.
+alphanum([L | Tail]) --> letter(L), alphanum_(Tail).
 
-alphanum_(AlNum) --> letter(L), alphanum_(Tail), !,
-    {
-        atomic_list_concat([L, Tail], AlNum)
-    }.
-alphanum_(AlNum) --> digit(L), alphanum_(Tail), !,
-    { 
-        atomic_list_concat([L, Tail], AlNum)
-    }.
-alphanum_('') --> [].
+alphanum_([L | Tail]) --> letter(L), !, alphanum_(Tail).
+alphanum_([L | Tail]) --> digit(L), alphanum_(Tail).
+alphanum_([]) --> [].
 
-whatever --> [].
-whatever --> [_], whatever.
-
-comment --> ['(', '*'], whatever, ['*', ')'].
+comment_tail --> ['*', ')'].
+comment_tail --> [_], comment_tail.
+comment --> ['(', '*'], comment_tail.
 
 token([]) --> [].
 token(Tokens) --> whitespace(_), !, token(Tokens).
 token(Tokens) --> comment, !, token(Tokens).
 token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
-token([KW| Tokens])  --> keyword(KW), !, token(Tokens).
-token([Id| Tokens])  --> identifier(Id), !, token(Tokens).
+token([Token| Tokens])  --> alphanum(Alnum), !, token(Tokens),
+    { 
+        phrase(keyword(Token), Alnum) -> 
+            !;
+            (atomic_list_concat(Alnum, Identifier),
+             Token = id(Identifier))
+    }.
+
+
+
+
+
+
+
+
