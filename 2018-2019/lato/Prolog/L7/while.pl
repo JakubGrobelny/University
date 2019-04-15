@@ -15,6 +15,14 @@ tokenize_file(FileName, Tokens) :-
     file_to_list(FileName, FileContents),
     phrase(token(Tokens), FileContents).
 
+parse_tokens(Tokens, Program) :-
+    phrase(program(Program), Tokens).
+
+parse_file(FileName, Program) :-
+    tokenize_file(FileName, Tokens),
+    parse_tokens(Tokens, Program).
+
+
 is_letter(X) :-
     X @>= 'a',
     X @=< 'z',
@@ -23,21 +31,21 @@ is_letter(X) :-
     X @>= 'A',
     X @=< 'Z'.
 
-whitespace(' ')  --> [' '].
-whitespace('\r') --> ['\r'].
-whitespace('\n') --> ['\n'].
-whitespace('\t') --> ['\t'].
+whitespace(' ')  --> [' '], !.
+whitespace('\r') --> ['\r'], !.
+whitespace('\n') --> ['\n'], !.
+whitespace('\t') --> ['\t'], !.
 
-digit('0') --> ['0'].
-digit('1') --> ['1'].
-digit('2') --> ['2'].
-digit('3') --> ['3'].
-digit('4') --> ['4'].
-digit('5') --> ['5'].
-digit('6') --> ['6'].
-digit('7') --> ['7'].
-digit('8') --> ['8'].
-digit('9') --> ['9'].
+digit('0') --> ['0'], !.
+digit('1') --> ['1'], !.
+digit('2') --> ['2'], !.
+digit('3') --> ['3'], !.
+digit('4') --> ['4'], !.
+digit('5') --> ['5'], !.
+digit('6') --> ['6'], !.
+digit('7') --> ['7'], !.
+digit('8') --> ['8'], !.
+digit('9') --> ['9'], !.
 
 special('+') --> ['+'].
 special('-') --> ['-'].
@@ -107,28 +115,44 @@ comment_tail --> [_], comment_tail.
 comment_tail --> ['*', ')'].
 comment --> ['(', '*'], comment_tail.
 
-operator(plus)       --> ['+'].
-operator(minus)      --> ['-'].
-operator(mult)       --> ['*'].
-operator(pow)        --> ['^'].
-operator(eq)         --> ['='].
-operator(less)       --> ['<'].
-operator(greater)    --> ['>'].
-operator(less_eq)    --> ['<', '='].
-operator(greater_eq) --> ['>', '='].
-operator(not_eq)     --> ['<', '>'].
-operator(assign)     --> [':', '='].
-operator(semicolon)  --> [';'].
+operator(less_eq)    --> ['<', '='], !.
+operator(greater_eq) --> ['>', '='], !.
+operator(not_eq)     --> ['<', '>'], !.
+operator(assign)     --> [':', '='], !.
+operator(plus)       --> ['+'], !.
+operator(minus)      --> ['-'], !.
+operator(mult)       --> ['*'], !.
+operator(pow)        --> ['^'], !.
+operator(eq)         --> ['='], !.
+operator(less)       --> ['<'], !.
+operator(greater)    --> ['>'], !.
+operator(semicolon)  --> [';'], !.
 
-token([]) --> [].
-token(Tokens) --> whitespace(_), !, token(Tokens).
-token(Tokens) --> comment, !, token(Tokens).
-token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
-token([Kw| Tokens]) --> keyword(Kw), !, token(Tokens).
-token([Id | Tokens]) --> identifier(Id), !, token(Tokens).
-token([Op | Tokens]) --> operator(Op), !, token(Tokens).
-token([lefparen | Tokens]) --> ['('], !, token(Tokens).
+token(Tokens)                --> whitespace(_), !, token(Tokens).
+token(Tokens)                --> comment, !, token(Tokens).
+token([Int| Tokens])         --> integer_literal(Int), !, token(Tokens).
+token([Kw| Tokens])          --> keyword(Kw), !, token(Tokens).
+token([Id | Tokens])         --> identifier(Id), !, token(Tokens).
+token([Op | Tokens])         --> operator(Op), !, token(Tokens).
+token([lefparen | Tokens])   --> ['('], !, token(Tokens).
 token([rightparen | Tokens]) --> [')'], !, token(Tokens).
+token([])                    --> [].
+
+
+program([Instr | Program]) --> instruction(Instr), !, program(Program).
+program([]) --> [].
+
+instruction(assignement(Var, Expr)) --> [id(Var)], !, [assign], arith(Expr).
+instruction(if_statement(Cond, Cons, Alt)) --> 
+    [kwrd(if)], logical(Cond), 
+    [kwrd(then)], program(Cons), 
+    [kwrd(else)], !, program(Alt), 
+    [kwrd(fi)].
+instruction(if_statement(Cond, Cons, [])) --> 
+    [kwrd(if)], !, logical(Cond), 
+    [kwrd(then)], program(Cons), 
+    [kwrd(fi)].
+
 
 
 
