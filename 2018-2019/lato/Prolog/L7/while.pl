@@ -1,4 +1,3 @@
-:- dynamic addend/3.
 char_codes_to_atoms([], []) :-
     !.
 char_codes_to_atoms([Char | Chars], [Atom | Atoms]) :-
@@ -22,7 +21,6 @@ parse_tokens(Tokens, Program) :-
 parse_file(FileName, Program) :-
     tokenize_file(FileName, Tokens),
     parse_tokens(Tokens, Program).
-
 
 is_letter(X) :-
     X @>= 'a',
@@ -153,25 +151,26 @@ relational(Comparison) --> arith(Lhs), relop(Op), arith(Rhs),
     }.
 
 
-arith(ArithExpr) --> addend(X1), arith__(X1, ArithExpr).
+arith(ArithExpr)  --> addend(X1), arith__(X1, ArithExpr).
 arith__(Acc, Res) --> additive(Op), !, addend(X1), arith__(Expr, Res),
     {
         Expr =.. [Op, Acc, X1]
     }.
 arith__(A, A) --> [].
 
-addend(ArithExpr) --> factor(X1), addend__(X1, ArithExpr).
+addend(ArithExpr)  --> factor(X1), addend__(X1, ArithExpr).
 addend__(Acc, Res) --> multiplicative(Op), !, factor(X1), addend__(Expr, Res),
     {
-        Expr =.. [Op, Acc, X1]
+        Expr =.. [Op, Acc, X1],
+        print([Op, Acc, X1])
     }.
 addend__(A, A) --> [].
 
 factor(pow(Base, Pow)) --> atomic_expr(Base), [op(pow)], !, factor(Pow).
-factor(Expr) --> atomic_expr(Expr).
+factor(Expr)           --> atomic_expr(Expr).
 
-atomic_expr(ArithExpr) --> [leftparen], arith(ArithExpr), [rightparen].
-atomic_expr(int(Integer)) --> [int(Integer)].
+atomic_expr(ArithExpr)      --> [leftparen], !, arith(ArithExpr), [rightparen].
+atomic_expr(int(Integer))   --> [int(Integer)].
 atomic_expr(id(Identifier)) --> [id(Identifier)].
 
 relop(Operator) --> [op(Operator)],
@@ -179,11 +178,10 @@ relop(Operator) --> [op(Operator)],
         member(Operator, [eq, not_eq, less, greater, less_eq, greater_eq])
     }.
 
-additive(plus) --> [op(plus)].
+additive(plus)  --> [op(plus)].
 additive(minus) --> [op(minus)].
 
 multiplicative(mult) --> [op(mult)].
-multiplicative(div) --> [kwrd(div)].
-multiplicative(mod) --> [kwrd(mod)].
-
+multiplicative(division)  --> [kwrd(div)].
+multiplicative(modulo)  --> [kwrd(mod)].
 
