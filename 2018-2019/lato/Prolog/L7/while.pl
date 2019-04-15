@@ -15,32 +15,58 @@ tokenize_file(FileName, Tokens) :-
     file_to_list(FileName, FileContents),
     phrase(token(Tokens), FileContents).
 
-whitespace(X) :-
-    member(X, [' ', '\r', '\n', '\t']).
-digit(X) :-
-    member(X, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']).
-special(X) :-
-    member(X, ['+', '-', '*', '^', ':', '=', '<', '>', '(', ')', ';']).
-letter(X) :-
+is_letter(X) :-
     X @>= 'a',
     X @=< 'z',
     !.
-letter(X) :-
+is_letter(X) :-
     X @>= 'A',
     X @=< 'Z'.
-valid(X) :-
-    whitespace(X);
-    digit(X);
-    special(X);
-    letter(X).
-keyword(KW) :-
-    member(KW, [if, then, else, fi, while, do, od, div, mod, or, and, not]).
 
-digit(D)      --> [D],    { digit(D)       }.
-whitespace    --> [WS],   { whitespace(WS) }.
-valid         --> [Char], { valid(Char)    }.
-letter(Char)  --> [Char], { letter(Char)   }.
-special(Char) --> [Char], { special(Char)  }.
+whitespace(' ')  --> [' '].
+whitespace('\r') --> ['\r'].
+whitespace('\n') --> ['\n'].
+whitespace('\t') --> ['\t'].
+
+digit('0') --> ['0'].
+digit('1') --> ['1'].
+digit('2') --> ['2'].
+digit('3') --> ['3'].
+digit('4') --> ['4'].
+digit('5') --> ['5'].
+digit('6') --> ['6'].
+digit('7') --> ['7'].
+digit('8') --> ['8'].
+digit('9') --> ['9'].
+
+special('+') --> ['+'].
+special('-') --> ['-'].
+special('*') --> ['*'].
+special('^') --> ['^'].
+special(':') --> [':'].
+special('=') --> ['='].
+special('<') --> ['<'].
+special('>') --> ['>'].
+special('(') --> ['('].
+special(')') --> [')'].
+special(';') --> [';'].
+
+letter(Char)  --> [Char], { is_letter(Char) }.
+
+valid(Char) --> digit(Char); letter(Char); special(Char).
+
+keyword(kwrd(if))    --> ['i', 'f'].
+keyword(kwrd(then))  --> ['t', 'h', 'e', 'n'].
+keyword(kwrd(else))  --> ['e', 'l', 's', 'e'].
+keyword(kwrd(fi))    --> ['f', 'i'].
+keyword(kwrd(while)) --> ['w', 'h', 'i', 'l', 'e'].
+keyword(kwrd(do))    --> ['d', 'o'].
+keyword(kwrd(od))    --> ['o', 'd'].
+keyword(kwrd(div))   --> ['d', 'i', 'v'].
+keyword(kwrd(mod))   --> ['m', 'o', 'd'].
+keyword(kwrd(or))    --> ['o', 'r'].
+keyword(kwrd(and))   --> ['a', 'n', 'd'].
+keyword(kwrd(not))   --> ['n', 'o', 't'].
 
 
 integer_literal(int(N)) --> digit(D), integer_literal_(Digits), !,
@@ -57,10 +83,8 @@ integer_literal_(Digits) --> digit(D), integer_literal_(DTail), !,
 integer_literal_(D) --> digit(D).
 
 
-keyword(kwrd(KW)) --> alphanum(KW), { keyword(KW) }.
 
-
-identifier(id(Id)) --> alphanum(Id), { \+ keyword(Id) }.
+identifier(id(Id)) --> alphanum(Id).
 
 
 alphanum(AlNum) --> letter(L), alphanum_(Tail),
@@ -84,8 +108,8 @@ whatever --> [_], whatever.
 comment --> ['(', '*'], whatever, ['*', ')'].
 
 token([]) --> [].
-token(Tokens) --> whitespace, !, token(Tokens).
+token(Tokens) --> whitespace(_), !, token(Tokens).
 token(Tokens) --> comment, !, token(Tokens).
 token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
-token([Id| Tokens])  --> identifier(Id), !, token(Tokens).
 token([KW| Tokens])  --> keyword(KW), !, token(Tokens).
+token([Id| Tokens])  --> identifier(Id), !, token(Tokens).
