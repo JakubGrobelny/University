@@ -63,7 +63,7 @@ keyword(kwrd(KW)) --> alphanum(KW), { keyword(KW) }.
 identifier(id(Id)) --> alphanum(Id), { \+ keyword(Id) }.
 
 
-alphanum(AlNum) --> letter(L), alphanum_(Tail), !,
+alphanum(AlNum) --> letter(L), alphanum_(Tail),
     { 
         atomic_list_concat([L, Tail], AlNum)
     }.
@@ -78,17 +78,14 @@ alphanum_(AlNum) --> digit(L), alphanum_(Tail), !,
     }.
 alphanum_('') --> [].
 
+whatever --> [].
+whatever --> [_], whatever.
 
-whatever --> valid, whatever.
-whatever --> valid.
-
-valid_sequence([]) --> [].
-valid_sequence([V | Vs]) --> valid(V), valid_sequence(Vs), { \+ whitespace(V) }.
+comment --> ['(', '*'], whatever, ['*', ')'].
 
 token([]) --> [].
 token(Tokens) --> whitespace, !, token(Tokens).
-token([KW| Tokens])  --> keyword(KW), !, token(Tokens).
+token(Tokens) --> comment, !, token(Tokens).
 token([Int| Tokens]) --> integer_literal(Int), !, token(Tokens).
 token([Id| Tokens])  --> identifier(Id), !, token(Tokens).
-% TODO: 1abc nie jest poprawnym tokenem
-% TODO: wszystko
+token([KW| Tokens])  --> keyword(KW), !, token(Tokens).
