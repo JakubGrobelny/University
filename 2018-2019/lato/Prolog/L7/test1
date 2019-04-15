@@ -1,0 +1,4 @@
+while b <> 0 and c < 42 and a <> 0 do
+    a1 := 1;
+    b1 := 2
+od

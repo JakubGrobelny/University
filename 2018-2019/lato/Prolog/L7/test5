@@ -1,0 +1,4 @@
+if not (b > 0 and c < 0)
+    then x := 0
+    else y := 1
+fi

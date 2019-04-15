@@ -1,0 +1,4 @@
+if not a<0 and b>0 or c<0
+    then true:=0
+    else false:=1
+fi

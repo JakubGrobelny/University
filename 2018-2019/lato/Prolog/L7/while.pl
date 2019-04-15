@@ -48,21 +48,7 @@ digit('7') --> ['7'], !.
 digit('8') --> ['8'], !.
 digit('9') --> ['9'], !.
 
-special('+') --> ['+'].
-special('-') --> ['-'].
-special('*') --> ['*'].
-special('^') --> ['^'].
-special(':') --> [':'].
-special('=') --> ['='].
-special('<') --> ['<'].
-special('>') --> ['>'].
-special('(') --> ['('].
-special(')') --> [')'].
-special(';') --> [';'].
-
 letter(Char)  --> [Char], { is_letter(Char) }.
-
-valid(Char) --> digit(Char); letter(Char); special(Char).
 
 is_keyword(Atom) :-
     member(Atom, [if, then, else, fi, while, do, od, div, mod, or, and, not]).
@@ -149,7 +135,7 @@ instruction(while(Cond, Program)) -->
 
 logical(Expr) --> logical_addend(X1), logical__(X1, Expr).
 logical__(Acc, Res) --> 
-    [op(or)], !, logical_addend(X1), logical__(or(Acc, X1), Res).
+    [kwrd(or)], !, logical_addend(X1), logical__(or(Acc, X1), Res).
 logical__(Acc, Acc) --> [].
 
 logical_addend(Expr) --> logical_factor(X1), logical_addend__(X1, Expr).
@@ -157,17 +143,15 @@ logical_addend__(Acc, Res) -->
     [kwrd(and)], !, logical_factor(X1), logical_addend__(and(Acc, X1), Res).
 logical_addend__(Acc, Acc) --> [].
 
-% logical_addend(and(Lhs, Rhs)) --> 
-%     logical_addend(Lhs), [kwrd(and)], !, logical_factor(Rhs).
-% logical_addend(Addend) --> logical_factor(Addend).
-
-logical_factor(not(Boolean)) --> [lwrd(not)], !, logical_factor(Boolean).
 logical_factor(Factor) --> relational(Factor).
+logical_factor(not(Boolean)) --> [kwrd(not)], !, logical_factor(Boolean).
 
+relational(Expr) --> [leftparen], !, logical(Expr), [rightparen].
 relational(Comparison) --> arith(Lhs), relop(Op), arith(Rhs),
     {
         Comparison =.. [Op, Lhs, Rhs]
     }.
+
 
 arith(ArithExpr) --> addend(X1), arith__(X1, ArithExpr).
 arith__(Acc, Res) --> additive(Op), !, addend(X1), arith__(Expr, Res),
@@ -190,7 +174,10 @@ atomic_expr(ArithExpr) --> [leftparen], arith(ArithExpr), [rightparen].
 atomic_expr(int(Integer)) --> [int(Integer)].
 atomic_expr(id(Identifier)) --> [id(Identifier)].
 
-relop(Operator) --> [op(Operator)].
+relop(Operator) --> [op(Operator)],
+    {
+        member(Operator, [eq, not_eq, less, greater, less_eq, greater_eq])
+    }.
 
 additive(plus) --> [op(plus)].
 additive(minus) --> [op(minus)].
