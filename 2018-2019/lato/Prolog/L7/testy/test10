@@ -1,0 +1,9 @@
+a :=     10;
+b :=     20;
+c := 0 - 30;
+
+if not (c >= 0 or b > 0 and a <> 11) then
+    result := 1
+else
+    result := 0
+fi

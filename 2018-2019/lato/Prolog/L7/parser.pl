@@ -117,6 +117,10 @@ program__(Acc, Res) -->
 program__(Acc, Res) --> [], { reverse(Acc, Res) }.
 
 instruction(assign(Var, Expr)) --> [id(Var)], !, [op(assign)], arith(Expr).
+instruction(while(Cond, Program)) -->
+    [kwrd(while)], logical(Cond), [kwrd(do)],
+    program(Program), !,
+    [kwrd(od)].
 instruction(if(Cond, Cons, Alt)) --> 
     [kwrd(if)],   logical(Cond), 
     [kwrd(then)], program(Cons), 
@@ -126,10 +130,6 @@ instruction(if(Cond, Cons, [])) -->
     [kwrd(if)],   !, logical(Cond), 
     [kwrd(then)], program(Cons), 
     [kwrd(fi)].
-instruction(while(Cond, Program)) -->
-    [kwrd(while)], !, logical(Cond), [kwrd(do)],
-    program(Program),
-    [kwrd(od)].
 
 logical(Expr) --> logical_addend(X1), logical__(X1, Expr).
 logical__(Acc, Res) --> 

@@ -1,0 +1,15 @@
+(* program liczący n-tą liczbę fibonacciego *)
+
+n := 9;
+
+a := 1;
+b := 0;
+
+while n <> 0 do
+    temp := b;
+    b := a;
+    a := temp + b;
+    n := n - 1
+od;
+
+result := a
