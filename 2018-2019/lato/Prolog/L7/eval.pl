@@ -18,104 +18,104 @@ mem_set([Binding | Tail], Var, Val, [Binding | NewTail]) :-
     mem_set(Tail, Var, Val, NewTail).
 
 
-evalExpr(int(N), _, N).
-evalExpr(id(X), Mem, Val) :-
+eval_expr(int(N), _, N).
+eval_expr(id(X), Mem, Val) :-
     mem_get(X, Mem, Val).
-evalExpr(plus(L, R), Mem, Val) :-
-    evalExpr(L, Mem, VL),
-    evalExpr(R, Mem, VR),
+eval_expr(plus(L, R), Mem, Val) :-
+    eval_expr(L, Mem, VL),
+    eval_expr(R, Mem, VR),
     Val is VL + VR.
-evalExpr(minus(L, R), Mem, Val) :-
-    evalExpr(L, Mem, VL),
-    evalExpr(R, Mem, VR),
+eval_expr(minus(L, R), Mem, Val) :-
+    eval_expr(L, Mem, VL),
+    eval_expr(R, Mem, VR),
     Val is VL - VR.
-evalExpr(mult(L, R), Mem, Val) :-
-    evalExpr(L, Mem, VL),
-    evalExpr(R, Mem, VR),
+eval_expr(mult(L, R), Mem, Val) :-
+    eval_expr(L, Mem, VL),
+    eval_expr(R, Mem, VR),
     Val is VL * VR.
-evalExpr(pow(B, P), Mem, Val) :-
-    evalExpr(B, Mem, VB),
-    evalExpr(P, Mem, VP),
+eval_expr(pow(B, P), Mem, Val) :-
+    eval_expr(B, Mem, VB),
+    eval_expr(P, Mem, VP),
     Val is VB ** VP.
-evalExpr(div(L, R), Mem, Val) :-
-    evalExpr(L, Mem, VL),
-    evalExpr(R, Mem, VR),
+eval_expr(div(L, R), Mem, Val) :-
+    eval_expr(L, Mem, VL),
+    eval_expr(R, Mem, VR),
     Val is VL div VR.
-evalExpr(modulo(L, R), Mem, Val) :-
-    evalExpr(L, Mem, VL),
-    evalExpr(R, Mem, VR),
+eval_expr(modulo(L, R), Mem, Val) :-
+    eval_expr(L, Mem, VL),
+    eval_expr(R, Mem, VR),
     Val is VL mod VR.
 
 
 negated(true, false).
 negated(false, true).
 
-evalLog(not(Boolean), Mem, Val) :-
-    evalLog(Boolean, Mem, true) ->
+eval_log(not(Boolean), Mem, Val) :-
+    eval_log(Boolean, Mem, true) ->
         Val = false;
         Val = true.
 
-evalLog(and(P, Q), Mem, Val) :-
-    evalLog(P, Mem, true) ->
-        evalLog(Q, Mem, Val);
+eval_log(and(P, Q), Mem, Val) :-
+    eval_log(P, Mem, true) ->
+        eval_log(Q, Mem, Val);
         Val = false.
 
-evalLog(or(P, Q), Mem, Val) :-
-    evalLog(P, Mem, false) ->
-        evalLog(Q, Mem, Val);
+eval_log(or(P, Q), Mem, Val) :-
+    eval_log(P, Mem, false) ->
+        eval_log(Q, Mem, Val);
         Val = true.
 
-evalLog(eq(A, B), Mem, true) :-
-    evalExpr(A, Mem, V),
-    evalExpr(B, Mem, V),
+eval_log(eq(A, B), Mem, true) :-
+    eval_expr(A, Mem, V),
+    eval_expr(B, Mem, V),
     !.
-evalLog(eq(_, _), _, false).
+eval_log(eq(_, _), _, false).
 
-evalLog(not_eq(A, B), Mem, Val) :-
-    evalLog(eq(A, B), Mem, NVal),
+eval_log(not_eq(A, B), Mem, Val) :-
+    eval_log(eq(A, B), Mem, NVal),
     negated(NVal, Val).
 
-evalLog(less(L, R), Mem, true) :-
-    evalExpr(L, Mem, LV),
-    evalExpr(R, Mem, RV),
+eval_log(less(L, R), Mem, true) :-
+    eval_expr(L, Mem, LV),
+    eval_expr(R, Mem, RV),
     LV < RV,
     !.
-evalLog(less(_, _), _, false).
+eval_log(less(_, _), _, false).
 
-evalLog(greater(L, R), Mem, true) :-
-    evalExpr(L, Mem, LV),
-    evalExpr(R, Mem, RV),
+eval_log(greater(L, R), Mem, true) :-
+    eval_expr(L, Mem, LV),
+    eval_expr(R, Mem, RV),
     LV > RV,
     !.
-evalLog(greater(_, _), _, false).
+eval_log(greater(_, _), _, false).
 
-evalLog(greater_eq(L, R), Mem, Val) :-
-    evalLog(less(L, R), Mem, NVal),
+eval_log(greater_eq(L, R), Mem, Val) :-
+    eval_log(less(L, R), Mem, NVal),
     negated(NVal, Val).
 
-evalLog(less_eq(L, R), Mem, Val) :-
-    evalLog(greater(L, R), Mem, NVal),
+eval_log(less_eq(L, R), Mem, Val) :-
+    eval_log(greater(L, R), Mem, NVal),
     negated(NVal, Val).
 
-evalProg([], Mem, Mem).
+eval_prog([], Mem, Mem).
 
-evalProg([Instr | Prog], MemIn, MemOut) :-
-    evalProg(Instr, MemIn, MemOut0),
-    evalProg(Prog, MemOut0, MemOut).
+eval_prog([Instr | Prog], MemIn, MemOut) :-
+    eval_prog(Instr, MemIn, MemOut0),
+    eval_prog(Prog, MemOut0, MemOut).
 
-evalProg(assign(Var, Expr), MemIn, MemOut) :-
-    evalExpr(Expr, MemIn, Val),
+eval_prog(assign(Var, Expr), MemIn, MemOut) :-
+    eval_expr(Expr, MemIn, Val),
     mem_set(MemIn, Var, Val, MemOut).
 
-evalProg(if(Cond, Cons, Alt), MemIn, MemOut) :-
-    evalLog(Cond, MemIn, true) ->
-        evalProg(Cons, MemIn, MemOut);
-        evalProg(Alt, MemIn, MemOut).
+eval_prog(if(Cond, Cons, Alt), MemIn, MemOut) :-
+    eval_log(Cond, MemIn, true) ->
+        eval_prog(Cons, MemIn, MemOut);
+        eval_prog(Alt, MemIn, MemOut).
 
-evalProg(while(Cond, Program), MemIn, MemOut) :-
-    evalLog(Cond, MemIn, true),
+eval_prog(while(Cond, Program), MemIn, MemOut) :-
+    eval_log(Cond, MemIn, true),
     !,
-    evalProg(Program, MemIn, MemOut0),
-    evalProg(while(Cond, Program), MemOut0, MemOut).
-evalProg(while(_, _), Mem, Mem).
+    eval_prog(Program, MemIn, MemOut0),
+    eval_prog(while(Cond, Program), MemOut0, MemOut).
+eval_prog(while(_, _), Mem, Mem).
 
