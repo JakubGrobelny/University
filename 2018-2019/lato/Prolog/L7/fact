@@ -1,0 +1,9 @@
+(* fact = n! *)
+
+n := 6;
+fact := 1;
+
+while n > 0 do
+    fact := n * fact;
+    n := n - 1
+od
