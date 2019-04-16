@@ -69,7 +69,7 @@ integer_literal(int(N)) --> digit(D), integer_literal_(Digits), !,
         atomic_list_concat([D, Digits], Number),
         atom_number(Number, N)
     }.
-integer_literal(int(N)) --> digit(D), { atom_number(D, N) }.
+integer_literal(int(N))  --> digit(D), { atom_number(D, N) }.
 
 integer_literal_(Digits) --> digit(D), integer_literal_(DTail), !,
     {
@@ -81,11 +81,11 @@ alphanum([L | Tail]) --> letter(L), alphanum_(Tail).
 
 alphanum_([L | Tail]) --> letter(L), !, alphanum_(Tail).
 alphanum_([L | Tail]) --> digit(L), !, alphanum_(Tail).
-alphanum_([]) --> [].
+alphanum_([])         --> [].
 
+comment      --> ['(', '*'], comment_tail.
 comment_tail --> ['*', ')'], !.
 comment_tail --> [_], comment_tail.
-comment --> ['(', '*'], comment_tail.
 
 operator(op(less_eq))    --> ['<', '='], !.
 operator(op(greater_eq)) --> ['>', '='], !.
@@ -111,12 +111,12 @@ token([rightparen | Tokens]) --> [')'], !, token(Tokens).
 token([])                    --> [].
 
 
-program(Program) --> instruction(Instr), program__([Instr], Program).
+program(Program)    --> instruction(Instr), program__([Instr], Program).
 program__(Acc, Res) --> 
     [semicolon], !, instruction(I1), program__([I1 | Acc], Res).
 program__(Acc, Res) --> [], { reverse(Acc, Res) }.
 
-instruction(assign(Var, Expr)) --> [id(Var)], !, [op(assign)], arith(Expr).
+instruction(assign(Var, Expr))    --> [id(Var)], !, [op(assign)], arith(Expr).
 instruction(while(Cond, Program)) -->
     [kwrd(while)], logical(Cond), [kwrd(do)],
     program(Program), !,
@@ -142,9 +142,9 @@ logical_addend__(Acc, Res) -->
 logical_addend__(Acc, Acc) --> [].
 
 logical_factor(not(Boolean)) --> [kwrd(not)], !, logical_factor(Boolean).
-logical_factor(Factor) --> relational(Factor).
+logical_factor(Factor)       --> relational(Factor).
 
-relational(Expr) --> [leftparen], !, logical(Expr), [rightparen].
+relational(Expr)       --> [leftparen], !, logical(Expr), [rightparen].
 relational(Comparison) --> arith(Lhs), relop(Op), arith(Rhs),
     {
         Comparison =.. [Op, Lhs, Rhs]
