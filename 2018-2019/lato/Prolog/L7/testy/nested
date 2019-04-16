@@ -1,0 +1,7 @@
+if 10 = 10
+    then if 20 = 20
+        then X := 1
+        else X := 2
+    fi
+    else X := 3
+fi
