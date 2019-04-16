@@ -6,4 +6,10 @@ if not (c >= 0 or b > 0 and a <> 11) then
     result := 1
 else
     result := 0
+fi;
+
+if not (b = 42) then
+    B := 42
 fi
+
+

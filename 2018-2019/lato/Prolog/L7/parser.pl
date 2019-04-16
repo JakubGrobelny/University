@@ -121,14 +121,14 @@ instruction(while(Cond, Program)) -->
     [kwrd(while)], logical(Cond), [kwrd(do)],
     program(Program), !,
     [kwrd(od)].
-instruction(if(Cond, Cons, Alt)) --> 
+instruction(if(Cond, Cons, [])) --> 
     [kwrd(if)],   logical(Cond), 
     [kwrd(then)], program(Cons), 
-    [kwrd(else)], !, program(Alt), 
-    [kwrd(fi)].
-instruction(if(Cond, Cons, [])) --> 
-    [kwrd(if)],   !, logical(Cond), 
-    [kwrd(then)], program(Cons), 
+    [kwrd(fi)], !.
+instruction(if(Cond, Cons, Alt)) --> 
+    [kwrd(if)],   logical(Cond),
+    [kwrd(then)], program(Cons),
+    [kwrd(else)], !, program(Alt),
     [kwrd(fi)].
 
 logical(Expr) --> logical_addend(X1), logical__(X1, Expr).
