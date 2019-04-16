@@ -83,14 +83,14 @@ alphanum_([L | Tail]) --> letter(L), !, alphanum_(Tail).
 alphanum_([L | Tail]) --> digit(L), !, alphanum_(Tail).
 alphanum_([]) --> [].
 
+comment_tail --> ['*', ')'], !.
 comment_tail --> [_], comment_tail.
-comment_tail --> ['*', ')'].
 comment --> ['(', '*'], comment_tail.
 
-operator(op(less_eq))    --> ['<', '='].
-operator(op(greater_eq)) --> ['>', '='].
-operator(op(not_eq))     --> ['<', '>'].
-operator(op(assign))     --> [':', '='].
+operator(op(less_eq))    --> ['<', '='], !.
+operator(op(greater_eq)) --> ['>', '='], !.
+operator(op(not_eq))     --> ['<', '>'], !.
+operator(op(assign))     --> [':', '='], !.
 operator(op(plus))       --> ['+'].
 operator(op(minus))      --> ['-'].
 operator(op(mult))       --> ['*'].

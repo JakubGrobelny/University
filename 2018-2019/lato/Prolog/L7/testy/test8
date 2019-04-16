@@ -1,0 +1,10 @@
+(* testowy program *)
+x := 10;
+y := 15;
+(* testowy program *)
+
+if x >= y
+    then a := 1
+    else a := 0
+fi
+

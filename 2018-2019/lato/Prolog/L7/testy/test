@@ -1,10 +1,11 @@
 (* testowy program *)
-x:=1+2+3+4;
-y:=42;
+
+x := 1+2+3+4;
+y := 42;
 z := (1+2)*b;
 
 if a >= 10
-    then A := 42;
+    then A := 42
     else B := 43
-fi;
+fi
 
