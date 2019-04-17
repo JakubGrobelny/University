@@ -62,3 +62,6 @@
     - wykład: Witold Kwaśnicki
 - Psychologia nowych technologii:
     - wykład: Jakub Kuś
+- Bazy danych:
+    - wykład: Piotr Wieczorek
+    - ćwiczenio-pracownia: Bartosz Bednarczyk
