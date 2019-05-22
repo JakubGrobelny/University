@@ -4,6 +4,9 @@ mem_get(_, [], 0) :-
     !.
 mem_get(Var, [(Var, Val) | _], Val) :-
     !.
+mem_get(Var0, [(Var1, _) | _], 0) :-
+    Var0 @< Var1,
+    !.
 mem_get(Var, [_ | Mem], Val) :-
     mem_get(Var, Mem, Val).
 
@@ -51,9 +54,8 @@ negated(true, false).
 negated(false, true).
 
 eval_log(not(Boolean), Mem, Val) :-
-    eval_log(Boolean, Mem, true) ->
-        Val = false;
-        Val = true.
+    eval_log(Boolean, Mem, NVal),
+    negated(NVal, Val).
 
 eval_log(and(P, Q), Mem, Val) :-
     eval_log(P, Mem, true) ->

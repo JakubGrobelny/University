@@ -101,8 +101,8 @@ operator(op(greater))    --> ['>'].
 
 token(Tokens)                --> whitespace(_), !, token(Tokens).
 token(Tokens)                --> comment, !, token(Tokens).
-token([Int| Tokens])         --> integer_literal(Int), !, token(Tokens).
-token([Kw| Tokens])          --> keyword(Kw), !, token(Tokens).
+token([Int | Tokens])        --> integer_literal(Int), !, token(Tokens).
+token([Kw | Tokens])         --> keyword(Kw), !, token(Tokens).
 token([Id | Tokens])         --> identifier(Id), !, token(Tokens).
 token([Op | Tokens])         --> operator(Op), !, token(Tokens).
 token([semicolon | Tokens])  --> [';'], !, token(Tokens).
@@ -118,11 +118,11 @@ program__(Acc, Res) --> [], { reverse(Acc, Res) }.
 
 instruction(assign(Var, Expr))    --> [id(Var)], !, [op(assign)], arith(Expr).
 instruction(while(Cond, Program)) -->
-    [kwrd(while)], logical(Cond), [kwrd(do)],
+    [kwrd(while)], !, logical(Cond), [kwrd(do)],
     program(Program), !,
     [kwrd(od)].
 instruction(if(Cond, Cons, [])) --> 
-    [kwrd(if)],   logical(Cond), 
+    [kwrd(if)], logical(Cond), 
     [kwrd(then)], program(Cons), 
     [kwrd(fi)], !.
 instruction(if(Cond, Cons, Alt)) --> 
