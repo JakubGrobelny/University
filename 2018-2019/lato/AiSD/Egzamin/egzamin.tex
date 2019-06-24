@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{dsfont}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{gensymb}
+
+\begin{document}
+\begin{titlepage}
+
+\title{\bfseries Algorytmy i Struktury Danych\\\Large Egzamin - Pierwszy termin}
+\date{\today}
+\author{JG}
+\end{titlepage}
+
+\maketitle
+
+\begin{enumerate}
+
+    \item{Czy usunięcie wierzchołka z drzewa AVL może wymagać 3 rotacji
+    dla przywrócenia balansu? Narysuj przykład albo napisz uzasadnienie
+    dlaczego nie.}
+    
+    \item{W algorytmie \textit{LazySelect} znajdującym medianę ciągu $C$
+    wyznaczana jest losowa próbka $H$. W tym celu $n^{3/4}$ razy losujemy (ze zwracaniem)
+    elementy ciągu $C$. Załóżmy, że $C$ składa się z $n$ różnych elementów. Co się
+    stanie jeśli za każdym razem do $H$ został wylosowany ten sam element?
+    Co jeśli do $H$ trafiły dokładnie dwa różne elementy?}
+    
+    \item{Tworząc słownik statyczny (dwupoziomowy) losujemy funkcję $h$ z
+    rodziny uniwersalnej i rozrzucamy $n$ kluczy do tablicy $n$-elementowej. Co jeżeli 
+    do pewnego kubełka, trafi $\sqrt{n}$ kluczy?}
+    
+    \item{Napisać \textit{InsertSort} w pseudokodzie.}
+    
+    \item{Podać (jak najdokładniejsze) asymptotyczne ograniczenie na głębokość sieci
+        przełączników realizujących wszystkie przesunięcia cykliczne ciągu wejściowego}
+
+    \item{W której wersji \textit{deletemin} na kopcu spodziewamy się wykonać
+    mniej porównań i dlaczego? (usuwany element zastępujemy skrajnie prawym liściem
+    z ostatniego poziomu \textbf{vs} przesuwanie dziury na dół).}
+
+    \item{Napisać procedurę wstawiania elementu do struktury van Emde Boasa w 
+    pseudokodzie i napisać jej złożoność z uzasadnieniem.}
+
+    \item{Ile elementów może liczyć zbiór $\{w^2 | \,\,w$ jest 
+    $n$-tym pierwiastkiem zespolonym z jedności $\}$}? Odpowiedź uzasadnij.
+
+    \item{Podany na wykładzie równoległy algorytm mnożenia dwóch liczb redukuje
+    dodawanie trzech liczb do dodawania dwóch liczb. Zmodyfikuj ten algorytm 
+    tak, by redukował dodawanie siedmiu liczb do dodawania trzech liczb. Jaką
+    złożoność będzie miał ten algorytm?}
+
+    \item{Jaka jest maksymalna liczba rotacji podczas pojedynczej operacji
+    słownikowej na drzewach \textit{Splay} o $n$ wierzchołkach?}
+
+    \item{Jaka jest oczekiwana liczba kolizji gdy do umieszczenia 30 różnych
+    kluczy w tablicy 300 elementowej użyjemy funkcji losowo wybranej z
+    uniwersalnej rodziny funkcji haszujących? Odpowiedź uzasadnij.}
+
+    \item{Czy wysokość drzew powstałych w kopcu Fibonacciego o $n$ wierzchołkach
+    da się ograniczyć przez $log^2n$?}
+
+    \item{Rozważamy haszowanie metodą adresowania otwartego, w której konflikty
+    rozwiązujemy metodą kwadratową. Czy funkcja $h(k,i)=(h'(k)+100i+1000i^2)\,\,mod\,\, 10000$}
+    jest sensownym wyborem?
+
+    \item{Udowodnij, że jeśli po ''przepuszczeniu'' ciągu bitonicznego $a_1,...,a_{2n}$
+    przez sieć półczyszczącą otrzymamy ciąg $b_1,...,b_{2n}$ to $b_1,...,b_{n}$
+    oraz $b_{n+1},...,b_{2n}$ są ciągami bitonicznymi.}
+    
+    \item{Zauważyłeś, że \textit{Quicksort} (z deterministycznym pivotem) zachowuje
+    się zadziwiająco regularnie na ciągach z pewnej rodziny $A$. Otóż okazało
+    się, że w trakcie wszystkich wywołań rekurencyjnych proderura \textit{Partition}
+    dokonuje podziału ciągu wejściowego na podciągi o długościach nie mniejszych
+    niż 1/3 i nie większych niż 2/3 długości ciągu wejściowego. W jakim
+    czasie działa Quicksort na ciągach z rodziny $A$?}
+
+    \item{Algorytm Boruvki-Sollina wykonuje pewną liczbę faz. W każdej fazie
+    dorzuca do konstruowanego drzewa pewne krawędzie i tworzy nowy graf, który będzie rozważany
+    w kolejnej fazie. Skonstruuj (jak najprostszy) graf, dla którego ten algorytm
+    wykona dokładnie 3 fazy lub pokaż, żę taki graf nie istnieje.}
+
+    \item{W analizie problemu \textit{Union-Find} wykorzystywaliśmy pojęcia rzędu
+    wierzchołka oraz grupy rzędu. Przypomnij definicje tych pojęć. Ile maksymalnie
+    bitów potrzebujemy przeznaczyć na pamiętanie rzędu w każdym wierzchołku?}
+
+    \item{Oblicz funkcję $\pi$ dla wzorca \texttt{aabaaabaaaba}.}
+
+    \item{Udowodnij, że przynajmniej jedna z operacji \textit{min, deletemin} lub \textit{insert}
+    wykonywanych na kolejce priorytetowej wymaga w najgorszym przypadku czasu $\Omega(log\,n)$}
+
+    \item{W algorytmie \textit{Shift-And} wykonywane są operacje logiczne na
+    słowach maszynowych. Wytłumacz w jaki sposób?}
+\end{enumerate}
+
+\end{document}
+
+
+

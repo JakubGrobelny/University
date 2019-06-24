@@ -1,1 +1,6 @@
 *.ods#
+*.fls
+*.fdb_latexmk
+*.aux
+*.log
+*.synctex.gz
