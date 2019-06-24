@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{dsfont}
+\usepackage[many]{tcolorbox}
+\usepackage{listings}
+\usepackage[bottom]{footmisc}
+
+\begin{document}
+\begin{titlepage}
+
+\title{\bfseries Algorytmy i Struktury Danych\\\Large Egzamin - część druga}
+\date{\today}
+\author{JG}
+\end{titlepage}
+
+\maketitle
+
+\begin{enumerate}
+
+    \item Skonstruuj efektywny algorytm, który dla danego ciągu
+    znajdzie jego najdłuższy podciąg, który jest palindromem.
+
+    \item Drzewem wyprowadzania słowa $w$ w gramatyce bezkontekstowej
+    jest drzewo $T$ etykietowane literami alfabetu, takie, że
+    \begin{itemize}
+        \item etykietą korzenia jest symbol początkowy
+        \item dla każdego wierzchołka wewnętrznego $v$: jeśli
+        etykietą $v$ jest $A$ a etykiety dzieci $v$ czytane z lewej
+        na prawo tworzą słowo $u$, to $A \rightarrow u$ jest produkcją
+        w gramatyce.
+        \item etykiety liści czytane z lewej na prawo tworzą słowo $w$
+    \end{itemize}
+    Głębokością wyprowadzenia słowa $w$ w gramatyce $G$ nazywamy najmniejszą
+    wysokość drzewa wyprowadzenia dla słowa $w$. Ułóż algorytm, który dla słowa
+    $w$ oblicza głębokość jego wyprowadzenia w gramatyce $G$ w postaci Chomsky'ego.
+
+    \item Dany jest zbiór $A$ punktów na okręgu oraz funkcja 
+    $c: A \times A \rightarrow R_+$ określająca wagi odcinków pomiędzy
+    punktami ze zbioru $A$. Zakładamy, że $A$ zawiera $2n$ punktów.
+    \begin{itemize}
+        \item Ile jest różnych zbiorów zlożonych z $n$ nieprzecinających
+        się odcinków łączących punkty z $A$?
+        \item Ułóż algorytm znajdujący zbiór takich odcinków o minimalnej wadze.
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
+
+
+
