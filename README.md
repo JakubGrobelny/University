@@ -65,3 +65,22 @@
 - Bazy danych:
     - wykład: Piotr Wieczorek
     - ćwiczenio-pracownia: Bartosz Bednarczyk
+
+# Semestr V:
+- Systemy operacyjne:
+    - wykład: Krystian Bacławski
+    - ćwiczenio-pracownia: Tomasz Wierzbicki
+- Kurs języka Rust:
+    - wykład: Łukasz Piwowar
+    - pracownia: Łukasz Piwowar
+- Kurs: zaawansowane techniki w C++ i STL
+    - wykład: Paweł Rzechonek
+    - pracownia: Marek Szykuła
+- Proseminarium: Archeologia cyfrowa:
+    - seminarium: Tomasz Wierzbicki
+- Komunikacja człowiek-komputer:
+    - wykład: Zdzisław Płoski
+    - ćwiczenio-pracownia: Leszek Grocholski
+- Podstawy i zastosowania złożoności obliczeniowej:
+    - wykład: Jakub Michaliszyn
+    - ćwiczenia: Jakub Michaliszyn
