@@ -5,3 +5,4 @@
 *.log
 *.synctex.gz
 */a.out
+.stack-work/
