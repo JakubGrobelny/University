@@ -2,6 +2,14 @@
 
 
 auto lucas_number(unsigned n) {
+    if (n == 0)
+        return 2;
+    if (n == 1)
+        return 1;
+    return lucas_number(n-1) + lucas_number(n-2);
+}
+
+auto lucas_number_tail(unsigned n) {
  
     const auto aux = [](unsigned n, int l1, int l2, const auto& rec) {
         if (n == 0)
