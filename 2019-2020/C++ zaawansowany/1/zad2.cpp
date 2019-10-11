@@ -2,7 +2,7 @@
 
 
 auto main() -> int {
-    std::cout << R"kkkkkkk("test("\n" ()") ??=))kkkkkkk";
+    std::cout << R"k("test("\n" ()") ??=))k";
 
     return 0;
 }
