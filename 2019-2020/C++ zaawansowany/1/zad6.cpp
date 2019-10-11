@@ -12,13 +12,13 @@ void solve_quadratic_equation(double a, double b, double c) {
 
     if (double delta = b*b - 4.0 * a * c; approx_zero(delta)) {
         const double x = -b / (2.0 * a);
-        std::cout << "x = " << x << std::endl;
 
+        std::cout << "x = " << x << std::endl;
     } else if (delta > 0) {
         const double sqrt_delta = std::sqrt(delta);
         const double x0 = (-b + sqrt_delta) / (2*a);
         const double x1 = c / a * x0;
-    
+
         std::cout << "x0 = " << x0 << std::endl << "x1 = " << x1 << std::endl;
     } else {
         using namespace std::complex_literals;

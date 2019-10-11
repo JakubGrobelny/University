@@ -22,15 +22,16 @@ void print_message(const std::string& message, name person) {
             case name::Klaudia:  return "Klaudia";
             case name::Karolina: return "Karolina";
             case name::Julia:    return "Julia";
-            default:             return "";
         }
+
+        return "";
     };
 
     std::cout << name_to_string(person) << ", " << message << std::endl;
 }
 
 
-auto main(int argc, char* argv[]) -> int {
+auto main() -> int {
     print_message("Zrób zadania z C++", name::Kacper);
     return 0;
 }
