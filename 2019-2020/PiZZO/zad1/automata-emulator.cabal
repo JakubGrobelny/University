@@ -52,14 +52,16 @@ executable automata-emulator
 
   -- Modules included in this executable, other than Main.
   other-modules:       Parser,
-                       Automata
+                       Automaton
 
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:
 
   -- Other library packages from which modules are imported.
   build-depends:       base >=4.12 && <4.13,
-                       aeson
+                       aeson,
+                       array >= 0.5.3,
+                       containers >= 0.6
 
   -- Directories containing source files.
   hs-source-dirs:      src
