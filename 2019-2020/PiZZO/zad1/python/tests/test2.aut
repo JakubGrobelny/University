@@ -1,0 +1,36 @@
+{
+    "alphabet": [
+        "a",
+        "b"
+    ],
+    "states": [
+        "q1",
+        "q2"
+    ],
+    "initial": "q1",
+    "accepting": [
+        "q2"
+    ],
+    "transitions": [
+        {
+            "letter": "a",
+            "from": "q1",
+            "to": "q1"
+        },
+        {
+            "letter": "b",
+            "from": "q1",
+            "to": "q2"
+        },
+        {
+            "letter": "a",
+            "from": "q2",
+            "to": "q1"
+        },
+        {
+            "letter": "b",
+            "from": "q2",
+            "to": "q2"
+        }
+    ]
+}
