@@ -1,0 +1,27 @@
+{
+    "alphabet": ["0", "1", "A"],
+    "states": ["q1", "q2", "q3", "q4", "q5"],
+    "initial": "q1",
+    "accepting": ["q5", "q1"],
+    "transitions": [
+        {"letter": "0", "from": "q1", "to": "q2"},
+        {"letter": "1", "from": "q1", "to": "q3"},
+        {"letter": "A", "from": "q1", "to": "q3"},
+
+        {"letter": "0", "from": "q2", "to": "q2"},
+        {"letter": "1", "from": "q2", "to": "q3"},
+        {"letter": "A", "from": "q2", "to": "q4"},
+
+        {"letter": "0", "from": "q3", "to": "q3"},
+        {"letter": "1", "from": "q3", "to": "q3"},
+        {"letter": "A", "from": "q3", "to": "q3"},
+
+        {"letter": "0", "from": "q4", "to": "q3"},
+        {"letter": "1", "from": "q4", "to": "q5"},
+        {"letter": "A", "from": "q4", "to": "q3"},
+
+        {"letter": "0", "from": "q5", "to": "q3"},
+        {"letter": "1", "from": "q5", "to": "q5"},
+        {"letter": "A", "from": "q5", "to": "q3"}
+    ]
+}

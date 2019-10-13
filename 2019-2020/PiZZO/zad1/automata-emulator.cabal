@@ -61,7 +61,8 @@ executable automata-emulator
   build-depends:       base >=4.12 && <4.13,
                        aeson,
                        array >= 0.5.3,
-                       containers >= 0.6
+                       containers >= 0.6,
+                       monad-loops
 
   -- Directories containing source files.
   hs-source-dirs:      src

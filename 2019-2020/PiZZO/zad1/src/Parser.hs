@@ -86,18 +86,12 @@ convertJSONTransitions states transitions =
                 letter t = jsonTransLetter t !! 0
 
         transitionFunction :: Char -> Int
-        transitionFunction c = case lookup c directions of
-            Nothing -> error "Invalid transition function!" -- impossible!
-            Just dir -> dir
+        transitionFunction c = findWithDefault (-1) c directions
             where
                 directions = fromList assocs'
 
-                assocs' = map unwrap $ filter isSomething assocs
+                assocs' = map unwrap $ filter (isJust . snd) assocs
                     where
-                        isSomething :: (Char, Maybe Int) -> Bool
-                        isSomething (_, Nothing) = False
-                        isSomething _ = True
-
                         unwrap :: (Char, Maybe Int) -> (Char, Int)
                         unwrap (c, Just i) = (c, i)
                         unwrap _ = error "Invalid state in transition!" --impossible
