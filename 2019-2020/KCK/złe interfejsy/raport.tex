@@ -51,7 +51,7 @@ Pierwszym miejscem, w jakim pojawimy się po zalogowaniu, jest strona
 Wyobraźmy sobie jednak sytuację, w której ktoś chciałby zapisać się na jakiś
 kurs własnoręcznie. Pojawia się wówczas pytanie -- w jaki sposób można znaleźć
 konkretny kurs? Okazuje się, że odpowiedź na nie nie jest taka oczywista jak
-by się mogło wydawać. Na rysunku \ref{figure:skos-header} widzimy, że 
+mogłoby się wydawać. Na rysunku \ref{figure:skos-header} widzimy, że 
 wyszukiwarka nie znajduje się tam, gdzie byśmy jej oczekiwali -- na samej górze 
 strony. Możemy zaobserwować, że paska wyszukiwania nie znajdziemy nigdzie na tej 
 stronie. Aby dostać się do wyszukiwarki  trzeba przenieść się na stronę główną
@@ -97,7 +97,7 @@ dobrze widoczne miejsce w ,,kokpicie''.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.8]{./img/skos_search.png}
+    \includegraphics[scale=0.7]{./img/skos_search.png}
     \caption{Nieoficjalny mistrz witryny SKOS w zabawie w chowanego.}
     \label{figure:skos-search}
 \end{figure}
@@ -119,7 +119,7 @@ rysunek \ref{figure:skos-mobile}). Nie znaczy to bynajmniej, że jest to
 czytelne. Większość kursów korzysta z domyślnej grafiki przez co trudno jest
 je od siebie od razu odróżnić. Niestety uwagę przykuwają właśnie te obrazki a
 nie znajdujący się pod nimi tekst przez co szybkie poruszanie się między kursami
-wymaga przyzwyczajenia.
+wymaga przyzwyczajenia do położenia każdego z nich.
 
 Oprócz kafelków istnieje opcja wyświetlania w formie listy oraz 
 ,,podsumowania''. Oba te warianty są do siebie bardzo podobne (podsumowanie
@@ -154,5 +154,51 @@ znajdziemy wyszukiwarkę kursów.
     \label{figure:skos-mobile}
 \end{figure}
 
+\chapter*{REPL OCamla}
+
+Innym przykładem złego interfejsu jest REPL (read-eval-print loop) języka OCaml,
+czyli program pozwalający na interaktywne programowanie w tym języku (dokładniej
+program \texttt{ocaml}).
+
+REPL ten odstaje od standardów, do którego przyzwyczajają nas implementacje
+innych języków. Program ten nie oferuje pewnych podstawowych funcjonalności,
+które sprawiają, że interakcja z kompilatorem jest bardzo niewygodna.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1.3]{./img/ocaml_history.png}
+    \caption{Niedziałające przeglądanie historii w programie \texttt{ocaml}.}
+    \label{figure:ocaml-history}
+\end{figure}
+
+Po pierwsze, nie ma opcji przeszukiwania historii wpisanych wyrażeń przy użyciu
+strzałek w górę/dół. W momencie wciśnięcia tych klawiszy zostaną po prostu
+wpisane znaki. Powoduje to, że jeżeli chcemy powtórzyć jakąś operację, to musimy
+albo skopiować wpisany tekst albo przepisać go na nowo. Zmniejsza to znacząco
+wydajność użytkownika.
+
+Drugą wadą tego tekstowego interfejsu jest to, iż nie zaimplementowano
+możliwości poruszania kursorem w obrębie wpisanego już tekstu. Jeżeli zauważymy
+jakiś błąd, to jego poprawa wymaga usunięcia całego tekstu aż do poprzedzającego
+go błędu.
+
+Jednym z zastosowań REPLa jest możliwość szybkiego przetestowania kodu w wysoce
+interaktywnym środowisku. Często możemy nie pamiętać na przykład nazwy jakiejś 
+funkcji, więc bardzo przydatne staje się autouzupełnianie i wyświetlanie
+sugestii przez REPL. Jak można się już domyślić, \texttt{ocaml} takiej
+opcji nie oferuje.\\
+
+Wszystkie wymienione tutaj rzeczy powodują, że korzystanie z domyślnego REPLa 
+rodzi więcej frustracji aniżeli pomaga (na szczęście powstały alternatywy -- na 
+przykład \texttt{utop}, który posiada wszystkie wymienione tu brakujące 
+funkcjonalności). Poprawienie tych wad nie jest niestety nietrywialne i wymagałoby zapewne
+napisania licznych linii kodu.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1.3]{./img/ocaml_back.png}
+    \caption{Niedziałające poruszanie kursorem w programie \texttt{ocaml}.}
+    \label{figure:ocaml-back}
+\end{figure}
 
 \end{document}
