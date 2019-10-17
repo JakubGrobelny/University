@@ -90,13 +90,17 @@ auto main(int argc, char* argv[]) -> int {
     try {
         n = std::stoi(argv[1]);
         m = std::stoi(argv[2]);
-
     } catch (std::exception& e) {
-        std::cerr << "failed to parse the numbers: " << e.what() << std::endl;
+        std::cerr << "Failed to parse the numbers: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 
     std::unique_ptr<counter[]> arr{new counter[n]};
+
+    if (!arr) {
+        std::cerr << "Failed to allocate the array!";
+        return EXIT_FAILURE;
+    }
 
     multiply_by_primes(arr, n, m, 0);
 
@@ -105,5 +109,5 @@ auto main(int argc, char* argv[]) -> int {
     }
     std::cout << std::endl;
 
-    return 0;
+    return EXIT_SUCCESS;
 }
