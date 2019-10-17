@@ -21,7 +21,7 @@ public:
         file = new std::ofstream(path, mode);
 
         if (!this->file->is_open()) {
-            throw std::ifstream::failure("failed to open the file");
+            throw std::ofstream::failure("failed to open the file");
         }
     }
 
