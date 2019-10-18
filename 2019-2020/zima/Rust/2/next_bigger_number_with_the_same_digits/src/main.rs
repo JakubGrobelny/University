@@ -34,12 +34,8 @@ fn next_bigger_number(n: i64) -> i64 {
         digits[first_smaller] = digits[first_greater];
         digits[first_greater] = temp;
 
-        let mut digits_last : Vec<char> = digits[first_smaller+1..].to_vec();
-        digits_last.sort();
-                
-        for i in first_smaller+1..digits.len() {
-            digits[i] = digits_last[i - first_smaller - 1];
-        }
+        &digits[first_smaller+1..].sort();
+
         digits.iter().collect::<String>().parse::<i64>().unwrap_or(-1)
     }
 }
@@ -93,4 +89,9 @@ fn test8() {
 #[test]
 fn test9() {
     assert_eq!(next_bigger_number(9899), 9989)
+}
+
+#[test]
+fn test10() {
+    assert_eq!(next_bigger_number(99999918), 99999981)
 }
