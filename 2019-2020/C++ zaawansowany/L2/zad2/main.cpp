@@ -33,6 +33,15 @@ public:
         delete this->file;
         std::cout << "[file closed]" << std::endl;
     }
+
+    auto operator=(line_writer&&) -> line_writer& = delete;
+
+    auto operator=(const line_writer&) -> line_writer& = delete;
+
+    line_writer(line_writer&& writer) {
+        this->file = writer.file;
+        writer.file = nullptr;
+    }
 };
 
 
