@@ -38,6 +38,8 @@ public:
 
     auto operator=(const line_writer&) -> line_writer& = delete;
 
+    line_writer(line_writer&) = delete;
+
     line_writer(line_writer&& writer) {
         this->file = writer.file;
         writer.file = nullptr;
