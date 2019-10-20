@@ -1,0 +1,58 @@
+Zadanie 1
+
+    * rodzic-dziecko: każdy proces posiada swojego rodzica (z wyjątkiem
+	init, którego rodzic to kernel), który utworzył dziecko
+	przy pomocy fork().
+    * grupa procesów - zbiór jednego lub więcej procesów, które mogą
+	otrzymywać razem sygnały.
+    * identyfikator (PID) - unikalna liczba, którą ma przypisany każdy
+	proces
+    * właściciel - użytkownik, który uruchomił proces. Ma pełne uprawnienia
+	do kontrolowania swoich procesów (może je np. zatrzymywać lub zabijać).
+    * wątki jądra - wątki wykonujące kod jądra, niepowiązane z procesami
+	z przestrzeni użytkownika. Nie używają pamięci użytkownika (więc
+	VSZ jest równe zero według polecenia ps). Używane są do implementowania
+	zadań działających w tle.
+    * hierarchia procesów - drzewo procesów przedstawiające relację 
+	rodzic-dziecko działających procesów.
+
+    ps -eo user,pid,pgid,tid,pri,stat,wchan,cmd
+
+	user - właściciel procesu
+	pid  - identyfikator procesu
+	ppid - identyfikator rodzica
+	pgid - identyfikator grupy procesów, do której należy proces
+	tid  - identyfikator wątku (wątki są procesami, które dzielą
+		niektóre rzeczy (np. pamięć) z innymi instancjami
+		z tej samej grupy procesów).
+	pri  - priorytet procesu (wyższa liczba oznacza mniejszy priorytet)
+	stat - stan w jakim znajduje się proces:
+		D - uninterruptible sleep
+		S - interruptible sleep
+		R - runnable
+		T - stopped
+		Z - zombie
+		< - high priority
+		+ - w grupie procesów pierwszoplanowych
+		l - wielowątkowy
+		s - session loader (pierwszy proces w sesji)
+	wchan - adres funkcji kernela w której proces śpi (???)
+	vsz   - rozmiar pamięci wirtualnej procesu
+	cmd   - nazwa polecenia, które utworzyło proces
+
+    rodzicem init jest kernel (ppid == 0)
+
+    wątki jądra można rozpoznać po vsz == 0 oraz po tym, że cmd jest
+	w nawiasach kwadratowych (nie jest znana nazwa polecenia,
+	które je utworzyło).
+
+    wątki w pstree można rozpoznać po tym, że ich nazwy znajdują się
+    w nawiasach klamrowych (n*[{name}] == grupa n wątków)
+
+-------------------------------------------------------------------------------
+
+Zadanie 2
+
+    
+
+
