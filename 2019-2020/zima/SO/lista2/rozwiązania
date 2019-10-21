@@ -259,9 +259,39 @@ Zadanie 4.
 	     fi efox 24193 jgrobelny  151u     IPv4             175690       0t0     TCP jgrobelny:51302->waw02s16-in-f2.1e100.net:https (ESTABLISHED)
 	     firefox 24193 jgrobelny  170u     IPv4             177062       0t0     TCP jgrobelny:58912->sof01s12-in-f3.1e100.net:http (ESTABLISHED)
 
+-------------------------------------------------------------------------------
+
+Zadanie 5
+
+    czas wykonania - czas spędzony na wykonywaniu zadania.
     
+    ograniczenie czasu wykonania - limit czasu jaki proces ma na
+	wykonanie się.
 
+    time find /usr > plik
 
+    real	0m11,344s
+    user	0m0,388s
+    sys  	0m0,883s
+
+    a) user - czas CPU spędzony w trybie użytkownika podczas
+	wykonywania tego konkretnego procesu.
+       sys - czas spędzony przez CPU na wykonywaniu syscalli
+	przez jądro. Liczy się tylko czas dla tego konkretnego
+	procesu.
+       real - czas realny od uruchomienia procesu do jego zakończenia.
+
+    b) Tak. User time jest sumowany po wszystkich rdzeniach. Używanie 
+	dwóch rdzeni po 1s każdy daje łączny czas usera 2s podczas gdy
+	realny to 1s.
+
+    jak nałożyć ograniczenie?:
+
+    ulimit -t [czas w sekundach]
+    
+    Program otrzymuje sygnał SIGKILL
+
+-------------------------------------------------------------------------------
 
 
 
