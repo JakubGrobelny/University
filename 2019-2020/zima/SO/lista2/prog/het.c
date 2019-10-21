@@ -22,7 +22,7 @@ static void print_board(int size, int board[size])
     {
         print_line_sep(size);
         for (int j = 0; j < size; ++j)
-            printf("|%s", board[i] == j ? " Q " : "     ");
+            printf("|%s", board[i] == j ? " Q " : "   ");
         printf("|\n");
     }
     print_line_sep(size);
@@ -34,9 +34,9 @@ static int ndselect(int n)
     if (n == 0)
         return 0;
     else if (Fork())
-        return ndselect(n-1);
-    else
         return n;
+    else
+        return ndselect(n-1);
 }
 
 int main(int argc, char **argv) 
@@ -53,17 +53,17 @@ int main(int argc, char **argv)
 
     for (int i = 0; i < size; i++) 
     {
-        board[i] = ndselect(size);
+        board[i] = ndselect(size-1);
 
-        for (int prev = 0; prev < i; prev++) 
-        {
+        if (board[i])
+            Waitpid(-1, NULL, 0);
+
+        for (int prev = 0; prev < i; prev++)
             if (conflict(i, board[i], prev, board[prev]))
-            {
                 exit(0);
-            }
-        }
     }
 
+    printf("\n[%d]: \n", getpid());
     print_board(size, board);
 
     return 0;
