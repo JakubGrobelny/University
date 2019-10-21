@@ -53,6 +53,99 @@ Zadanie 1
 
 Zadanie 2
 
+    proc(5) - wirtualny system plików, który udostępnia interfejs do struktur
+	danych jądra. Zwyczajowo znajduje się w /proc. 
+    procfs - wirtualny system plików pozwalający na komunikację z
+	jądrem uniksowego systemu. Jego struktura występuje jedynie
+	w pamięci operacyjnej komputera.
+    System plików procfs montowany jest w katalogu /proc. Większość
+    plików ma rozmiar 0 bajtów (wywołanie programu file zwraca empty, gdyż
+    file wywołuje syscall stat(), który wykrywa specjalne pliki (można
+    to wyłączyć flagą -s)).
+
+	/proc/pid  - zawiera informacje związane z procesami o danym pid
+	/proc/tid  - zawiera informacje związene z wątkami o danym tid
+        /proc/self - link symboliczny przekierowujący do
+	    własnego /proc/[pid] procesu
+	/proc/thread-self - link symboliczny przekierowujący
+	    do własnego /proc/self/taks/[tid] wątku
+
+    argumenty programu - parametry przekazane do programu w momencie
+	jego wywołania.
+	    argc - liczba argumentów (włącznie z nazwą polecenia)
+	    argv[] - argumenty (argv[0] to nazwa polecenia)
     
+    zmienne środowiskowe - zmienne, których wartości są ustawianie
+	poza programem. Nazwane wartości, przechowywane i zarządzane
+	przez powłokę. Każdy proces poswiada swój zestaw zmiennych
+	środowiskowych, które dziedziczy po rodzicu.
+
+    zmienne środowiskowe: /proc/[pid]/environ
+    argumenty programu:   /proc/[pid]/cmdline
+
+    pola w pliku status (nie stat!):
+
+	State - aktualny stan procesu
+	Groups - supplementary grupy procesu; dziedziczone po rodzicu
+	    (np. shellu); mówią o tym jakie uprawnienia ma proces
+	VmPeak - największy rozmiar pamięci wirtualnej (do pamięci
+	    wirtualnej wliczają się też strony, które nie są wtoczone)
+	VmSize - aktualny rozmiar pamięci wirtualnej
+	VmRSS - resident set size; fizyczny rozmiar pamięci używanej
+	    przez proces; (zbiór roboczy procesu)
+	Threads - liczba wątków w procesie zawierającym ten wątek
+	voluntary_ctxt_switches - liczba dobrowolnych zmian kontekstu
+	    (jest wtedy kiedy proces opuszcza CPU bo nie ma nic
+	    do robienia (np. oczekuje na IO)).
+	nonvoluntary_ctxt_switches - liczba zmian kontestu wywołanych
+	    przez wywłaszczenie procesu.
+
+-------------------------------------------------------------------------------
+
+Zadanie 3
+
+    jak znaleźć pid X-serwera?
+
+	ps ax | grep X
+	   ^^
+	   ||__ włącznie z procesami, które nie działają w terminalu
+	   |
+	   |___ włącznie z procesami innych użytkowników
+
+	cmd: /usr/lib/Xorg
+
+	sudo pmap [pid] (można to też znaleźć w /proc/[pid]/maps)
+
+	segmenty programu - spójne bloki pamięci o jednolitym przeznaczeniu
+	    i atrybutach z punktu widzenia procesu ładowania i
+	    uruchamiania programu. Jeden segment może zawierać wiele
+	    sekcji (linker - sekcje, loader - segmenty).
+
+	pamięć anonimowa - pamięć, która nie jest powiązana z żadnym plikiem
+	    ani obiektem. Powszechnym anonimowym mapowaniem pamięci
+	    są stos bądź sterta ([ heap ], [ stack ]).
+
+	pliki odwzorowane w pamięć (memory-mapped file) - segment pamięci
+	    wirtualnej, który ma przypisane bezpośrednie mapowanie co 
+	    do bajta z jakimś plikiem bądź podobnym zasobem. Umożliwia 
+	    to ominięcie kopiowania buforów przy read() lub write() gdyż 
+	    proces moze adresować plik bezpośrednio.
+
+	[ heap ] może nie pojawiać się w pmap ale jest widoczny 
+	    w /proc/[pid]/maps.
+
+	[ vdso ] - vritual dynamic shared object (biblioteka współdzielona
+	    udostępniana przez jądro żeby przyspieszyć wykonywanie
+	    pewnym syscalli, które niekoniecznie muszą działać w
+	    przestrzeni jądra.
+
+	[ vvar ] - obszar read-only zawierający zmienne jądra (???)
+
+	Znaczenie kolumn wydruku:
+
+	    
+
+
+
 
 
