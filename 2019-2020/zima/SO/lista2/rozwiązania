@@ -120,6 +120,8 @@ Zadanie 3
 	    i atrybutach z punktu widzenia procesu ładowania i
 	    uruchamiania programu. Jeden segment może zawierać wiele
 	    sekcji (linker - sekcje, loader - segmenty).
+	(???)
+	segment kodu - obszar pamięci zawierający kod maszynowy programu.
 
 	pamięć anonimowa - pamięć, która nie jest powiązana z żadnym plikiem
 	    ani obiektem. Powszechnym anonimowym mapowaniem pamięci
@@ -143,7 +145,150 @@ Zadanie 3
 
 	Znaczenie kolumn wydruku:
 
+	    Address - adres początku
+	    Size/Kbytes - rozmiar 
+	    RSS - fizyczny rozmiar używanej pamięci    
+	    Dirty - dirty strony w kilobajtach
+	    Mode - pozwolenia na czytanie/pisanie/wykonywanie
+	    Device - nazwa urządzenia (major:minor ???)
+	    Mapping - plik na jaki zmapowana jest pamięć lub [anon]/[stack]
+
+-------------------------------------------------------------------------------
+
+Zadanie 4.
+
+    zasób plikopodobny (deskryptor pliku) - zasób mający deskryptor pliku
+	ale nie będący "prawdziwym" plikiem (np. stdin/stdout/stderr).
+
+    ps -ax | grep firefox
+
+    lsof -p [pid]
+
+    znaczenie kolumn wykazu:
+
+	COMMAND - polecenie, które uruchomiło proces
+	PID - identyfikator procesu
+	USER - właściciel procesu
+	FD - numer deskryptora pliku lub ktoreś z poniższych
+	    cwd - current working directory
+	    L[nn] - library reference
+	    err - FD information error 
+	    jld - jail directory
+	    ltx - shared library text
+	    M[xx] - hex memory-mapped type number
+	    m86 - DOS Merge mapped file
+	    mem - memory-mapped file
+	    mmap - memory-mapped-defive
+	    pd - parent directory
+	    rtd - root directory
+	    tr - kernel trace file 
+	    txt - program text (code and data)
+	    v86 - VP/ix mapped file
+	    Po FD pojawia się trym w jakim plik został otworzony
+		w - write
+		r - read
+		u - write and read
+		spacja jeżeli tryb jest nieznany (brak znaku
+		    oznaczającego rodzaj blokady)
+		'-' jeżeli tryb jest nieznany
+	TYPE - typ węzła powiązanego z plikiem
+	    DIR - katalogi
+	    DEL - usunięty plik zmapowany
+	    REG - plik zwykły
+	    IPv4 - socket IPv4
+	    ax25 - socket Linux AX.25
+	    inet - Internet domain socket
+	    sock - socket of unknown domain
+	    unix - UNIX domain socket - służy do wymiany
+		danych pomiędzy procesami
+	    x.25 - HP-UX x.25 socket
+	    STSO - stream socket
+	    wysyłanie i odbieranie danych.
+	    FIFO - specjalny plik (nazwany potok), który jest częścią
+		systemu plików
+
+	plik zwykły - zwykły plik, po użyciu ls -l ma '-' w polu
+	    trybu (np. -rw-r--r--). W lsof oznaczony przez REG.
+
+	katalog (directory) - struktura organizacji danych (specjalny
+	    rodzaj pliku), która zawiera referencje do plików lub innych 
+	    katalogów. W lsof oznaczony przez DIR.
+
+	plik urządzenia (device file) - specjalny plik służący do komunikacji
+	    programu z urządzeniem poprzez używanie jego sterowników
+	    przy użyciu zwykłych syscalli wejścia/wyjścia.
+
+	gniazdo (socket) - dwukierunkowy punkt końcowy połączenia. Umożliwia
+	    Gniazdo posiada trzy główne właściwości:
+		- typ gniazda identyfikujący protokół wymiany danych
+		- lokalny adres
+		- opcjonalny lokalny numer portu identyfikujący proces
+	    W lsof oznaczony przez sock/IPv4/unix itp.
+
+	potok (pipe) - mechanizm komunikacji międzyprocesowej umożliwiający
+	    wymianę danych pomiędzy dwoma procesami. Odbywa się to najczęściej
+	    poprzez połączenie stdio jednego procesu ze stdin drugiego.
+	Rozwinięciem idei potoku jest potok nazwany. Polega ono na stworzeniu
+	specjalnego pliku, który ma służyć jako łącznik między procesami.
+	W lsof oznaczony jako FIFO.
+
+
+	Jak zidentyfikować nowo utworzone połączenia sieciowe?
+
+	    ps -ax | grep "firefox"
+	    lsof -p [pid] > before
+	    lsof -p [pid] > after
+	    diff -u before after | grep IPv4
 	    
+	    before: otworzone google.pl
+	    after:  otworzone bing.com 
+
+	    -firefox 24193 jgrobelny   51u     IPv4             178591       0t0     TCP jgrobelny:58870->sof01s12-in-f3.1e100.net:http (ESTABLISHED)
+	    -firefox 24193 jgrobelny   69u     IPv4             177169       0t0     TCP jgrobelny:44730->waw02s16-in-f3.1e100.net:http (ESTABLISHED)
+	    +firefox 24193 jgrobelny   69u     IPv4             184459       0t0     TCP jgrobelny:56778->13.107.21.200:https (ESTABLISHED)
+	    +firefox 24193 jgrobelny   80u     IPv4             183034       0t0     TCP jgrobelny:46360->40.90.23.154:https (ESTABLISHED)
+	    -firefox 24193 jgrobelny  112u     IPv4             175646       0t0     TCP jgrobelny:52248->ec2-35-162-117-80.us-west-2.compute.amazonaws.com:https (ESTABLISHED)
+	    +firefox 24193 jgrobelny  112u     IPv4             182062       0t0     TCP jgrobelny:47542->ec2-52-39-224-180.us-west-2.compute.amazonaws.com:https (ESTABLISHED)
+	     firefox 24193 jgrobelny  135u     IPv4             178217       0t0     TCP jgrobelny:58838->sof01s12-in-f3.1e100.net:http (ESTABLISHED)
+	     firefox 24193 jgrobelny  137u     IPv4             178542       0t0     TCP jgrobelny:54598->waw02s17-in-f14.1e100.net:https (ESTABLISHED)
+	     firefox 24193 jgrobelny  138u     IPv4             178677       0t0     TCP jgrobelny:34004->waw02s08-in-f206.1e100.net:https (ESTABLISHED)
+	     firefox 24193 jgrobelny  139u     IPv4             178690       0t0     TCP jgrobelny:50098->waw02s14-in-f1.1e100.net:https (ESTABLISHED)
+	    -firefox 24193 jgrobelny  141u     IPv4             177239       0t0     TCP jgrobelny:52846->93.184.220.29:http (ESTABLISHED)
+	    -firefox 24193 jgrobelny  149u     IPv4             177240       0t0     TCP jgrobelny:52848->93.184.220.29:http (ESTABLISHED)
+	    -firefox 24193 jgrobelny  150u     IPv4             177241       0t0     TCP jgrobelny:52850->93.184.220.29:http (ESTABLISHED)
+	     fi efox 24193 jgrobelny  151u     IPv4             175690       0t0     TCP jgrobelny:51302->waw02s16-in-f2.1e100.net:https (ESTABLISHED)
+	     firefox 24193 jgrobelny  170u     IPv4             177062       0t0     TCP jgrobelny:58912->sof01s12-in-f3.1e100.net:http (ESTABLISHED)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
