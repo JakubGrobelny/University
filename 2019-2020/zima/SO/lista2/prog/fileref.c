@@ -8,8 +8,8 @@ static char buf[256];
 
 static void do_read(int fd) 
 {
-    pid_t fork_pid = Fork();
-    pid_t pid = getpid();
+    const pid_t fork_pid = Fork();
+    const pid_t pid = getpid();
 
     const int chars_to_read = 16;
 
@@ -42,7 +42,7 @@ static void do_close(int fd)
     }
     else
     {
-        pid_t pid = getpid();
+        const pid_t pid = getpid();
 
         sleep(1);
 
