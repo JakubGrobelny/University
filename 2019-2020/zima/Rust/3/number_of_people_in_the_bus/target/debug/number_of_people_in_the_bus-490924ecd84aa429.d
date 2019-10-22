@@ -1,0 +1,1 @@
+/home/jgrobelny/Documents/University/2019-2020/zima/Rust/3/number_of_people_in_the_bus/target/debug/number_of_people_in_the_bus-490924ecd84aa429: /home/jgrobelny/Documents/University/2019-2020/zima/Rust/3/number_of_people_in_the_bus/src/main.rs
