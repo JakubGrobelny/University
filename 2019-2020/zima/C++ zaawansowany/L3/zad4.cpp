@@ -6,20 +6,18 @@
 template <
     typename From,
     typename To,
-    typename std::enable_if<
-        std::is_pointer<From>::value,
-        void
-    >::type* = nullptr,
-    typename std::enable_if<
+    typename std::enable_if_t<
+        std::is_pointer<From>::value
+    >* = nullptr,
+    typename std::enable_if_t<
         std::is_convertible<
             typename std::remove_pointer<From>::type,
             To
-        >::value,
-        void
-    >::type* = nullptr
+        >::value
+    >* = nullptr
 >
 auto move_from_to(From from, To& to) -> To& {
-    to = std::move((To)*from);
+    to = (To&&)std::move(*from);
     std::cout << "Used pointer version" << std::endl;
     return to;
 }
@@ -27,17 +25,15 @@ auto move_from_to(From from, To& to) -> To& {
 template <
     typename From, 
     typename To,
-    typename std::enable_if<
-        std::is_convertible<From, To>::value,
-        void
-    >::type* = nullptr
+    typename std::enable_if_t<
+        std::is_convertible<From, To>::value
+    >* = nullptr
 >
-auto move_from_to(From from, To& to) -> To& {
-    to = std::move((To)from);
+auto move_from_to(From& from, To& to) -> To& {
+    to = (To&&)(std::move(from));
     std::cout << "Used normal version" << std::endl;
     return to;
 }
-
 
 
 auto main() -> int {
@@ -52,6 +48,17 @@ auto main() -> int {
     move_from_to(s3, s0);
     std::cout << s0 << std::endl;
 
+    std::cout << *s3 << std::endl;
+    std::cout << s1 << std::endl;
+
     delete s3;
+
+    struct A {};
+    struct B { A a; operator A() { return a;  } };
+
+    A a;
+    B b;
+
+    move_from_to(b, a);
 }
 
