@@ -6,3 +6,9 @@
 *.synctex.gz
 */*.out
 .stack-work/
+*/*.o
+/*.o
+/*.out
+*.a
+*.out
+*.o
