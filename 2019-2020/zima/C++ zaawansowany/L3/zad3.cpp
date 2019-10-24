@@ -22,7 +22,6 @@ auto main() -> int {
       H9 = 7129/2520,
     */
     constexpr auto n = 46;
-    using h_t = harmonic<n>;
-    std::cout << "H_" << n << " = " << h_t::num << "/" << h_t::den << std::endl;
-    return 0;
+    using h_n = harmonic<n>;
+    std::cout << "H_" << n << " = " << h_n::num << "/" << h_n::den << std::endl;
 }
