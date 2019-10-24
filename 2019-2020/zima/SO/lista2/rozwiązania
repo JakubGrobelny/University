@@ -30,8 +30,10 @@ Zadanie 1
         D - uninterruptible sleep
         S - interruptible sleep
         R - runnable
+        X - dead
         T - stopped
         Z - zombie
+        I - idle kernel thread
         < - high priority
         + - w grupie procesów pierwszoplanowych
         l - wielowątkowy
@@ -54,21 +56,21 @@ Zadanie 1
 Zadanie 2
 
     proc(5) - wirtualny system plików, który udostępnia interfejs do struktur
-    danych jądra. Zwyczajowo znajduje się w /proc. 
-    procfs - wirtualny system plików pozwalający na komunikację z
-    jądrem uniksowego systemu. Jego struktura występuje jedynie
-    w pamięci operacyjnej komputera.
-    System plików procfs montowany jest w katalogu /proc. Większość
-    plików ma rozmiar 0 bajtów (wywołanie programu file zwraca empty, gdyż
-    file wywołuje syscall stat(), który wykrywa specjalne pliki (można
-    to wyłączyć flagą -s)).
+        danych jądra. Zwyczajowo znajduje się w /proc. 
+        procfs - wirtualny system plików pozwalający na komunikację z
+        jądrem uniksowego systemu. Jego struktura występuje jedynie
+        w pamięci operacyjnej komputera.
+        System plików procfs montowany jest w katalogu /proc. Większość
+        plików ma rozmiar 0 bajtów (wywołanie programu file zwraca empty, gdyż
+        file wywołuje syscall stat(), który wykrywa specjalne pliki (można
+        to wyłączyć flagą -s)).
 
     /proc/pid  - zawiera informacje związane z procesami o danym pid
     /proc/tid  - zawiera informacje związene z wątkami o danym tid
         /proc/self - link symboliczny przekierowujący do
         własnego /proc/[pid] procesu
     /proc/thread-self - link symboliczny przekierowujący
-        do własnego /proc/self/taks/[tid] wątku
+        do własnego /proc/self/task/[tid] wątku
 
     argumenty programu - parametry przekazane do programu w momencie
     jego wywołania.
@@ -76,9 +78,9 @@ Zadanie 2
         argv[] - argumenty (argv[0] to nazwa polecenia)
     
     zmienne środowiskowe - zmienne, których wartości są ustawianie
-    poza programem. Nazwane wartości, przechowywane i zarządzane
-    przez powłokę. Każdy proces poswiada swój zestaw zmiennych
-    środowiskowych, które dziedziczy po rodzicu.
+        poza programem. Nazwane wartości, przechowywane i zarządzane
+        przez powłokę. Każdy proces poswiada swój zestaw zmiennych
+        środowiskowych, które dziedziczy po rodzicu.
 
     zmienne środowiskowe: /proc/[pid]/environ
     argumenty programu:   /proc/[pid]/cmdline
@@ -131,7 +133,10 @@ Zadanie 3
         wirtualnej, który ma przypisane bezpośrednie mapowanie co 
         do bajta z jakimś plikiem bądź podobnym zasobem. Umożliwia 
         to ominięcie kopiowania buforów przy read() lub write() gdyż 
-        proces moze adresować plik bezpośrednio.
+        proces moze adresować plik bezpośrednio. Plik może być wtedy
+        traktowany jak ciągły obszar w pamięci procesu dostępny poprzez
+        bezpośrednie operacja pobrania i podstawienia wartości. Wszystkie
+        zmiany dokonane w pamieci zapisywane są potem na dysku.
 
     [ heap ] może nie pojawiać się w pmap ale jest widoczny 
         w /proc/[pid]/maps.
@@ -151,6 +156,8 @@ Zadanie 3
         Dirty - dirty strony w kilobajtach
         Mode - pozwolenia na czytanie/pisanie/wykonywanie
         Device - nazwa urządzenia (major:minor ???)
+            The major number is actually the offset into the kernel’s device 
+            driver table, which tells the kernel what kind of device it is.
         Mapping - plik na jaki zmapowana jest pamięć lub [anon]/[stack]
 
 -------------------------------------------------------------------------------
@@ -219,6 +226,7 @@ Zadanie 4.
         przy użyciu zwykłych syscalli wejścia/wyjścia.
 
     gniazdo (socket) - dwukierunkowy punkt końcowy połączenia. Umożliwia
+        przesyłanie danych w obie strony.
         Gniazdo posiada trzy główne właściwości:
         - typ gniazda identyfikujący protokół wymiany danych
         - lokalny adres
@@ -295,7 +303,7 @@ Zadanie 5
 
 -------------------------------------------------------------------------------
 
-Zadanie 7
+Zadanie 6
 
     kopiowanie przez referencję - kopiowanie wskaźnika na obiekt
         zamiast zawartości obiektu.

@@ -8,23 +8,23 @@ static char buf[256];
 
 static void do_read(int fd) 
 {
-    Fork();
-    pid_t pid = getpid();
+    const pid_t fork_pid = Fork();
+    const pid_t pid = getpid();
 
     const int chars_to_read = 16;
 
     const off_t prev_offset = Lseek(fd, 0, SEEK_CUR);
-    printf("[%d]: %ld\n", pid, prev_offset);
+    printf("[%d]: before %ld\n", pid, prev_offset);
 
     if (Read(fd, buf, chars_to_read) != chars_to_read) 
         app_error("Failed to read the file!");
 
     const off_t end_offset = Lseek(fd, 0, SEEK_CUR);
-    printf("[%d]: %ld\n", pid, end_offset);
+    printf("[%d]: after %ld\n", pid, end_offset);
 
-    if (pid) 
+    if (fork_pid) 
     {
-        Waitpid(pid, NULL, WUNTRACED);
+        Waitpid(-1, NULL, WUNTRACED);
         Close(fd);
     }
 
@@ -42,7 +42,7 @@ static void do_close(int fd)
     }
     else
     {
-        pid_t pid = getpid();
+        const pid_t pid = getpid();
 
         sleep(1);
 
