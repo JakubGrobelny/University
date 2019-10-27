@@ -189,3 +189,57 @@ powłók, ale większość programów powłokami nie jest.
     przez *pre-spawn call*, które zapisuje, że w dziecku ma odbyć
     się zamknięcie danego pliku.
     
+# Zadanie 4
+
+### Który sygnał jest wysyłany domyślnie? 
+
+- kill: `Program received signal SIGTERM, Terminated. 0x00007ffff7b819b7 
+    in poll () from /usr/lib/libc.so.6`
+- pkill: Z manuala: „pkill will send the specified signal (by default   
+    SIGTERM).” `xeyes` najprawdopodobniej ignoruje SIGTERM więc się
+    nie zamyka.
+- xkill: `X connection to :1 broken (explicit kill or server shutdown).`
+    Z manuala:
+    „This  command  does  not provide any warranty that the application 
+    whose connection to the X server is closed will abort nicely, or even abort at all. All this command does is to
+    close the connection to the X server. Many existing applications 
+    do indeed abort when their connection to the X server is closed, 
+    but some can choose to continue.”
+    
+### Przy pomocy kombinacji klawiszy `CTRL+Z` wyślij `xeyes` sygnał `SIGSTOP`, a następnie wznów jego wykonanie. Przeprowadź inspekcję pliku `/proc/pid/status` i wyświetl maskę sygnałów oczekujących na dostarczenie. 
+
+**sygnały oczekujące** - sygnały, których dostarczenie jest wstrzymane
+dopóki proces nie wyjdzie z nieprzerywalnego snu.
+
+```
+    ps -o pid,cmd,stat
+    cat /proc/[pid]/status
+    kill -l
+    kill -SIGUSR1 [pid]
+    cat /proc/[pid]/status
+    kill -SIGUSR2 [pid]
+    cat /proc/[pid]/status
+    kill -SIGHUP  [pid]
+    cat /proc/[pid]/status
+    kill -SIGINT  [pid]
+    cat /proc/[pid]/status
+```
+
+`SIGUSR1/SIGUSR2` – sygnały zdefiniowane przez użytkownika
+`SIGHUP` („signal hang up”) – sygnał wysyłany do procesu kiedy
+    jego terminal zostanie zamknięty.
+`SIGINT` – przerwanie z klawiatury
+
+### Co opisują pozostałe polapliku «status» dotyczące sygnałów?
+
+- SigQ – liczba zakolejkowanych sygnałów *real user ID* danego procesu
+    oraz limit zakolejkowanych sygnałów dla tego procesu.
+- SigPnd - liczba sygnałów oczekujących na wątek
+- ShdPnd - liczba sygnałów oczekujących na cały proces
+- SigBlk, SigIgn, SigCgt – maski sygnałów blokowanych,
+ignorowanych, złapanych.
+
+### Który sygnał zostanie dostarczony jako pierwszy po wybudzeniu procesu?
+
+Jako pierwszy dostarczony zostanie `SIGHUP` (znajdował się na prawym
+końcu w masce sygnałów oczekujących).
