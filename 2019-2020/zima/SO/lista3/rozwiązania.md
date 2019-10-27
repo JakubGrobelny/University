@@ -71,7 +71,12 @@ tego sygnału powoduje zabicie procesu.
     dostęp do plików rodzica
     4. Rejestry zostają wypełnione odpowiednimi informacjami.
 
-- WinNT
+- WinNT – W WinNT procesy są tworzone w inny sposób niż w na Linuxie.
+    Zamiast wywołania `fork()` używane jest wywołanie `CreateProcess`,
+    które tworzy całkiem nowy proces, który wykonuje program podany
+    jako argument. Proces-dziecko nie otrzymuje kopii pamięci
+    swojego rodzica (`CreateProcess` działa trochę jak połączenie
+    `fork` z `execve`).
 
 ### Naszkicuj przebieg akcji podejmowanych przez jądro w trakcie obsługi funkcji `fork(2)` i `execve(2)`.
 
