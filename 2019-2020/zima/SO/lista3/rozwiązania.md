@@ -1,3 +1,13 @@
+# Spis treści
+
+- [Zadanie 1](#zadanie-1)
+- [Zadanie 2](#zadanie-2)
+- [Zadanie 3](#zadanie-3)
+- [Zadanie 4](#zadanie-4)
+- [Zadanie 5](#zadanie-5)
+- [Zadanie 6](#zadanie-6)
+- [Zadanie 7](#zadanie-7)
+
 # Zadanie 1
 
 ![rysunek](zad1.png)
@@ -111,3 +121,71 @@ jako *read only*. Kiedy dziecko próbuje pisać do pamięci, następuje
 *protection fault*. Jądro w takiej sytuacji alokuje nową kopię
 strony dla procesu (*read/write*) i dopiero wtedy kopiuje do niej pamięć.
 
+# Zadanie 3
+
+### Na podstawie sekcji 4 publikacji przedstaw pobieżnie argumentację autorów przeciwko `fork`.
+
+- `fork` nie jest już prosty – specyfikacja POSIX wymienia 25 specjalnych
+    przypadków kopiowania stanu rodzica do dziecka (*file locks*, timery,
+    asynchroniczne IO, *tracing* itp.). W dodatku wiele flag wpływa na
+    zachowanie `fork` w kwestii:
+        - mapowania pamięci (flagi `madvise` linuksa `MADV_DONTFORK`/
+        `DOFORK`/`WIPEONFORK` (`madvise` – wywołanie systemowe 
+        informujące system pamięci wirtualnej systemu operacyjnego o 
+        planowanym sposobie użycia danego obszaru pamięci) 
+        - deskryptorów plików (`O_CLOEXEC` – dzieci nie dziedziczą
+        deskryptorów plików, `FD_CLOEXEC` – zamknij plik po wywołaniu
+        funkcji z rodziny `exec`)
+        - wątków (`pthread_atfork` - rejestruje *fork handlery*, które
+        mają zostać wykonane podczas wywołania `fork` w kontekście
+        wątku, który wywołał `fork`).
+- `fork` nie jest „składalny” – na przykład przez duplikowanie całej
+    przestrzeni adresowej przy buferowanym IO użytkownik musi
+    eksplicite s*flushować* IO przed `fork`iem aby uniknąć duplikacji
+    zawartości bufora. Powoduje to, że `fork` jest kiepską abstrakcją.
+- `fork` nie jest *thread-safe* - dziecko utworzone przez `fork` ma
+    jedynie jeden wątek. Możliwe jest, że przestrzeń adresowa dziecka 
+    nie będzie spójną kopią przestrzeni rodzica. Na przykład gdy
+    jeden wątek dokonuje alokacji pamięci i posiada blokadę sterty a 
+    inny wątek wywoła `fork`, alokacja pamięci w nowym dziecku
+    będzie niemożliwa gdyż będzie ono czekało na odblokowanie, które
+    nigdy nie nastąpi. `malloc` nie jest bezpieczny w połączeniu
+    z `fork`.
+- `fork` jest niebezpieczny – dziecko dziedziczy wszystkie
+    uprawnienia po rodzicu a programista jest odpowiedzialny za
+    usunięcie wszystkich rzeczy (np. deskryptorów plików), których
+    dziecko nie potrzebuje. Zachowanie `fork`a łamię *principle of
+    least privilege*.
+- `fork` jest powolny – np. przeglądarka Chrome doświadcza
+    czasów `fork`owania rzędu 100ms. Słaba wydajność powoduje,
+    że np. `posix_spawn` nie wykorzystuje zazwyczaj `fork` a
+    Solaris implementuje `spawn` jako natywny syscall.
+- `fork` nie jest skalowalny – sposobem do stworzenia skalowalnego
+    systemu jest unikanie niepotrzebnego dzielenia. S`fork`owany
+    proces zdieli wszystko ze swoim rodzicem.
+- `fork` prowadzi do przesadnej alokacji pamięci (*memory overcommit*) –
+    gdy duży proces wywołuje `fork` należy stworzyć wiele mapowań
+    stron *copy-on-write*, które prawdopodobnie nigdy nie zostaną
+    zmodyfikowane. Na Linuxie nie jest to problemem, bo
+    domyślną strategią jest *overcommit virtual memory* (??!).
+
+Podsumowanie: `fork` jest wygodnym API dla jednowątkowych procesów 
+używającym małej ilości pamięci, które nadaje się do implementacji
+powłók, ale większość programów powłokami nie jest.
+
+### Opowiedz jak `vfork(2)` i `posix_spawn(3)` pomagają zniwelować niektóre z wymienionych wad.
+
+- `vfork(2)` – tworzy nowy proces, który dzieli przestrzeń adresową
+    rodzica dopóki dziecko wezwie `exec`. Pozwala to na podobny styl
+    użycia jak `fork` gdzie nowy proces modyfikuje stan kernela
+    przed wywołaniem `exec`a. Przez dzielenie pamięci jest trudno
+    używać go bezpiecznie ale unika się kopiowania przestrzeni
+    adresowej dzięki czemu zyskuje się na wydajności.
+ - `posix_spawn(3)` – tworzy nowy proces-dziecko, który wykonuje
+    wskazany plik (połączenie `fork` i `exec`). API `posix_spawn`
+    ułatwia refaktorowanie kodu, który zawierał `fork` i `exec`,
+    które być może znajdowały się w odległych miejscach w kodzie.
+    Wywołanie `close()` po wywołaniu `fork` może zostać zastępione
+    przez *pre-spawn call*, które zapisuje, że w dziecku ma odbyć
+    się zamknięcie danego pliku.
+    
