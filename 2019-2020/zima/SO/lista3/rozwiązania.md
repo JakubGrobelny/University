@@ -243,3 +243,11 @@ ignorowanych, złapanych.
 
 Jako pierwszy dostarczony zostanie `SIGHUP` (znajdował się na prawym
 końcu w masce sygnałów oczekujących).
+
+# Zadanie 5
+
+- sierota – proces, który starcił rodzica. Zostaje zaadotpowany
+przez proces wyżej w hierarchii.
+- żniwiaż – proces, który wyszukuje zombie i odczytyuje ich kod wyjścia.
+- kod wyjścia – wynik zakończenia programu zwracany do środowiska i
+zapisywany w zmiennej `$?` (w bashu). 0 – sukces, inna wartość – błąd.
