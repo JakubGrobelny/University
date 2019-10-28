@@ -225,10 +225,12 @@ dopóki proces nie wyjdzie z nieprzerywalnego snu.
     cat /proc/[pid]/status
 ```
 
-`SIGUSR1/SIGUSR2` – sygnały zdefiniowane przez użytkownika
-`SIGHUP` („signal hang up”) – sygnał wysyłany do procesu kiedy
+- `SIGUSR1/SIGUSR2` – sygnały zdefiniowane przez użytkownika
+
+- `SIGHUP` („signal hang up”) – sygnał wysyłany do procesu kiedy
     jego terminal zostanie zamknięty.
-`SIGINT` – przerwanie z klawiatury
+
+- `SIGINT` – przerwanie z klawiatury
 
 ### Co opisują pozostałe polapliku «status» dotyczące sygnałów?
 

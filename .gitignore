@@ -12,3 +12,6 @@
 *.a
 *.out
 *.o
+cycle
+demand
+reaper

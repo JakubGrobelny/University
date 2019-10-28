@@ -14,7 +14,7 @@ static pid_t spawn(void (*fn)(void))
 }
 
 
-static void handler(int sig)
+static void handler()
 {
     return;
 }
