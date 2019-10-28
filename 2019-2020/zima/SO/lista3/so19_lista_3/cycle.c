@@ -41,10 +41,10 @@ int main(int argc, char *argv[])
     Sigaction(SIGUSR1, &action, NULL);
     Sigaction(SIGINT, &action, NULL);
 
-    sigset_t set;
-    sigemptyset(&set);
-    sigaddset(&set, SIGUSR1);
-    Sigprocmask(SIG_BLOCK, &set, &set);
+    sigemptyset(&action.sa_mask);
+    sigaddset(&action.sa_mask, SIGUSR1);
+    sigaddset(&action.sa_mask, SIGUSR1);
+    Sigprocmask(SIG_BLOCK, &action.sa_mask, &action.sa_mask);
 
     pid_t next_pid = getpid();
 
@@ -53,13 +53,13 @@ int main(int argc, char *argv[])
         pid_t pid = Fork();
 
         if (!pid)
-            play(next_pid, &set);
+            play(next_pid, &action.sa_mask);
         else
             next_pid = pid;
     }
 
     Kill(next_pid, SIGUSR1);
-    play(next_pid, &set);
+    play(next_pid, &action.sa_mask);
 
     return EXIT_SUCCESS;
 }
