@@ -196,8 +196,7 @@ powłók, ale większość programów powłokami nie jest.
 - kill: `Program received signal SIGTERM, Terminated. 0x00007ffff7b819b7 
     in poll () from /usr/lib/libc.so.6`
 - pkill: Z manuala: „pkill will send the specified signal (by default   
-    SIGTERM).” `xeyes` najprawdopodobniej ignoruje SIGTERM więc się
-    nie zamyka.
+    SIGTERM).”
 - xkill: `X connection to :1 broken (explicit kill or server shutdown).`
     Z manuala:
     „This  command  does  not provide any warranty that the application 
