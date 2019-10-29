@@ -114,10 +114,10 @@ na stos, sygnały zostają zresetowane a rejestry wypełnione zerami.
 ### Wyjaśnij jak system uniksowy optymalizuje klonowanie procesów z użyciem *kopiowania przy zapisie*¹.
 
 System uniksowy optymalizuje klonowanie procesów poprzez odraczanie
-kopiowania pamięci rodzica do momentu, kiedy dziecko próbuje do niej
+kopiowania pamięci rodzica do momentu, kiedy któryś proces próbuje do niej
 pisać. Wykorzystuje się **kopiowanie przy zapisie** – nowo utworzony
 proces otrzymuje swoją tablicę stron, ale wszystkie oznaczone są
-jako *read only*. Kiedy dziecko próbuje pisać do pamięci, następuje
+jako *read only*. Kiedy proces próbuje pisać do pamięci, następuje
 *protection fault*. Jądro w takiej sytuacji alokuje nową kopię
 strony dla procesu (*read/write*) i dopiero wtedy kopiuje do niej pamięć.
 

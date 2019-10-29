@@ -1,4 +1,5 @@
 #include "csapp.h"
+#include "signal.h"
 
 
 static pid_t spawn(void (*fn)(void)) 
@@ -14,10 +15,7 @@ static pid_t spawn(void (*fn)(void))
 }
 
 
-static void handler()
-{
-    return;
-}
+static void handler() {}
 
 static void grandchild(void) 
 {
