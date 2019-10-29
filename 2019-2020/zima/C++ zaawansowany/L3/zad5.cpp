@@ -18,7 +18,7 @@ class matrix {
 public:
 
     auto operator=(const matrix&) -> matrix& = delete;
-    matrix(const matrix&);
+    matrix(const matrix&) = delete;
 
     auto operator=(matrix&& m) -> matrix& {
         if (this != &m) {
@@ -66,7 +66,7 @@ public:
     template <int M>
     friend auto operator<< (std::ostream&, const matrix<M>&) -> std::ostream&;
 
-    auto operator[] (size_t row) const -> double* {
+    auto operator[] (size_t row) const -> const double* {
         return this->arr + row * N;
     }
 };
