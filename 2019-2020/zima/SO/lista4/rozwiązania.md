@@ -1,6 +1,8 @@
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
+- [Zadanie 2](#zadanie-2)
+
 
 ***
 # Zadanie 1
@@ -35,3 +37,9 @@ ls -al /usr/bin | grep "[r|\-][w|\-]s"
 ```
 
 `set-uid`/`set-gid` - bit oznaczający, że użytkownik uruchamiający program uruchamia go z uprawnieniami jego właściciela/grupy właściciela (np. `sudo`).
+
+# Zadanie 2
+
+### Wywołanie [open(2)](https://www.freebsd.org/cgi/man.cgi?query=open&sektion=2) zawiedzie z błędem `ETXTBSY`, jeśli próbujemy otworzyć plik wykonywalny do zapisu pod warunkiem, że tenże plik jest w chwili obecnej wykonywany. Co mogłoby się stać, gdyby system operacyjny pozwolił modyfikować plik wykonywalny, który jest uruchomiony?
+
+Jeżeli system używa stronicowania na żądanie, to wówczas kopiuje stronę z dysku do pamięci wtedy, gdy następuje próba dostępu do niej. Gdyby system pozwalał modyfikować uruchomione pliki wykonywalne, to wówczas istnieje możliwość, że dokonałby modyfikacji fragmentu tego pliku, który znajdowałby się na stronie niezaładowanej jeszcze do pamięci przez co przy próbie wykonania tego fragmentu mógłby zostać wykonany zmodyfikowany kod.
