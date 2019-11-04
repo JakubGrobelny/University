@@ -119,12 +119,14 @@ Plik zostaje faktycznie usunięty z dysku kiedy licznik `st_nlink` będzie miał
 ### Zaprezentuj pseudokod procedury `bool my_access(struct stat *statbuf, int mode)`.
 
 ```C
+#define SIZE 32
+
 bool my_access(struct stat* statbuf, int mode)
 {
     // uprawnienia które nas interesują
-    const int rwx = (((mode & R_OK) != 0)
-                  |  ((mode & W_OK) != 0) >> 1
-                  |  ((mode & X_OK) != 0) >> 2);
+    const int rwx = (((mode & R_OK) != 0) << 2
+                  |  ((mode & W_OK) != 0) << 1
+                  |  ((mode & X_OK) != 0));
 
     if (statbuf->st_uid == getuid())
         return (((statbuf->st_mode >> 6) & rwx) ^ rwx) == 0;
@@ -133,8 +135,8 @@ bool my_access(struct stat* statbuf, int mode)
     //            które znajdują się w masce       to wówczas wynik xor będzie
     //            st_mode                          niezerowy
 
-    gid_t gids[32];
-    const int gids_count = getgroups(32, gids);
+    gid_t gids[SIZE];
+    const int gids_count = getgroups(SIZE, gids);
     // tutaj powinna być obsługa błędu wywołania getgroups
     for (int i = 0; i < gids_count; i++)
     {
