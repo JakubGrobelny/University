@@ -3,6 +3,7 @@
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
+- [Zadanie 4](#zadanie-4)
 
 ***
 # Zadanie 1
@@ -100,3 +101,49 @@ struct stat
 ### Kiedy plik zostaje faktycznie usunięty z dysku?
 
 Plik zostaje faktycznie usunięty z dysku kiedy licznik `st_nlink` będzie miał wartość zero (czyli nie istnieje żaden link do tego pliku).
+
+# Zadanie 4
+
+### Jaką rolę pełnią bity uprawnień `rwx` dla katalogów w systemach uniksowych? 
+
+- **r** – prawo do odczytywania listy plików znajdujących się w katalogu.
+- **w** – prawo do modyfikowania listy plików (usuwanie, zmiana nazw, dodawanie) w katalogu pod warunkiem, że bit **x** również jest ustawiony.
+- **x** - pozwala na ustawienie katalogu jako katalogu roboczego.
+
+### Opisz znaczenie bitów `set-uid`, `set-gid` i `sticky` dla katalogów. 
+
+- `set-gid` – ustawienie tego bitu dla katalogu sprawia, że wszystkie nowe pliki i podkatalogi utworzone wewnątrz tego katalogu dziedziczą *gid* tego katalogu zamiast ID głównej grupy użytkownika, który utworzył plik (nie dotyczy ID właściciela, jedynie grupy). Nowo utworzone podkatalogi dziedziczą bit `set-gid`. Nie dotyczy *gid* plików które zostały utworzone gdzie indziej i przeniesione do katalogu z ustawionym `set-gid`.
+- `set-uid` – na większości systemów jest ignorowany ale na FreeBSD `set-uid` interpretowany jest podobnie jak `set-gid`, tylko że dotyczy właściciela a nie grupy.
+- `sticky` – w katalogu z ustawionym bitem `sticky` pliki mogą być usuwane lub przemianowywane tylko przez właściciela lub *root*a. W przeciwnym razie każdy użytkownik z prawami zapisu i wykonywania dla katalogu mógłby usuwać bądź przemianowywać znajdujące się w nim pliki.
+
+### Zaprezentuj pseudokod procedury `bool my_access(struct stat *statbuf, int mode)`.
+
+```C
+bool my_access(struct stat* statbuf, int mode)
+{
+    // uprawnienia które nas interesują
+    const int rwx = (((mode & R_OK) != 0)
+                  |  ((mode & W_OK) != 0) >> 1
+                  |  ((mode & X_OK) != 0) >> 2);
+
+    if (statbuf->st_uid == getuid())
+        return (((statbuf->st_mode >> 6) & rwx) ^ rwx) == 0;
+    //          |_____________________________| |
+    //            interesujące nas uprawnienia, |_ jeżeli brakuje uprawnienia
+    //            które znajdują się w masce       to wówczas wynik xor będzie
+    //            st_mode                          niezerowy
+
+    gid_t gids[32];
+    const int gids_count = getgroups(32, gids);
+    // tutaj powinna być obsługa błędu wywołania getgroups
+    for (int i = 0; i < gids_count; i++)
+    {
+        if (gids[i] == statbuf->st_gid)
+            return (((statbuf->st_mode >> 3) & rwx) ^ rwx) == 0;
+    }
+
+    return ((statbuf->st_mode & rwx) ^ rwx) == 0;
+}
+```
+
+
