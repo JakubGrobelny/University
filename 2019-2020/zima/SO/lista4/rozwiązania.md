@@ -4,6 +4,7 @@
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
+- [Zadanie 5](#zadanie-5)
 
 ***
 # Zadanie 1
@@ -124,9 +125,9 @@ Plik zostaje faktycznie usunięty z dysku kiedy licznik `st_nlink` będzie miał
 bool my_access(struct stat* statbuf, int mode)
 {
     // uprawnienia które nas interesują
-    const int rwx = (((mode & R_OK) != 0) << 2
-                  |  ((mode & W_OK) != 0) << 1
-                  |  ((mode & X_OK) != 0));
+    const int rwx = ((mode & R_OK != 0) << 2)
+                  | ((mode & W_OK != 0) << 1)
+                  |  (mode & X_OK != 0);
 
     if (statbuf->st_uid == getuid())
         return (((statbuf->st_mode >> 6) & rwx) ^ rwx) == 0;
@@ -147,5 +148,37 @@ bool my_access(struct stat* statbuf, int mode)
     return ((statbuf->st_mode & rwx) ^ rwx) == 0;
 }
 ```
+
+# Zadanie 5
+
+### Zlokalizuj w poniższym kodzie wyścig i napraw go! 
+
+W czasie pomiędzy wywołaniem `access(...)` oraz `Open(...)` inny proces może otworzyć plik, przez co dwa procesy otrzymają blokadę (z `O_CREAT` open nie sprawdza, czy plik istnieje).
+
+Poprawka:
+
+```C
+#include "csapp.h
+
+bool f_lock(const char* path)
+{
+    return Open(path, O_CREAT | O_EXCL | O_WRONLY, 0700) >= 0;
+}
+
+void f_unlock(const char* path)
+{
+    Unlink(path);
+}
+
+```
+
+### Opowiedz jakie zagrożenia niesie ze sobą taki błąd
+
+Błędy **TOCTTOU** (*Time Of Check To Time Of Use*) umożliwiają atakującemu ominięcie sprawdzenia poprawności operacji przez celową zmianę danych w momencie gdy program znajduje się pomiędzy ich sprawdzeniem a wykonaniem operacji.
+
+Przykład: Usługa poczty elektronicznej działająca jako *root*, która dodaje nadchodzące wiadomości do pliku skrzynki odbiorczej użytkownika poprzez wywołanie `lstat()` w celu uzyskania informacji o tym, czy jest to normalny plik, którego właścicielem jest użytkownik (a nie na link do innego pliku, którego serwer nie powinien uaktualniać) a następnie, jeżeli test się powiedzie, aktualizuje plik z nowymi wiadomościami. Przerwa pomiędzy sprawdzeniem a zapisem do pliku może jednak zostać wykorzystana przez atakującego, który może podmienić swoją skrzynkę odbiorczą na inny plik, np `/etc/passwd` (*przyp.red:* w `/etc/passwd` haseł już w dzisiejszych czasach nie ma). Jeżeli zmiana nastąpi w idealnym momencie, to atakujący mógłby zapisać coś do wrażliwego pliku (np. dodać konto z uprawnieniami *root*a).
+
+![zad5](zad5.png)
+
 
 
