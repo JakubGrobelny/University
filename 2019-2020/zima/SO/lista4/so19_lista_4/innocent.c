@@ -32,7 +32,7 @@ int main(void)
                 Write(out, &c, 1);
         }
     }
-    
+
     Close(out);
 
     printf("I'm just a normal executable you use on daily basis!\n");

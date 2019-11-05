@@ -5,22 +5,24 @@
 
 static sigjmp_buf env;
 
-static void signal_handler(int signo) {
+static void signal_handler(int signo) 
+{
   /* TODO: Something is missing here! */
 }
 
 /* If interrupted by signal, returns signal number. Otherwise converts user
  * provided string to number and saves it under num_p and returns zero. */
-static int readnum(int *num_p) {
-  char line[MAXLINE];
-  int n;
+static int readnum(int *num_p) 
+{
+    char line[MAXLINE];
+    int n;
 
-  /* TODO: Something is missing here! */
+    /* TODO: Something is missing here! */
     (void)n;
     (void)env;
 
-  *num_p = atoi(line);
-  return 0;
+    *num_p = atoi(line);
+    return 0;
 }
 
 static void game(void) {

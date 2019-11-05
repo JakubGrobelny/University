@@ -188,6 +188,10 @@ Przykład: Usługa poczty elektronicznej działająca jako *root*, która dodaje
 
 **dowiązanie symboliczne** – specjalny rodzaj pliku wskazujący za pomocą nazwy na dowolny inny plik lub katalog.
 
+Rozwiązanie:
+- [innocent.c](./so19_lista_4/innocent.c)
+- [leaky.c](./so19_lista_4/leaky.c)
+
 ```bash
 john /tmp/hacker --show
 
