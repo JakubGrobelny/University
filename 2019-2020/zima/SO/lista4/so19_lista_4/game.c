@@ -16,6 +16,9 @@ static int readnum(int *num_p) {
   int n;
 
   /* TODO: Something is missing here! */
+    (void)n;
+    (void)env;
+
   *num_p = atoi(line);
   return 0;
 }

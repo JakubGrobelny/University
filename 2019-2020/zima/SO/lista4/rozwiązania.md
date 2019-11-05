@@ -5,6 +5,8 @@
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
 - [Zadanie 5](#zadanie-5)
+- [Zadanie 6](#zadanie-6)
+- [Zadanie 7](#zadanie-7)
 
 ***
 # Zadanie 1
@@ -180,5 +182,40 @@ Przykład: Usługa poczty elektronicznej działająca jako *root*, która dodaje
 
 ![zad5](zad5.png)
 
+# Zadanie 6
 
+**kursor** – aktualne przesunięcie względem początku pliku; miejsce od którego następuje wczytywanie/zapis.
 
+# Zadanie 7
+
+[metadane](#zadanie-3)
+
+### Uruchom program `mkholes`, a następnie odczytaj metadane pliku `holes.bin` przy pomocy polecenia [stat(1)](http://man7.org/linux/man-pages/man1/stat.1.html). Wszystkie pola struktury `stat` są opisane w [stat(2)](http://man7.org/linux/man-pages/man2/stat.2.html). Oblicz faktyczną objętość pliku na podstawie liczby używanych bloków `st_blocks` i rozmiaru pojedynczego bloku `st_blksize` systemu pliku. 
+
+```bash
+stat holes.bin
+# out:
+    File: holes.bin
+    Size: 33550336  	Blocks: 1112       IO Block: 4096   regular file
+    Device: 807h/2055d	Inode: 12322952    Links: 1
+    Access: (0644/-rw-r--r--)  Uid: ( 1000/jgrobelny)   Gid: ( 1000/jgrobelny)
+    Access: 2019-11-05 00:20:39.601578315 +0100
+    Modify: 2019-11-05 00:28:02.432897339 +0100
+    Change: 2019-11-05 00:28:02.432897339 +0100
+    Birth: 2019-11-05 00:20:39.601578315 +0100
+
+stat -c=%B holes.bin
+512
+```
+
+Faktyczna objętość pliku = Blocks * 512
+
+### Czemu liczba używanych bloków jest mniejsza od tej wynikającej z objętości pliku z pola `st_size`?
+
+Liczba bloków wynikająca z Size = Size / 512 
+
+Liczba bloków jest mniejsza niż wynikająca z objętości pliku, gdyż program `mkholes` pisze jedynie do ~1/64 bloków a w pozostałych przypadkach jedynie przesuwa kursor tworząc dziury.
+
+### Czemu jest większa od liczby faktycznie używanych bloków zgłaszanych przez `mkholes`?
+
+Bo faktyczny rozmiar bloku jest inny niż stała zadeklarowana w programie.
