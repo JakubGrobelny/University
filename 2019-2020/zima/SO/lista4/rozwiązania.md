@@ -80,9 +80,11 @@ Niedziałające:
 
 ### Na podstawie *§10.6.3* (rysunek 10-32) przedstaw reprezentację katalogu i pokaż jak przebiega operacja usuwania pliku.
 
+$$katalog: nazwa \rightarrow numer \,\, inode$$
+
 ![zad](zad3.png)
 
-**Reprezentacja katalogu**:
+**Reprezentacja katalogu**: 
 Katalog (w *ext2*) pozwala na nazwy plików do 255 znaków. Każdy katalog składa się z całkowitej liczby bloków co pozwala na jego atomowy zapis na dysku. Wewnątrz katalogu znajdują się nieposortowane wpisy plików i katalogów. Jeżeli któryś nie zajmuje całego bloku to wówczas bajty na jego końcu są nieużywane. 
 Każdy wpis w katalogu składa się z czterech pół stałej długości i jednego o zmiennej. Pierwsze pole oznacza numer *inode* pliku. Następny, `rec_len` oznacza jak duży jest wpis (w bajtach, włączając ewentualny *padding* na końcu). Pole to jest potrzebne do znajdowania kolejnego wpisu. Następne pole oznacza typ pliku (plik, katalog itd.). Ostatnie pole o stałym rozmiarze mówi o tym jak długa jest nazwa pliku. Nazwa pliku jest *null terminated* i wyrównana do 32 bitów.
 
@@ -121,7 +123,7 @@ struct stat
 
 ### Kiedy plik zostaje faktycznie usunięty z dysku?
 
-Plik zostaje faktycznie usunięty z dysku kiedy licznik `st_nlink` będzie miał wartość zero (czyli nie istnieje żaden link do tego pliku).
+Plik zostaje faktycznie usunięty z dysku kiedy licznik `st_nlink` będzie miał wartość zero (czyli nie istnieje żaden link do tego pliku) oraz kiedy jest zamknięty.
 
 # Zadanie 4
 
@@ -182,7 +184,7 @@ Poprawka:
 
 bool f_lock(const char* path)
 {
-    return Open(path, O_CREAT | O_EXCL | O_WRONLY, 0700) >= 0;
+    return open(path, O_CREAT | O_EXCL | O_WRONLY, 0700) >= 0;
 }
 
 void f_unlock(const char* path)
@@ -248,6 +250,6 @@ Bo faktyczny rozmiar bloku jest inny niż stała zadeklarowana w programie.
 
 ```bash
 
-    stat -c=%B holes.bin
-512
+    stat -c "%b %B %s" holes.bin
+    du holes.bin
 ```
