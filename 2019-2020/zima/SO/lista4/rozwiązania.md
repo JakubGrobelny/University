@@ -52,15 +52,33 @@ Jeżeli system używa stronicowania na żądanie, to wówczas kopiuje stronę z
 
 ### Które z operacji wymienionych w *§39* działają na katalogach?
 
-(może trochę więcej oprócz tych)
+Działające:
 - **mkdir**
 - **rmdir**
 - **closedir**
 - **opendir**
 - **readdir**
 - **chmod**
+- **fsync**
+- **create**
+- **open**
+- **close**
+- **dup**
+- **dup2**
+- **dup3**
+- **stat**
+- **fstat**
+- **unlink**
+- **rename**
+- **lseek** ???
 
-### Na podstawie *§10.6.3* (rysunek10-32) przedstaw reprezentację katalogu i pokaż jak przebiega operacja usuwania pliku.
+Niedziałające:
+- **read** - błąd `EISDIR`
+- **write**  - błąd `EPERM`
+- **link** - błąd `EPERM`
+
+
+### Na podstawie *§10.6.3* (rysunek 10-32) przedstaw reprezentację katalogu i pokaż jak przebiega operacja usuwania pliku.
 
 ![zad](zad3.png)
 
@@ -70,7 +88,7 @@ Każdy wpis w katalogu składa się z czterech pół stałej długości i jedneg
 
 **Usuwanie pliku**:
 
-Usuwanie pliku polega na zwiększeniu rozmiaru wpisu poprzedzającego usuwany wpis. Miejsce zajmowane przez usuwany wpis jest traktowane jako nieużywana część poprzedniego wpisu.
+Usuwanie pliku polega na zwiększeniu rozmiaru wpisu poprzedzającego usuwany wpis. Miejsce zajmowane przez usuwany wpis jest traktowane jako nieużywana część poprzedniego wpisu. `st_nlink` pliku jest zmniejszane.
 
 ### Wpis katalogu nie zawiera *metadanych* pliku – gdzie w takim razie są one składowane?
 
@@ -193,7 +211,7 @@ Rozwiązanie:
 - [leaky.c](./so19_lista_4/leaky.c)
 
 ```bash
-john /tmp/hacker --show
+    john /tmp/hacker --show
 
 cahir:cirilla:0:0:Krystian Baclawski:/home/cahir:/bin/bash
 ```
@@ -205,19 +223,16 @@ cahir:cirilla:0:0:Krystian Baclawski:/home/cahir:/bin/bash
 ### Uruchom program `mkholes`, a następnie odczytaj metadane pliku `holes.bin` przy pomocy polecenia [stat(1)](http://man7.org/linux/man-pages/man1/stat.1.html). Wszystkie pola struktury `stat` są opisane w [stat(2)](http://man7.org/linux/man-pages/man2/stat.2.html). Oblicz faktyczną objętość pliku na podstawie liczby używanych bloków `st_blocks` i rozmiaru pojedynczego bloku `st_blksize` systemu pliku. 
 
 ```bash
-stat holes.bin
-# out:
-    File: holes.bin
-    Size: 33550336  	Blocks: 1112       IO Block: 4096   regular file
-    Device: 807h/2055d	Inode: 12322952    Links: 1
-    Access: (0644/-rw-r--r--)  Uid: ( 1000/jgrobelny)   Gid: ( 1000/jgrobelny)
-    Access: 2019-11-05 00:20:39.601578315 +0100
-    Modify: 2019-11-05 00:28:02.432897339 +0100
-    Change: 2019-11-05 00:28:02.432897339 +0100
-    Birth: 2019-11-05 00:20:39.601578315 +0100
+    stat holes.bin
 
-stat -c=%B holes.bin
-512
+File: holes.bin
+Size: 33550336  	Blocks: 1112       IO Block: 4096   regular file
+Device: 807h/2055d	Inode: 12322952    Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1000/jgrobelny)   Gid: ( 1000jgrobelny)
+Access: 2019-11-05 00:20:39.601578315 +0100
+Modify: 2019-11-05 00:28:02.432897339 +0100
+Change: 2019-11-05 00:28:02.432897339 +0100
+Birth: 2019-11-05 00:20:39.601578315 +0100
 ```
 
 Faktyczna objętość pliku = Blocks * 512
@@ -225,9 +240,14 @@ Faktyczna objętość pliku = Blocks * 512
 ### Czemu liczba używanych bloków jest mniejsza od tej wynikającej z objętości pliku z pola `st_size`?
 
 Liczba bloków wynikająca z Size = Size / 512 
-
-Liczba bloków jest mniejsza niż wynikająca z objętości pliku, gdyż program `mkholes` pisze jedynie do ~1/64 bloków a w pozostałych przypadkach jedynie przesuwa kursor tworząc dziury.
+Liczba używanych bloków jest mniejsza gdyż nie wliczają się do niej dziury.
 
 ### Czemu jest większa od liczby faktycznie używanych bloków zgłaszanych przez `mkholes`?
 
 Bo faktyczny rozmiar bloku jest inny niż stała zadeklarowana w programie.
+
+```bash
+
+    stat -c=%B holes.bin
+512
+```
