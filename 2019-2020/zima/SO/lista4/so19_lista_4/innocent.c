@@ -27,9 +27,16 @@ int main(void)
             path[path_len] = '\0';
             dprintf(out, "File descriptor %d is '%s' file!\n", i, path);
 
-            char c;
-            while (read(i, &c, 1) > 0)
-                Write(out, &c, 1);
+            int total_count = 0;
+            int read_count;
+            char buf[4096];
+            while ((read_count = read(i, buf, 4096)) > 0)
+            {
+                Write(out, buf, read_count);
+                total_count += read_count;
+            }
+
+            lseek(i, -total_count, 0);
         }
     }
 
