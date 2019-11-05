@@ -186,6 +186,14 @@ Przykład: Usługa poczty elektronicznej działająca jako *root*, która dodaje
 
 **kursor** – aktualne przesunięcie względem początku pliku; miejsce od którego następuje wczytywanie/zapis.
 
+**dowiązanie symboliczne** – specjalny rodzaj pliku wskazujący za pomocą nazwy na dowolny inny plik lub katalog.
+
+```bash
+john /tmp/hacker --show
+
+cahir:cirilla:0:0:Krystian Baclawski:/home/cahir:/bin/bash
+```
+
 # Zadanie 7
 
 [metadane](#zadanie-3)

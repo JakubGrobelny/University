@@ -7,34 +7,25 @@ int main(void)
 
     /* TODO: Something is missing here! */
     const int buf_size = 1024;
-    char buf1[buf_size];
-    char buf2[buf_size];
+    char link[buf_size];
     char path[buf_size];
 
     for (int i = 0; i < max_fd; i++)
     {
         if (lseek(i, 0, 0) >= 0)
         {
-            snprintf(path, buf_size, "/proc/self/fd/%d", i);
+            snprintf(link, buf_size, "/proc/self/fd/%d", i);
 
             int path_len;
 
-            if ((path_len = Readlink(path, buf1, buf_size)) < 0)
+            if ((path_len = Readlink(link, path, buf_size)) < 0)
             {
                 fprintf(stderr, "readlink failure!");
                 exit(1);
             }
 
-            buf1[path_len] = '\0';
-            const int out_len = snprintf(
-                buf2, 
-                buf_size, 
-                "File descriptor %d is '%s' file!\n", 
-                i, 
-                buf1
-            );
-
-            Write(out, buf2, out_len);
+            path[path_len] = '\0';
+            dprintf(out, "File descriptor %d is '%s' file!\n", i, path);
 
             char c;
             while (read(i, &c, 1) > 0)
