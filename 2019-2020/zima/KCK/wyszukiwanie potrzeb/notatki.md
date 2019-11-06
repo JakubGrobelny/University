@@ -14,6 +14,8 @@ Przebieg badania:
     -B: Pani Wiesława wyglądała na wyraźnie zagubioną po posadzeniu przed komputerem. Używanie myszki sprawiało jej problem i miała trudności z wycelowaniem w odpowiednie miejsce. Szybko zmieniające się reklamy na stronie głównej rozpraszały ją (o czym wspomniała) ale w miarę sprawnie znalazła pola do wpisywania stacji. Nie zauważyła jednak, że datę można zmienić strzałkami oraz przez ikonkę kalendarza więc wpisała datę ręcznie. Gdy przeszła do kolejnej strony kursor myszy wylądował na polu gdzie wybiera się pociąg, więc gdy chciała użyć kółka myszy aby przejść w dół, lista pociągów przesunęła się horyzontalnie. Pani Wiesława wybrała z listy ulgę „Bilet dla Seniora” ale niestety nie zauważyła, że domyślnie wybrany jest też jeden bilet według taryfy normalnej. Swoją pomyłkę zauważyła dopiero na następnym ekranie gdy cena była wyższa niż być powinna.
 
 Ankieta:
+
+
 - Czy uważasz, że strona PKP Intercity jest czytelna i przejrzysta?
     - A: raczej nieczytelna
     - B: bardzo nieczytelna
@@ -48,6 +50,8 @@ Ankieta:
     - B: „większe litery”
 
 Potrzeby (10): 
+
+
 0. Możliwość wyszukiwania wielu połączeń w jednym momencie.
 1. Możliwie wiele form płatności przy zakupie biletu.
 2. Czytelna strona główna, na której głównym elementem jest wyszukiwarka połączeń a nie reklamy.
@@ -60,6 +64,8 @@ Potrzeby (10):
 9. Możliwość szybkiego wybrania często używanego połączenia dla zarejestrowanych użytkowników.
 
 Propozycje ulepszeń:
+
+
 0. Umożliwienie istnienia więcej niż jednej sesji dla danego użytkownika co pozwoli na jednoczesne wyszukiwanie biletów w obie strony. Obecnie nie jest możliwe sprawdzanie kilku opcji, gdyż otworzenie strony w nowej karcie kończy się komunikatem o tym, że praca została już rozpoczęta w innej karcie lub oknie przeglądarki.
 1. Dodanie nowych form płatności (na przykład PayPal, paysafecard, Bitcoin). Różni ludzie mają różne preferencje co do sposobu płatności a aktualnie wybór jest bardzo ograniczony.
 2. Umieszczenie wyszukiwarki połączeń w centralnej części strony tak aby reklamy nie odwracały od niej uwagi co może być problematyczne dla osób, które nie są przyzwyczajone do szumu informacyjnego panującego w internecie. Strona główna jest zaśmiecona reklamami PKP Intercity co zmniejsza jej czytelność.
