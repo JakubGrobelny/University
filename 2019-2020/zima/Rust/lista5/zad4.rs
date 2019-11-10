@@ -112,3 +112,54 @@ pub fn execute(code: &str) -> String {
 
     result
 }
+
+
+#[test]
+fn test0() {
+    assert_eq!(execute(""), "*")
+}
+
+#[test]
+fn test1() {
+    assert_eq!(execute("F"), "**")
+}
+
+#[test]
+fn test2() {
+    assert_eq!(execute("F10"), "***********")
+}
+
+#[test]
+fn test3() {
+    assert_eq!(execute("RF"), "*\r\n*")
+}
+
+#[test]
+fn test4() {
+    assert_eq!(execute("RFLF"), "* \r\n**")
+}
+
+#[test]
+fn test5() {
+    assert_eq!(execute("R3F7L2F7"), "*\r\n*\r\n*\r\n*\r\n*\r\n*\r\n*\r\n*")
+}
+
+#[test]
+fn test6() {
+    assert_eq!(execute("R1R100"), "*")
+}
+
+#[test]
+fn test7() {
+    assert_eq!(execute("RF2LF4LF2R2F4LF7L24RF2F4LF2LF4"), "*   *         \r\n*   *         \r\n*****         \r\n    *         \r\n    ********  \r\n           *  \r\n           * *\r\n           * *\r\n           * *\r\n           * *\r\n           ***")
+}
+
+#[test]
+fn test8() {
+    assert_eq!(execute("R2LFL2FLFRL6FL8RFRL7FLRL3F4LF4L7LFR8LFLRLF7"), "  **    \r\n ***    \r\n  *     \r\n  *     \r\n********\r\n  ******")
+}
+
+#[test]
+fn test9() {
+    assert_eq!(execute("R1000"), "*")
+}
