@@ -1,8 +1,10 @@
+
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
+- [Zadanie 6](#zadanie-6)
 
 ***
 
@@ -18,7 +20,7 @@
 
 Ścieżka relatywna obliczana jest względem aktualnego katalogu roboczego (*current working directory*).
 
-Można zmienić ten katalog wywołąniem [`chdir(2)`](https://linux.die.net/man/2/chdir).
+Można zmienić ten katalog wywołąniem [chdir(2)](https://linux.die.net/man/2/chdir).
 
 ### Wyjaśnij czym są *punkty montażowe*, a następnie na podstawie [mount(8)](https://www.freebsd.org/cgi/man.cgi?mount(8)) wyjaśnij znaczenie i zastosowanie następujących atrybutów punktów montażowych: `noatime`, `noexec` i `sync`.
 
@@ -52,6 +54,8 @@ cd dir
 
 ln -s ../dir link
 ```
+(*Ciekawostka: po 40 `cd link` następuje powrót do początkowego katalogu*)
+
 
 ### Kiedy jądro systemu operacyjnego ją wykryje (błąd `ELOOP`)?
 
@@ -73,11 +77,11 @@ Liczba dowiązań wynika z liczby podkatalogów (każdy z nich ma dowiązanie `.
 
 # Zadanie 4
 
-### Do czego służy wywołanie systemowe [`ioctl(2)`](http://man7.org/linux/man-pages/man2/ioctl.2.html)? Zauważ, że stosowane jest głównie do plików urządzeń znakowych lub blokowych.
+### Do czego służy wywołanie systemowe [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html)? Zauważ, że stosowane jest głównie do plików urządzeń znakowych lub blokowych.
 
 Wywołanie `ioctl()` (*input/output control*) - wywołanie systemowe do specyficznych dla danego urządzenia operacji IO i innych operacji, których nie można wyrazić zwykłymi wywołaniami systemowymi.
 
-### Na podstawie pliku [`ioccom.h`](https://grok.dragonflybsd.org/xref/netbsd/sys/sys/ioccom.h) wyjaśnij znaczenie drugiego i trzeciego parametru wywołania `ioctl(2)`.
+### Na podstawie pliku [ioccom.h](https://grok.dragonflybsd.org/xref/netbsd/sys/sys/ioccom.h) wyjaśnij znaczenie drugiego i trzeciego parametru wywołania [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html).
 
 - drugi parametr – kod rządanej operacji. Koduje informację o tym, czy argument jest parametrem wejściowym czy wyjściowym i rozmiar kolejnego argumentu w bajtach.
 ```
@@ -96,4 +100,47 @@ Wywołanie `ioctl()` (*input/output control*) - wywołanie systemowe do specyfic
 
 ***
 
+# Zadanie 6
 
+### Uruchamiamy w powłoce *potok* (ang. pipeline) `ps -ef | grep zsh | wc -l > cnt`, Każde z poleceń używa wyłącznie standardowego wejścia i wyjścia. Dzięki [dup2(2)](http://man7.org/linux/man-pages/man2/dup2.2.html) i [pipe(2)](http://man7.org/linux/man-pages/man2/pipe.2.html) bez modyfikacji kodu źródłowego powyższych programów możemy połączyć je w potok i *przekierować* wyjście do pliku `cnt`. Powłoka umieszcza wszystkie trzy procesy w nowej grupie procesów rozłącznej z grupą powłoki. Kiedy potok zakończy swe działanie, do powłoki zostanie przekazany kod wyjścia ostatniego polecenia w potoku
+
+- **potok** – mechanizm komunikacji międzyprocesowej polegający na połączeniu procesów poprzez ich standardowe strumienie wejścia/wyjścia przez co kolejne procesy otrzymują wyjście poprzednich jako wejście.
+- **przekierowanie** – zmiana standardowego wejścią bądź wyjścia procesu na inny plik.
+
+### Uzasadnij kolejność tworzenia procesów potoku posługując się obrazem 9.10 z rozdziału *„Shell Execution of Programs”* (APUE). Następnie ustal, który z procesów powinien wołać [setpgrp(2)](http://man7.org/linux/man-pages/man2/setpgrp.2.html), [creat(2)](http://man7.org/linux/man-pages/man2/creat.2.html), [dup2(2)](http://man7.org/linux/man-pages/man2/dup2.2.html), [pipe(2)](http://man7.org/linux/man-pages/man2/pipe.2.html), [close(2)](http://man7.org/linux/man-pages/man2/close.2.html) lub [waitpid(2)](http://man7.org/linux/man-pages/man2/close.2.html) i uzasadnij swój wybór.
+
+Wynik `ps | cat1 | cat2`:
+
+![zad6](zad6.png)
+
+- Kolejność tworzenia procesów potoku: ostatni proces w potoku jest dzieckiem powłoki i wszystkie inne procesy są dziećmi ostatniego procesu.
+    - Uzasadnienie:
+        - przez to, że ostatni proces jest dzieckiem powłoki, powłoka ma    dostep do informacji, że cały potok się zakończył.
+
+(***Uwaga!*** *mój autorski pomysł więc prawdopodobnie jest zły* ***Uwaga!***)
+- Który z procesów powinien wywołać...
+    - `setpgrp()`: 1988 jeżeli chcemy żeby cały potok był osobną grupą.
+    - `creat()`: żaden ???
+    - `dup2()`: 1998 do zmiany stdin, 1989 i 1990 do ustawienia wejścia *pipe*'a jako swojego `stdout`.
+    - `pipe()`: 1998 – powinien tworzyć *pipe*'y w pętli. Powinien ustawiać kolejne wyjścia *pipe*'ów jako swój `stdin` używając `dup2` (i `fork`iem tworzyć dzieci, które odziedziczą ten *pipe*).
+    - `close()`: 1988, 1989, 1990 do zamknięcia nieużywanych końców *pipe*'ów.
+    - `waitpid()`: 949 (shell).
+
+
+Ogólny schemat:
+- w [1989] ustaw *id* grupy przy użyciu `setpgrp`.
+- w [1989] dla każdego procesu poza ostatnim w potoku (od lewej):
+    - wywołaj `pipe`
+    - wywołaj `fork`
+        - w dziecku:
+            - ustaw wejście *pipe*'a jako swój `stdout` przy użyciu `dup2`.
+            - zamknij wyjście *pipe*'a przy użyciu `close`.
+            - wywołaj odpowiednie polecenie przy użyciu `exec`.
+        - w rodzicu ([1989]):
+            - ustaw wyjście *pipe*'a jako swój `stdin` przy użyciu `dup2`.
+            - zamknij wejście *pipe*'a przy użyciu `close`.
+- wywołaj ostatnie polecenie z potoku przy użyciu `exec`.
+
+(*teoretycznie na końcu [1989] będzie miał wyjście ostatniego pipe'a jako swój stdin a stdin pierwszego procesu będzie niezmieniony tak jak stdout ostatniego*)
+
+***
