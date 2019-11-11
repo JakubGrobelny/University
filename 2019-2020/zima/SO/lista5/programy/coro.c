@@ -46,6 +46,8 @@ static void coro_destroy(coro_t *co) {
  */
 static noreturn void coro_switch(int v) {
   /* TODO: Something is missing here! */
+  exit(0); //TODO: temp
+
 }
 
 /* Save caller context and switch back to next coroutine. */
@@ -60,6 +62,7 @@ static int coro_yield(int v) {
 static void coro_add(coro_t *co, void (*fn)(int)) {
   int v = Setjmp(co->co_ctx);
   /* TODO: Something is missing here! */
+  (void)v; //TODO: temp
   co->co_ctx->rsp = co->co_stack + CORO_STKSIZE;
   TAILQ_INSERT_TAIL(&runqueue, co, co_link);
 }

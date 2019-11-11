@@ -5,6 +5,7 @@
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
 - [Zadanie 6](#zadanie-6)
+- [Zadanie 7](#zadanie-7)
 
 ***
 
@@ -117,7 +118,7 @@ Wynik `ps | cat1 | cat2`:
     - Uzasadnienie:
         - przez to, że ostatni proces jest dzieckiem powłoki, powłoka ma    dostep do informacji, że cały potok się zakończył.
 
-(***Uwaga!*** *mój autorski pomysł więc prawdopodobnie jest zły* ***Uwaga!***)
+(***Uwaga!*** *mój autorski pomysł więc prawdopodobnie jest zły* **Uwaga!**)
 - Który z procesów powinien wywołać...
     - `setpgrp()`: 1988 jeżeli chcemy żeby cały potok był osobną grupą.
     - `creat()`: żaden ???
@@ -144,3 +145,9 @@ Ogólny schemat:
 (*teoretycznie na końcu [1989] będzie miał wyjście ostatniego pipe'a jako swój stdin a stdin pierwszego procesu będzie niezmieniony tak jak stdout ostatniego*)
 
 ***
+
+# Zadanie 7
+
+Rozwiązanie:
+- [prime.c](programy/prime.c)
+

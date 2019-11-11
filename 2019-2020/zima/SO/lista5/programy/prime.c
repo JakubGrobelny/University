@@ -27,6 +27,26 @@ static noreturn void filter_chain(pipe_t in) {
   long prime;
 
   /* TODO: Something is missing here! */
+  if (!ReadNum(in, &prime))
+    exit(EXIT_SUCCESS);
+  
+  printf("%ld\n", prime);
+
+  pipe_t out = MakePipe();
+  // Dup2(out.read, in.write);
+
+  pid_t pid = Fork();
+
+  if (pid) {
+    CloseReadEnd(out);
+    filter(in, out, prime);
+    CloseWriteEnd(out);
+    Waitpid(pid, NULL, 0);
+  } else {
+    CloseReadEnd(in);
+    CloseWriteEnd(out);
+    filter_chain(out);
+  }
 
   exit(EXIT_SUCCESS);
 }
