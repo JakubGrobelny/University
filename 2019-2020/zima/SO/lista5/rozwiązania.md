@@ -1,7 +1,7 @@
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
-- [Zadanie 2](#zadanie-2)
+- [Zadanie 3](#zadanie-3)
 
 ***
 
@@ -29,3 +29,42 @@ Można zmienić ten katalog wywołąniem [`chdir(2)`](https://linux.die.net/man/
 - `sync` – powoduje, że wszelkie operacje I/O do systemu plików muszą zostać wykonane synchronicznie. Może skrócić życie urządzeń z ograniczoną liczbą zapisów ale zapewnia spójność zapisywanych danych.
 
 ***
+
+# Zadanie 3
+
+### Na podstawie slajdów do wykładu wyjaśnij różnice w sposobie implementacji dowiązań *twardych* (ang. hard link) i *symbolicznych* (ang. symbolic link).
+
+- **dowiązanie twarde** – wskaźniki na *inode*'y plików. Wliczają się do licznika referencji do pliku.
+
+- **dowiązanie symboliczne** – kodują ścieżkę, do której należy pzrekierować algorytm rozwiązywania nazw.
+
+### Jak za pomocą dowiązania symbolicznego stworzyć w systemie plików pętlę? 
+
+```bash
+ln -s . link
+```
+lub
+```bash
+mkdir dir
+
+cd dir
+
+ln -s ../dir link
+```
+
+### Kiedy jądro systemu operacyjnego ją wykryje (błąd `ELOOP`)?
+
+Jądro wykrywa pętlę jeżeli przekroczona zostaje maksymalna głębokość rekursji (*"Too many levels of symbolic links"*).
+
+### Czemu pętli nie da się zrobić z użyciem dowiązania twardego? 
+
+Możliwość stworzenia pętli z użyciem dowiązań twardych sprawiłoby, że mogłyby powstać spójne składowe DAGu, które nie byłyby osiągalne z katalogu *root*.
+
+![zad3](zad3.png)
+
+W przypadku na obrazku usunięcie dowiązania z `\` sprawiłoby, że `dir1` byłoby nieosiągalne ale nie zostałoby usunięte, gdyż istniałaby referencja z `link`.
+
+### Skąd wynika liczba dowiązań do katalogów?
+
+Liczba dowiązań wynika z liczby podkatalogów (każdy z nich ma dowiązanie `..`), z dowiązania `.` oraz wszystkich pozostałych dowiązań twardych (w szczególności dowiązania od rodzica).
+
