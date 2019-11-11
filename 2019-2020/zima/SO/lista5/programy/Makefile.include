@@ -1,0 +1,58 @@
+CC = gcc -g
+CFLAGS = -Og -Wall -Werror
+AS = as 
+CPPFLAGS = -Iinclude
+LDFLAGS = -Llibcsapp -lcsapp
+
+ifeq ($(shell uname -s), Darwin)
+CPPFLAGS += -DMACOS
+endif
+
+ifeq ($(shell uname -s), Linux)
+CPPFLAGS += -DLINUX -D_GNU_SOURCE 
+endif
+
+ifeq ($(shell uname -s), FreeBSD)
+CPPFLAGS += -DFREEBSD
+endif
+
+LIBCSAPP = libcsapp/libcsapp.a 
+LIBCSAPP_CSRC = $(wildcard libcsapp/*.c)
+LIBCSAPP_ASRC = $(wildcard libcsapp/*.s)
+LIBCSAPP_HDR = $(wildcard include/*.h)
+LIBCSAPP_OBJ += $(patsubst %.c,%.o,$(LIBCSAPP_CSRC))
+LIBCSAPP_OBJ += $(patsubst %.s,%.o,$(LIBCSAPP_ASRC))
+
+ARCHIVE = so$(shell date +'%y')_$(shell basename $(PWD))
+FILES = *.c libcsapp include Makefile Makefile.include $(EXTRA-FILES)
+
+all: $(PROGS)
+
+%: %.c $(LIBCSAPP)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ $< $(LDFLAGS) $(LDLIBS)
+
+$(LIBCSAPP): $(LIBCSAPP_OBJ)
+	$(AR) rc $@ $^
+
+clean:
+	rm -f $(PROGS) *.o $(shell find -L . -iname '*~')
+	rm -f $(LIBCSAPP) $(LIBCSAPP_OBJ)
+	rm -f $(ARCHIVE).tar.gz
+	rm -rf $(EXTRA-CLEAN) *.dSYM
+
+format:
+	clang-format --style=file -i \
+		$(PROGS:%=%.c) $(LIBCSAPP_CSRC) $(LIBCSAPP_HDR)
+
+archive: clean
+	mkdir -p $(ARCHIVE)
+	cp -RL $(FILES) $(ARCHIVE)
+	for f in $$(find $(ARCHIVE) -iname '*.[csh]'); do \
+	  sed --in-place='' -e '/^#if.*STUDENT/,/^#endif.*STUDENT/d' $$f; \
+	done
+	tar cvzhf $(ARCHIVE).tar.gz $(ARCHIVE)
+	rm -rf $(ARCHIVE)
+
+.PHONY: all clean format archive 
+
+# vim: ts=8 sw=8 noet
