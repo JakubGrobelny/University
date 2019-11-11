@@ -2,6 +2,7 @@
 
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 3](#zadanie-3)
+- [Zadanie 4](#zadanie-4)
 
 ***
 
@@ -62,9 +63,37 @@ Możliwość stworzenia pętli z użyciem dowiązań twardych sprawiłoby, że m
 
 ![zad3](zad3.png)
 
-W przypadku na obrazku usunięcie dowiązania z `\` sprawiłoby, że `dir1` byłoby nieosiągalne ale nie zostałoby usunięte, gdyż istniałaby referencja z `link`.
+W przypadku na obrazku usunięcie dowiązania z `/` sprawiłoby, że `dir1` byłoby nieosiągalne ale nie zostałoby usunięte, gdyż istniałaby referencja z `link`.
 
 ### Skąd wynika liczba dowiązań do katalogów?
 
 Liczba dowiązań wynika z liczby podkatalogów (każdy z nich ma dowiązanie `..`), z dowiązania `.` oraz wszystkich pozostałych dowiązań twardych (w szczególności dowiązania od rodzica).
+
+****
+
+# Zadanie 4
+
+### Do czego służy wywołanie systemowe [`ioctl(2)`](http://man7.org/linux/man-pages/man2/ioctl.2.html)? Zauważ, że stosowane jest głównie do plików urządzeń znakowych lub blokowych.
+
+Wywołanie `ioctl()` (*input/output control*) - wywołanie systemowe do specyficznych dla danego urządzenia operacji IO i innych operacji, których nie można wyrazić zwykłymi wywołaniami systemowymi.
+
+### Na podstawie pliku [`ioccom.h`](https://grok.dragonflybsd.org/xref/netbsd/sys/sys/ioccom.h) wyjaśnij znaczenie drugiego i trzeciego parametru wywołania `ioctl(2)`.
+
+- drugi parametr – kod rządanej operacji. Koduje informację o tym, czy argument jest parametrem wejściowym czy wyjściowym i rozmiar kolejnego argumentu w bajtach.
+```
+    31 29 28                     16 15            8 7             0
+   +---------------------------------------------------------------+
+   | I/O | Parameter Length        | Command Group | Command       |
+   +---------------------------------------------------------------+
+```
+- trzeci parametr – nietypowany wskaźnik do pamięci.
+
+### Używając [przeglądarki kodu](https://grok.dragonflybsd.org/xref/netbsd/) jądra NetBSD znajdź definicję identyfikatorów `DIOCEJECT`, `KIOCTYPE` i `SIOCGIFCONF`, a następnie krótko opisz co robią te polecenia.
+
+- `DIOCEJECT` – *„eject removable disk”*
+- `KIOCTYPE` – *„get keyboard type”*
+- `SIOCGIFCONF` –  *„get [ifnet](https://www.freebsd.org/cgi/man.cgi?query=ifnet&sektion=9) list”*
+
+***
+
 
