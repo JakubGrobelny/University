@@ -2,8 +2,10 @@
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
+- [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
+- [Zadanie 5](#zadanie-5)
 - [Zadanie 6](#zadanie-6)
 - [Zadanie 7](#zadanie-7)
 
@@ -15,7 +17,7 @@
 
 - **ścieżka absolutna** – wskazuje na ten sam plik niezależnie od aktualnego katalogu roboczego (zaczyna się katalogiem *root*a).
 - **ścieżka relatywna** – wskazuje na lokalizację względem aktualnego katalogu roboczego.
-- **ścieżka znormalizowana** – (*??? jedyne co znalazłem to [coś](https://blogs.msdn.microsoft.com/jeremykuhne/2016/04/21/path-normalization/) na (tfu) Windowsie*) ścieżka bez `.` , `..` + bez końcowych białych znaków.
+- **ścieżka znormalizowana** – ścieżka bez `..` i `.`.
 
 ### Względem którego katalogu obliczana jest ścieżka relatywna? Jakim wywołaniem systemowym zmienić ten katalog?
 
@@ -31,6 +33,43 @@ Można zmienić ten katalog wywołąniem [chdir(2)](https://linux.die.net/man/2/
 - `noatime` – powoduje, że czasy dostępów do *inode*'ów nie są aktualizowane w danym systemie plików (na przykład w celu zwiększenia szybkości dostępu gdy plików jest dużo).
 - `noexec` – zakaz bezpośredniego wykonywania plików binarnych ze wskazanego zamontowanego systemu plików (nie dotyczy plików tekstowych ze skryptami z *shebang*iem). Ta opcja jest przydatna dla serwerów, które mają systemy plików zawierające pliki wykonywalne dla architektur innych niż własna.
 - `sync` – powoduje, że wszelkie operacje I/O do systemu plików muszą zostać wykonane synchronicznie. Może skrócić życie urządzeń z ograniczoną liczbą zapisów ale zapewnia spójność zapisywanych danych.
+
+***
+
+# Zadanie 2
+
+### Przywołując strukturę `dirent` i reprezentację katalogu z poprzednich ćwiczeń wyjaśnij krok po kroku jak działa [rename(2)](http://man7.org/linux/man-pages/man2/rename.2.html). 
+
+Struktura dirent:
+```C
+struct dirent 
+{
+    ino_t          d_ino;       /* Inode number */
+    off_t          d_off;       /* Not an offset; see below */
+    unsigned short d_reclen;    /* Length of this record */
+    unsigned char  d_type;      /* Type of file; not supported by all filesystem types */
+    char           d_name[256]; /* Null-terminated filename */
+};
+```
+
+Reprezentacja katalogu z poprzednich ćwiczeń:
+![zad2](zad2.png)
+
+Działanie `int rename(const char* oldname, const char* newname)`:
+1. Jeżeli `oldname` i `newname` nie są katalogami oraz `newname` istnieje, to wówczas `newname` zostaje usunięty a `oldname` przemianowany na `newname`. Wymagane są uprawnienia do pisania w katalogu zawierającym `oldname` i `newname`.
+2. Jeżeli `oldname` jest katalogiem i `newname` jest katalogiem, to `newname` musi być pusym katalogiem. Jeżeli `newname` istnieje to zostaje usunięty a `oldname` przemianowany na `newname`. Dodatkowo jeżeli przemianowujemy katalog, to `newname` nie może zawierać prefiksu, który nazywa `oldname`. Na przykład nie można przemianować `/usr/foo` na `/usr/foo/testdir` bo trzeba by usunąć usunąć `/usr/foo`.
+3. Jeżeli `oldname` bądź `newname` odnosi się do dowiązania symbolicznego, wówczas przetwarzane jest dowiązanie a nie plik, na który wskazuje.
+4. Nie można przemianować `.` ani `..`.
+5. Jeżeli `oldname` i `newname` odnoszą się do tego samego pliku, to funkcja kończy się sukcesem bez zmieniania niczego.
+- Jeżeli `newname` istnieje, musimy mieć pozwolenia jak gdybyśmy go usuwali. Dodatkowo, prez to że usuwamy wpis w katalogu dla `oldname` i być może tworzymy nowe wpis dla `newname`, potrzebujemy uprawnień *write* i *execute* w katalogach zawierającym `oldname` i `newname`.
+
+### Zauważ, że korzystając z `rename` można również przenieść *atomowo* plik do innego katalogu pod warunkiem, że ten znajduje się w obrębie tego samego systemu plików.
+
+- **atomowo** – za pomocą jednej operacji, która nie może się przeplatać z żadną inną.
+
+### Czemu `rename` zakończy się błędem `EXDEV` kiedy próbujemy przenieść plik do innego systemu plików?
+
+Ponieważ nie da się atomowo przenosić plików pomiędzy różnymi systemami plików a wywołanie `rename` jest atomowe. Żeby przenieść taki plik `mv` robi *copy* i *delete* w przestrzeni użytkownika.
 
 ***
 
@@ -130,7 +169,7 @@ Wynik `ps | cat1 | cat2`:
 
 Ogólny schemat:
 - w [1989] ustaw *id* grupy przy użyciu `setpgrp`.
-- w [1989] dla każdego procesu poza ostatnim w potoku (od lewej):
+- w [1989] dla każdego polecenia poza ostatnim w potoku (od lewej):
     - wywołaj `pipe`
     - wywołaj `fork`
         - w dziecku:
@@ -150,4 +189,5 @@ Ogólny schemat:
 
 Rozwiązanie:
 - [prime.c](programy/prime.c)
+
 

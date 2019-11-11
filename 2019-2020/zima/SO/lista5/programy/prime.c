@@ -33,7 +33,6 @@ static noreturn void filter_chain(pipe_t in) {
   printf("%ld\n", prime);
 
   pipe_t out = MakePipe();
-  // Dup2(out.read, in.write);
 
   pid_t pid = Fork();
 
