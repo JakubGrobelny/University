@@ -5,9 +5,10 @@
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
-- [Zadanie 5](#zadanie-5)
+- Zadanie 5 – brak
 - [Zadanie 6](#zadanie-6)
 - [Zadanie 7](#zadanie-7)
+- Zadanie 8 – brak
 
 ***
 

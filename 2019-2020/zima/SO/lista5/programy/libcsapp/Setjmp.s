@@ -1,17 +1,17 @@
 _JB_RBX = 0
-_JB_RBP = 1
+_JB_RBP = 1 # start of stack 
 _JB_R12 = 2
 _JB_R13 = 3
 _JB_R14 = 4
 _JB_R15 = 5
-_JB_RSP = 6
-_JB_RIP = 7
+_JB_RSP = 6 # current location in stack
+_JB_RIP = 7 # instruction pointer 
 
         .text
 
         .globl Setjmp
         .type Setjmp,@function
-Setjmp:
+Setjmp: # int Setjmp(Jmpbuf env : rdi)
 	movq    (%rsp),%r11
 	movq    %rbx,(_JB_RBX * 8)(%rdi)
 	movq    %rbp,(_JB_RBP * 8)(%rdi)
@@ -27,7 +27,7 @@ Setjmp:
         
         .globl Longjmp
         .type Longjmp,@function
-Longjmp:
+Longjmp: # noreturn void Longjmp(Jmpbuf env : rdi, int val : esi)
 	movq    (_JB_RBX * 8)(%rdi),%rbx
 	movq    (_JB_RBP * 8)(%rdi),%rbp
 	movq    (_JB_R12 * 8)(%rdi),%r12
@@ -38,8 +38,8 @@ Longjmp:
 	movq    (_JB_RIP * 8)(%rdi),%r11
 	movl	%esi,%eax
 	testl	%eax,%eax
-	jnz	1f
-	incl	%eax
-1:	movq	%r11,(%rsp)
+	jnz	1f  # if (!eax)
+	incl	%eax # eax := 1
+1:	movq	%r11,(%rsp) # put old %rip on the stack
 	ret
         .size Longjmp, . - Longjmp

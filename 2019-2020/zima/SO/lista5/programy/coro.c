@@ -45,9 +45,21 @@ static void coro_destroy(coro_t *co) {
  * Return to dispatcher if there're no more coroutines to run.
  */
 static noreturn void coro_switch(int v) {
+  
   /* TODO: Something is missing here! */
-  exit(0); //TODO: temp
+  if (v == EOF) {
+    TAILQ_REMOVE(&runqueue, running, co_link);
+  }
 
+  if (TAILQ_EMPTY(&runqueue)) {
+    Longjmp(dispatcher, v);
+  } 
+
+  running = TAILQ_NEXT(running, co_link);
+  if (!running)
+    running = TAILQ_FIRST(&runqueue);
+  
+  Longjmp(running->co_ctx, v);
 }
 
 /* Save caller context and switch back to next coroutine. */
@@ -62,7 +74,12 @@ static int coro_yield(int v) {
 static void coro_add(coro_t *co, void (*fn)(int)) {
   int v = Setjmp(co->co_ctx);
   /* TODO: Something is missing here! */
-  (void)v; //TODO: temp
+  
+  if (v != 0) {
+    fn(NOTHING);
+    coro_switch(EOF);
+  }
+
   co->co_ctx->rsp = co->co_stack + CORO_STKSIZE;
   TAILQ_INSERT_TAIL(&runqueue, co, co_link);
 }
@@ -70,7 +87,7 @@ static void coro_add(coro_t *co, void (*fn)(int)) {
 /* Take first coroutine and feed it with passed value. */
 static int coro_run(int v) {
   running = TAILQ_FIRST(&runqueue);
-  int nv = Setjmp(dispatcher);
+  int nv = Setjmp(dispatcher);  
   if (nv == 0)
     Longjmp(running->co_ctx, v);
   return nv;
