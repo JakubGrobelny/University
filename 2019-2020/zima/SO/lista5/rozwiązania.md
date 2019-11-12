@@ -8,7 +8,7 @@
 - Zadanie 5 – brak
 - [Zadanie 6](#zadanie-6)
 - [Zadanie 7](#zadanie-7)
-- Zadanie 8 – brak
+- [Zadanie 8](#zadanie-8)
 
 ***
 
@@ -191,4 +191,8 @@ Ogólny schemat:
 Rozwiązanie:
 - [prime.c](programy/prime.c)
 
+# Zadanie 8
 
+Rozwiązanie:
+- [coro.c](programy/coro.c)
+- [Setjmp.s z komentarzami](programy/libcsapp/Setjmp.s)

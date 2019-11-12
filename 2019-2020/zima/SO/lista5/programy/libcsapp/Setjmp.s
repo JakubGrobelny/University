@@ -38,8 +38,8 @@ Longjmp: # noreturn void Longjmp(Jmpbuf env : rdi, int val : esi)
 	movq    (_JB_RIP * 8)(%rdi),%r11
 	movl	%esi,%eax
 	testl	%eax,%eax
-	jnz	1f  # if (!eax)
-	incl	%eax # eax := 1
+	jnz	1f  # if (!eax) eax = 1; else goto 1;
+	incl	%eax
 1:	movq	%r11,(%rsp) # put old %rip on the stack
 	ret
         .size Longjmp, . - Longjmp

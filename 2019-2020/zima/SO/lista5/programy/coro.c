@@ -76,7 +76,7 @@ static void coro_add(coro_t *co, void (*fn)(int)) {
   /* TODO: Something is missing here! */
   
   if (v != 0) {
-    fn(NOTHING);
+    fn(v);
     coro_switch(EOF);
   }
 
