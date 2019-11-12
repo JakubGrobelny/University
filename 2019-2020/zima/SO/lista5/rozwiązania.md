@@ -64,6 +64,8 @@ Działanie `int rename(const char* oldname, const char* newname)`:
 5. Jeżeli `oldname` i `newname` odnoszą się do tego samego pliku, to funkcja kończy się sukcesem bez zmieniania niczego.
 - Jeżeli `newname` istnieje, musimy mieć pozwolenia jak gdybyśmy go usuwali. Dodatkowo, prez to że usuwamy wpis w katalogu dla `oldname` i być może tworzymy nowe wpis dla `newname`, potrzebujemy uprawnień *write* i *execute* w katalogach zawierającym `oldname` i `newname`.
 
+Nowe wpisy do katalogu dodawane są na końcu, chyba że istnieje wolne miejsce wcześniej. Usuwanie wpisu polega na zwiększeniu `entry size` poprzednika.
+
 ### Zauważ, że korzystając z `rename` można również przenieść *atomowo* plik do innego katalogu pod warunkiem, że ten znajduje się w obrębie tego samego systemu plików.
 
 - **atomowo** – za pomocą jednej operacji, która nie może się przeplatać z żadną inną.
@@ -150,18 +152,21 @@ Wywołanie `ioctl()` (*input/output control*) - wywołanie systemowe do specyfic
 
 ### Uzasadnij kolejność tworzenia procesów potoku posługując się obrazem 9.10 z rozdziału *„Shell Execution of Programs”* (APUE). Następnie ustal, który z procesów powinien wołać [setpgrp(2)](http://man7.org/linux/man-pages/man2/setpgrp.2.html), [creat(2)](http://man7.org/linux/man-pages/man2/creat.2.html), [dup2(2)](http://man7.org/linux/man-pages/man2/dup2.2.html), [pipe(2)](http://man7.org/linux/man-pages/man2/pipe.2.html), [close(2)](http://man7.org/linux/man-pages/man2/close.2.html) lub [waitpid(2)](http://man7.org/linux/man-pages/man2/close.2.html) i uzasadnij swój wybór.
 
-Wynik `ps | cat1 | cat2`:
+Wynik `ps | cat1 | cat2` z książki:
 
 ![zad6](zad6.png)
+
+Nasz przypadek (`ps -ef | grep zsh | wc -l > cnt`)
+![zad6_1](zad6_1.png)
 
 - Kolejność tworzenia procesów potoku: ostatni proces w potoku jest dzieckiem powłoki i wszystkie inne procesy są dziećmi ostatniego procesu.
     - Uzasadnienie:
         - przez to, że ostatni proces jest dzieckiem powłoki, powłoka ma    dostep do informacji, że cały potok się zakończył.
-
+     
 (***Uwaga!*** *mój autorski pomysł więc prawdopodobnie jest zły* **Uwaga!**)
 - Który z procesów powinien wywołać...
     - `setpgrp()`: 1988 jeżeli chcemy żeby cały potok był osobną grupą.
-    - `creat()`: żaden ???
+    - `creat()`: 1988 musi utworzyć `cnt`
     - `dup2()`: 1998 do zmiany stdin, 1989 i 1990 do ustawienia wejścia *pipe*'a jako swojego `stdout`.
     - `pipe()`: 1998 – powinien tworzyć *pipe*'y w pętli. Powinien ustawiać kolejne wyjścia *pipe*'ów jako swój `stdin` używając `dup2` (i `fork`iem tworzyć dzieci, które odziedziczą ten *pipe*).
     - `close()`: 1988, 1989, 1990 do zamknięcia nieużywanych końców *pipe*'ów.
@@ -180,6 +185,8 @@ Ogólny schemat:
         - w rodzicu ([1989]):
             - ustaw wyjście *pipe*'a jako swój `stdin` przy użyciu `dup2`.
             - zamknij wejście *pipe*'a przy użyciu `close`.
+- utwórz plik `cnt` przy użyciu creat
+- ustaw `cnt` jako `stdout`
 - wywołaj ostatnie polecenie z potoku przy użyciu `exec`.
 
 (*teoretycznie na końcu [1989] będzie miał wyjście ostatniego pipe'a jako swój stdin a stdin pierwszego procesu będzie niezmieniony tak jak stdout ostatniego*)
