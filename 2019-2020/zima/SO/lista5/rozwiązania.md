@@ -191,11 +191,13 @@ Ogólny schemat:
 Rozwiązanie:
 - [prime.c](programy/prime.c)
 
+***
+
 # Zadanie 8
 
 - **zmiana kontekstu** – zapisanie stanu procesu aby można było go przywrócić potem i wczytanie innego zapisanego stanu.
 
-- **wielozadaniowość kooperacyjna** (ang. *cooperative multitasking*) – inaczej *non-preemptive multitasking*. Styl wielozadaniowości, w którym system operacyjny nigdy nie wykonuje zmiany kontekstu pomiędzy procesami. Zamiast tego procesy dobrowolnie zrzekają się (ang. *yield*) kontroli aby umożliwiśc innym zadaniom współbieżne działanie.
+- **wielozadaniowość kooperacyjna** (ang. *cooperative multitasking*) – inaczej *non-preemptive multitasking*. Styl wielozadaniowości, w którym system operacyjny nigdy nie wykonuje zmiany kontekstu pomiędzy procesami. Zamiast tego procesy dobrowolnie zrzekają się (ang. *yield*) kontroli aby umożliwić innym zadaniom współbieżne działanie.
 
 Rozwiązanie:
 - [coro.c](programy/coro.c)
