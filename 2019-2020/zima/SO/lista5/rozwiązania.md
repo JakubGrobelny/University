@@ -126,7 +126,7 @@ Wywołanie `ioctl()` (*input/output control*) - wywołanie systemowe do specyfic
 
 ### Na podstawie pliku [ioccom.h](https://grok.dragonflybsd.org/xref/netbsd/sys/sys/ioccom.h) wyjaśnij znaczenie drugiego i trzeciego parametru wywołania [ioctl(2)](http://man7.org/linux/man-pages/man2/ioctl.2.html).
 
-- drugi parametr – kod rządanej operacji. Koduje informację o tym, czy argument jest parametrem wejściowym czy wyjściowym i rozmiar kolejnego argumentu w bajtach.
+- drugi parametr – kod żądanej operacji. Koduje informację o tym, czy argument jest parametrem wejściowym czy wyjściowym i rozmiar kolejnego argumentu w bajtach.
 ```
     31 29 28                     16 15            8 7             0
    +---------------------------------------------------------------+
