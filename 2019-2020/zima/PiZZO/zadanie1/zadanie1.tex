@@ -44,7 +44,7 @@ procedura f(G(V, E)):
     zwróć {"studenci": studenci, "konflikty": konflikty}
 
 procedura przemianuj(G(V, E)):
-    dla każdego i z 0...|V| + 1:
+    dla każdego i z 1...|V|:
         zmień nazwę wierzchołka V[i] na i
 
 \end{verbatim}
@@ -102,7 +102,7 @@ Niech \texttt{T} $= f(G)$ i niech $H$ będzie grafem o poniższej konstrukcji:
 
 $H$ jest w oczywisty sposób 4-kolorowalny, gdyż wybór jednego spośród czterech 
 tutorów odpowiada wyborowi jednego spośród czterech kolorów, a skoro krawędzie 
-w grafie $H$ opisują relację \textit{nielubienia} z obiektu \texttt{T}, to 
+w grafie $H$ opisują relację \textit{konflikty} z obiektu \texttt{T}, to 
 wówczas mamy gwarancję, że dwa wierzchołki o tym samym kolorze (tutorze) nie 
 sąsiadują ze sobą w grafie $H$.
 
@@ -110,16 +110,61 @@ Z definicji $f$ wiemy również, że w \texttt{T} istnieje student $s$, który j
 
 Możemy zauważyć, że $\forall_{G', H'}(f(G') = f(H') \Leftrightarrow G'$ jest 
 izomorficzny z $H'$). Własność ta wynika z tego, że pomocnicza procedura 
-\texttt{przemianuj} jest izomorfizmem a reszta przekształcenia $f$ jest odwracalna. W takim razie grafy $H^-$ oraz $G$ są izomorficzne. Izomorfizm nie zmienia kolorowalności grafu, więć z tego wynika, że $G$ jest 3-kolorowalny, czyli $G \in 3COL$, co należało udowodnić. 
+\texttt{przemianuj} przeetykietowała jedynie wierzchołki (graf otrzymany po 
+zaaplikowaniu \texttt{przemianuj} do grafu jest izomorficzny z oryginalnym) a 
+dalsza część przekształcenia $f$ jest w pełni odwracalna. Widać, że $f(G) 
+= f(H^-)$, bo $H^-$ powstał na podstawie $f(G)$ z odjętym wierzchołkiem, 
+dodanym przez $f$. W takim razie grafy $H^-$ oraz $G$ są izomorficzne. 
+Zaaplikowanie izomorfizmu nie zmienia kolorowalności grafu, więc 
+$G$ jest 3-kolorowalny, czyli $G \in 3COL$.
 \begin{flushright}
     $\qedsymbol$
 \end{flushright}
 
-
-    \end{proof*}
-\end{theorem*}
+\end{proof*} \end{theorem*}
 
 \hrulefill
 
+\section{Podpunkt b}
+
+\begin{theorem*}\,\\\normalfont
+Problem $Tutorzy$ można rozwiązać w czasie wielomianowym, przy założeniu, że 
+będzie co najwyżej 15 zrzęd.
+
+\begin{proof*}\,\\\normalfont
+
+Pokażemy, że dla dowolnej stałej liczby zrzęd $Z$ istnieje algorytm działający 
+w czasie wielomianowym, który rozwiązuje problem $Tutorzy$.
+
+% \begin{verbatim}
+% procedura tutorzy(S):
+%     S' := S bez studentów, którzy nie są zrzędami
+%     jeżeli nie istnieje przydział tutorów dla S':
+%         zwróć NIE
+%     w przeciwnym razie:
+%         P := przydział tutorów dla S'
+%         dla każdego s z S:
+%             K := 
+
+
+
+% \end{verbatim}
+
+\end{proof*} \end{theorem*}
+
 \end{titlepage}
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
