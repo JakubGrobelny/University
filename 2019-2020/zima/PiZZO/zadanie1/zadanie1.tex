@@ -1,0 +1,125 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage{abstract}
+\usepackage{titlesec}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\titleformat{\section}[block]{\Large\bfseries\filcenter}{}{0em}{}
+\newtheorem*{theorem*}{Teza}
+\newtheorem*{proof*}{Dowód}
+
+\title{\bfseries Podstawy i Zastosowania Złożoności Obliczeniowej\\\Large Zadanie 1}
+\date{}
+\author{\Large Jakub Grobelny}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\thispagestyle{empty}
+
+\hrulefill
+\section{Podpunkt a}
+\begin{theorem*}\,\\
+$3COL \leq_P Tutorzy$
+    \begin{proof*} \,\\\normalfont    
+    Pokażemy, że istnieje obliczalna w czasie wielomianowym funkcja $f$ taka, 
+    że $\forall_G(G \in 3COL \Leftrightarrow f(G) \in Tutorzy)$.
+    
+\begin{verbatim}
+procedura f(G(V, E)):
+    przemianuj(G)
+    konflikty := []
+    studenci := |V| + 1
+    dla każdego v z V:
+        dodaj {"zrzeda": |V| + 1, "nielubiany": v} do konflikty
+        dla każdego w sąsiadującego z v:
+            dodaj {"zrzeda": v, "nielubiany": w} do konflikty
+    zwróć {"studenci": studenci, "konflikty": konflikty}
+
+procedura przemianuj(G(V, E)):
+    dla każdego i z 0...|V| + 1:
+        zmień nazwę wierzchołka V[i] na i
+
+\end{verbatim}
+
+Funkcja $f$ obliczana przez powyższy program zamienia dany graf $G$ na 
+instancję problemu $Tutorzy$ poprzez zamienienie każdego wierzchołka na 
+studenta. Każdy wierzchołek $v$, od którego w grafie $G$ wychodzi krawędź 
+incydentna do wierzchołka $w$, staje się \textit{zrzędą} $v$, która nie chce 
+mieć tego samego tutora co student $w$. Dodatkowo tworzymy jednego sztucznego 
+studenta o numerze $|V|+1$, który nie lubi wszystkich innych studentów. Na początku wywołujemy procedurę \texttt{przemianuj}, która sprawia, że wszystkie wierzchołki mają nazwy będące liczbami z odpowiedniego zakresu.
+
+Widać, że program działa w czasie $O(|V|\cdot|E|+T(G))$, gdzie 
+$T(G)$ to czas działania procedury \texttt{przemianuj}, gdyż każdy 
+wierzchołek grafu odwiedzamy jeden raz, a dla każdego wierzchołka sprawdzamy 
+jego sąsiadów również tylko raz (w najgorszym przypadku każdy wierzchołek 
+sąsiaduje z każdym). Dodawanie obiektów do listy można zrealizować w czasie 
+stałym a pomocnicza procedura \texttt{przemianuj} działa w czasie 
+wielomianowym. Funkcja $f$ jest zatem obliczalna w czasie wielomianowym
+względem rozmiaru danego grafu.
+
+$ $\\
+Pokażemy teraz, że $\forall_G(G \in 3COL \Leftrightarrow f(G) \in Tutorzy)$:
+
+$ $\\
+$\Rightarrow$ 
+
+Weźmy dowolny graf $G \in 3COL$. Skoro $G$ jest 3-kolorowalny, to jeżeli dodamy 
+do niego nowy wierzchołek $v$, taki że sąsiaduje z każdym innym 
+istniejącym już wierzchołkiem, to graf ten będzie 4-kolorowalny (wystarczy 
+wziąć dowolne 3-kolorowanie $G$ a nowy wierzchołek pomalować na nowy, czwarty 
+kolor). Niech $G^+$ będzie grafem $G$ z dodanym wyżej opisanym wierzchołkiem $v$.
+Wówczas każdy wierzchołek z $G$ ma odpowiadającego mu studenta w $f(G)$, 
+zaś dodatkowy wierzchołek $v$ odpowiada sztucznie dodanemu studentowi, który 
+nie lubi nikogo. Każda krawędź z $G^+$ jest reprezentowana przez 
+\textit{konflikty}. 
+
+Wprowadźmy bijekcję $g : Kolor \rightarrow Tutor$, która odwzorowuje kolory na tutorów.
+Każdemu studentowi $s$ możemy przydzielić tutora $g(c)$, gdzie $c$ jest 
+kolorem wierzchołka $w$ z $G^+$ odpowiadającego studentowi $s$. Skoro $G^+$ 
+jest 4-kolorowalny, a $g$ jest bijekcją, to żaden student z $f(G)$ nie będzie w grupie ze studentem, którego nie lubi, czyli $f(G) \in Tutorzy$.
+
+$ $\\
+$\Leftarrow$
+
+Weźmy dowolny graf $G$ taki, że $f(G) \in Tutorzy$. Pokażemy, że $G \in 3COL$.
+
+
+Niech \texttt{T} $= f(G)$ i niech $H$ będzie grafem o poniższej konstrukcji:
+\begin{itemize}
+    \item Zbiór wierzchołków grafu $H$ to \{1, 2,\,..., \texttt{T.studenci}\}
+    \item Dla dowolnych $v$ i $w$, jeżeli \texttt{T.konflikty} zawiera \\
+        \texttt{\{"\hskip0pt zrzeda":} $v$\texttt{, "\hskip0pt nielubiany":} 
+        $w$ \texttt{\}}, to wówczas w $H$ istnieje krawędź pomiędzy $v$ a $w$.
+\end{itemize}
+
+$H$ jest w oczywisty sposób 4-kolorowalny, gdyż wybór jednego spośród czterech 
+tutorów odpowiada wyborowi jednego spośród czterech kolorów, a skoro krawędzie 
+w grafie $H$ opisują relację \textit{nielubienia} z obiektu \texttt{T}, to 
+wówczas mamy gwarancję, że dwa wierzchołki o tym samym kolorze (tutorze) nie 
+sąsiadują ze sobą w grafie $H$.
+
+Z definicji $f$ wiemy również, że w \texttt{T} istnieje student $s$, który jest \textit{zrzędą} i nie lubi wszystkich innych studentów. W takim razie w $H$ istnieje wierzchołek $v$, taki że jest połączony z każdym innym wierzchołkiem w tym grafie. Skoro $f(G) \in Tutorzy$, to student $s$ jest jedynym studentem przypisanym do swojego tutora $t$, bo w przeciwnym razie byłby w grupie razem z kimś, kogo nie lubi. Z tego wynika, że w 4-kolorowaniu grafu $H$ odpowiadającemu przydziałowi tutorów, wierzchołek $v$ jako jedyny ma swój kolor $c$. Niech $H^-$ będzie grafem powstałym poprzez usunięcie wierzchołka $v$ oraz incydentnych do niego krawędzi z grafu $H$. W oczywisty sposób $H^-$ jest 3-kolorowalny.
+
+Możemy zauważyć, że $\forall_{G', H'}(f(G') = f(H') \Leftrightarrow G'$ jest 
+izomorficzny z $H'$). Własność ta wynika z tego, że pomocnicza procedura 
+\texttt{przemianuj} jest izomorfizmem a reszta przekształcenia $f$ jest odwracalna. W takim razie grafy $H^-$ oraz $G$ są izomorficzne. Izomorfizm nie zmienia kolorowalności grafu, więć z tego wynika, że $G$ jest 3-kolorowalny, czyli $G \in 3COL$, co należało udowodnić. 
+\begin{flushright}
+    $\qedsymbol$
+\end{flushright}
+
+
+    \end{proof*}
+\end{theorem*}
+
+\hrulefill
+
+\end{titlepage}
+\end{document}
