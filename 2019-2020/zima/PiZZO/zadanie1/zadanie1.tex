@@ -95,7 +95,7 @@ Weźmy dowolny graf $G$ taki, że $f(G) \in Tutorzy$. Pokażemy, że $G \in 3COL
 Niech \texttt{T} $= f(G)$ i niech $H$ będzie grafem o poniższej konstrukcji:
 \begin{itemize}
     \item Zbiór wierzchołków grafu $H$ to \{1, 2,\,..., \texttt{T.studenci}\}
-    \item Dla dowolnych $v$ i $w$, jeżeli \texttt{T.konflikty} zawiera \\
+    \item Dla dowolnych $v$ i $w$, jeżeli do \texttt{T.konflikty} należy \\
         \texttt{\{"\hskip0pt zrzeda":} $v$\texttt{, "\hskip0pt nielubiany":} 
         $w$ \texttt{\}}, to wówczas w $H$ istnieje krawędź pomiędzy $v$ a $w$.
 \end{itemize}
@@ -113,10 +113,8 @@ izomorficzny z $H'$). Własność ta wynika z tego, że pomocnicza procedura
 \texttt{przemianuj} przeetykietowała jedynie wierzchołki (graf otrzymany po 
 zaaplikowaniu \texttt{przemianuj} do grafu jest izomorficzny z oryginalnym) a 
 dalsza część przekształcenia $f$ jest w pełni odwracalna. Widać, że $f(G) 
-= f(H^-)$, bo $H^-$ powstał na podstawie $f(G)$ z odjętym wierzchołkiem, 
-dodanym przez $f$. W takim razie grafy $H^-$ oraz $G$ są izomorficzne. 
-Zaaplikowanie izomorfizmu nie zmienia kolorowalności grafu, więc 
-$G$ jest 3-kolorowalny, czyli $G \in 3COL$.
+= f(H^-)$, bo $H^-$ ma dokładnie takie same krawędzie jak $G$ (z dokładnością 
+do nazw wierzchołków) oraz tyle samo wierzchołków. W takim razie grafy $H^-$ oraz $G$ są izomorficzne. Zaaplikowanie izomorfizmu nie zmienia kolorowalności grafu, więc $G$ jest 3-kolorowalny, czyli $G \in 3COL$.
 \begin{flushright}
     $\qedsymbol$
 \end{flushright}
@@ -133,38 +131,78 @@ będzie co najwyżej 15 zrzęd.
 
 \begin{proof*}\,\\\normalfont
 
-Pokażemy, że dla dowolnej stałej liczby zrzęd $Z$ istnieje algorytm działający 
+Pokażemy, że dla dowolnej stałej liczby zrzęd $K$ istnieje algorytm działający 
 w czasie wielomianowym, który rozwiązuje problem $Tutorzy$.
 
-% \begin{verbatim}
-% procedura tutorzy(S):
-%     S' := S bez studentów, którzy nie są zrzędami
-%     jeżeli nie istnieje przydział tutorów dla S':
-%         zwróć NIE
-%     w przeciwnym razie:
-%         P := przydział tutorów dla S'
-%         dla każdego s z S:
-%             K := 
+\begin{verbatim}
+procedura tutorzy(S):
+    S' := S bez studentów, którzy nie są zrzędami
+    P  := wszystkie poprawne przydziały tutorów dla S'
+    jeżeli P jest puste:
+        zwróć NIE
+    dla każdego p z P:
+        dla każdego studenta s z S, który nie jest zrzędą:
+            T := tutorzy przydzieleni zrzędom nie lubiącym s
+            jeżeli |T| = 4:
+                wyjdź z pętli i rozpatrz kolejne p
+        zwróć TAK
+    zwróć NIE
+\end{verbatim}
 
+$ $\\
+Zasada działania:
 
+Algorytm najpierw przydziela tutorów dla podzbioru 
+studentów, którzy są  zrzędami (dowolnym algorytmem rozwiązującym ogólny 
+problem $Tutorzy$). Jeżeli nie da się przydzielić tutorow 
+dla samych zrzęd, to wówczas można od razu 
+zwrócić odpowiedź ,,\texttt{NIE}'', gdyż tym bardziej nie można wtedy 
+przydzielić tutorów reszcie studentów. Następnie rozpatrujemy wszystkie 
+poprawne przydziały tutorów dla zrzęd. Żeby dokończyć przydział tutorów, musimy 
+wybrać tutora dla każdego pozostałego studenta. Można zauważyć, że jedyni 
+studenci, jakich trzeba rozważyć przy doborze tutora, to zrzędy. Algorytm 
+zlicza wszystkich unikalnych tutorów jacy zostali przydzieleni zrzędom, które 
+nie lubią aktualnie rozpatrywanego studenta. Jeżeli jest to czterech różnych 
+tutorów, to wówczas nie ma żadnego dostępnego dla rozpatrywanego studenta. W 
+takim przypadku wychodzimy z wewnętrznej pętli i rozpatrujemy kolejny przydział 
+\texttt{p}. Jeżeli okaże się, że w wewnętrznej pętli udało się znaleźć tutora dla każdego studenta, to zwracamy odpowiedź ,,\texttt{TAK}''. Jeżeli rozpatrzymy bez sukcesu wszystkie przydziały \texttt{p}, to wówczas zwracamy odpowiedź ,,\texttt{NIE}''.
 
-% \end{verbatim}
+$ $\\
+$ $\\
+$ $\\
+Analiza złożoności poszczególnych kroków:
+
+\begin{enumerate}
+    \item Przefiltrowanie studentów aby uzyskać instancję \texttt{S'} problemu 
+    można wykonać w czasie wielomianowym. Wystarczy wziąć listę konfliktów z 
+    \texttt{S}, usunąć te konflikty, gdzie zrzęda nie lubi studenta, który nie 
+    jest zrzędą a następnie wyznaczyć nowe numery dla studentów aby leżały w 
+    odpowiednim przedziale.
+    \item Przydziały \texttt{P} możemy wyznaczyć dowolnym algorytmem 
+    rozwiązującym problem $Tutorzy$, ponieważ w \texttt{S} jest nie więcej 
+    niż $K$ studentów (a $K$ jest ustaloną stałą), więc zajmuje to czas $O(1)$.
+    \item \texttt{|P|} jest stałą (być może bardzo dużą) ze względu na stałą 
+    liczbą studentów. W związku z tym, zewnętrzna pętla wykona się stałą liczbę 
+    razy.
+    \item |\texttt{S} $\setminus$ \texttt{S'}| = $O$(\texttt{S.studenci}), więc 
+    pętla wykona się liniową liczbę razy względem rozmiaru wejścia.
+    \item Wyznaczenie \texttt{T} zajmuje najwyżej czas $K\cdot$ \texttt{S.studenci} (może być w czasie stałym jeżeli przed rozpoczęciem pętli stworzylibyśmy macierz sąsiedztwa studentów, w której zapisana byłaby informacja o tym, przez jakich studentów dany student jest nielubiany).
+\end{enumerate}
+
+Sumarycznie czas potrzebny na wykonanie programu \texttt{tutorzy(S)} jest 
+wielomianowy.
+
+$ $\\
+Pokazaliśmy, że istnieje algorytm rozwiązujący problem $Tutorzy$ z 
+ograniczeniem do $K$ zrzęd w czasie wielomianowym. Jeżeli istnieje taki 
+algorytm dla dowolnej stałej $K$, to w szczególności da się rozwiązać taki 
+problem w czasie wielomianowym przy założeniu, że będzie co najwyżej 15 zrzęd, 
+co należało udowodnić.
+\begin{flushright}
+    $\qedsymbol$
+\end{flushright}
 
 \end{proof*} \end{theorem*}
 
 \end{titlepage}
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
