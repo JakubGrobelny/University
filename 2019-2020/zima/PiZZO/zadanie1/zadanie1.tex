@@ -142,7 +142,7 @@ procedura tutorzy(S):
         zwróć NIE
     dla każdego p z P:
         dla każdego studenta s z S, który nie jest zrzędą:
-            T := tutorzy przydzieleni zrzędom nie lubiącym s
+            T := tutorzy przydzieleni zrzędom nielubiącym s
             jeżeli |T| = 4:
                 wyjdź z pętli i rozpatrz kolejne p
         zwróć TAK
@@ -181,12 +181,14 @@ Analiza złożoności poszczególnych kroków:
     \item Przydziały \texttt{P} możemy wyznaczyć dowolnym algorytmem 
     rozwiązującym problem $Tutorzy$, ponieważ w \texttt{S} jest nie więcej 
     niż $K$ studentów (a $K$ jest ustaloną stałą), więc zajmuje to czas $O(1)$.
-    \item \texttt{|P|} jest stałą (być może bardzo dużą) ze względu na stałą 
-    liczbą studentów. W związku z tym, zewnętrzna pętla wykona się stałą liczbę 
-    razy.
-    \item |\texttt{S} $\setminus$ \texttt{S'}| = $O$(\texttt{S.studenci}), więc 
-    pętla wykona się liniową liczbę razy względem rozmiaru wejścia.
-    \item Wyznaczenie \texttt{T} zajmuje najwyżej czas $K\cdot$ \texttt{S.studenci} (może być w czasie stałym jeżeli przed rozpoczęciem pętli stworzylibyśmy macierz sąsiedztwa studentów, w której zapisana byłaby informacja o tym, przez jakich studentów dany student jest nielubiany).
+    \item \texttt{|P|} jest ograniczne przez stałą $4^K$. W związku z tym, 
+    zewnętrzna pętla wykona się stałą liczbę razy.
+    \item Liczba wykonań wewnętrznej pętli jest rzędu $O$(\texttt{S.studenci}),
+    a więc liniowa.
+    \item Wyznaczenie \texttt{T} zajmuje najwyżej czas $K\cdot$ \texttt
+    {S.studenci} (może być w czasie stałym jeżeli przed rozpoczęciem pętli 
+    stworzylibyśmy macierz sąsiedztwa studentów, w której zapisana byłaby 
+    informacja o tym, przez jakich studentów dany student jest nielubiany).
 \end{enumerate}
 
 Sumarycznie czas potrzebny na wykonanie programu \texttt{tutorzy(S)} jest 
