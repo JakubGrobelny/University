@@ -4,6 +4,8 @@
 *.aux
 *.log
 *.synctex.gz
+/*/*.synctex.gz
+/*.synctex.gz
 */*.out
 .stack-work/
 */*.o
@@ -15,3 +17,4 @@
 cycle
 demand
 reaper
+

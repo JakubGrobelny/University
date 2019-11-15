@@ -130,7 +130,6 @@ Problem $Tutorzy$ można rozwiązać w czasie wielomianowym, przy założeniu, 
 będzie co najwyżej 15 zrzęd.
 
 \begin{proof*}\,\\\normalfont
-
 Pokażemy, że dla dowolnej stałej liczby zrzęd $K$ istnieje algorytm działający 
 w czasie wielomianowym, który rozwiązuje problem $Tutorzy$.
 
@@ -165,8 +164,12 @@ zlicza wszystkich unikalnych tutorów jacy zostali przydzieleni zrzędom, które
 nie lubią aktualnie rozpatrywanego studenta. Jeżeli jest to czterech różnych 
 tutorów, to wówczas nie ma żadnego dostępnego dla rozpatrywanego studenta. W 
 takim przypadku wychodzimy z wewnętrznej pętli i rozpatrujemy kolejny przydział 
-\texttt{p}. Jeżeli okaże się, że w wewnętrznej pętli udało się znaleźć tutora dla każdego studenta, to zwracamy odpowiedź ,,\texttt{TAK}''. Jeżeli rozpatrzymy bez sukcesu wszystkie przydziały \texttt{p}, to wówczas zwracamy odpowiedź ,,\texttt{NIE}''.
+\texttt{p} w nowej iteracji pętli zewnętrznej. Jeżeli okaże się, że w 
+wewnętrznej pętli udało się znaleźć tutora dla każdego studenta, to zwracamy 
+odpowiedź ,,\texttt{TAK}''. Jeżeli rozpatrzymy bez sukcesu wszystkie przydziały 
+\texttt{p}, to wówczas zwracamy odpowiedź ,,\texttt{NIE}''.
 
+$ $\\
 $ $\\
 $ $\\
 $ $\\
