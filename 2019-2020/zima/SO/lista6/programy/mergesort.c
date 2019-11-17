@@ -61,15 +61,38 @@ static void Sort(int parent_fd) {
 
   sockpair_t left = MakeSocketPair();
   /* TODO: Spawn left child. */
-    (void)left;
-    (void)Merge;
-    (void)SendElem;
+  if (!Fork()) {
+    Close(left.parent_fd);
+    Close(parent_fd);
+
+    Sort(left.child_fd);
+    exit(0);
+  }
+  Close(left.child_fd);
 
   sockpair_t right = MakeSocketPair();
   /* TODO: Spawn right child. */
-    (void)right;
+  if (!Fork()) {
+    Close(left.parent_fd);
+    Close(right.parent_fd);
+    Close(parent_fd);
+
+    Sort(right.child_fd);
+    exit(0);
+  }
+  Close(right.child_fd);
 
   /* TODO: Send elements to children and merge returned values afterwards. */
+  const int lhalf = nelem / 2;
+  const int rhalf = nelem - lhalf;
+
+  SendElem(parent_fd, left.parent_fd, lhalf);
+  SendElem(parent_fd, right.parent_fd, rhalf);
+  Merge(left.parent_fd, right.parent_fd, parent_fd);
+
+  Close(parent_fd);
+  Close(left.parent_fd);
+  Close(right.parent_fd);
 
   /* Wait for both children. */
   Wait(NULL);

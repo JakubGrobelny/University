@@ -6,6 +6,7 @@
 - Zadanie 2 – brak
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
+- [Zadanie 5](#zadanie-5)
 
 ***
 
@@ -70,4 +71,17 @@ Rozwiązanie:
 Rozwiązanie:
 - [listdir.c](./programy/listdir.c)
 
+***
+
+# Zadanie 5
+
+**lokalna dwukierunkowa** (metoda komunikacji??¿) – gniazda (ang. *sockets*) IPC (*inter-process comunication*). Pozwalają na dwustronną wymianę danych pomiędzy procesami działającymi na tym samym systemie. Działają podobnie do gniazd sieciowych ale cała komunikacja odbywa się w obrębie jądra systemu.
+
+Rozwiązanie:
+- [mergesort.c](./programy/mergesort.c)
+
+Rysunek:
+![zad5](./zad5.png)
+
+***
 
