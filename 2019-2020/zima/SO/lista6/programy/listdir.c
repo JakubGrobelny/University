@@ -89,6 +89,8 @@ int main(int argc, char *argv[]) {
   while ((n = Getdents(dirfd, (void *)buf, DIRBUFSZ))) {
     struct linux_dirent *d;
     /* TODO: Iterate over directory entries and call file_info on them. */
+    (void)d;
+    (void)file_info;
   }
 
   Close(dirfd);

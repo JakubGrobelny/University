@@ -61,9 +61,13 @@ static void Sort(int parent_fd) {
 
   sockpair_t left = MakeSocketPair();
   /* TODO: Spawn left child. */
+    (void)left;
+    (void)Merge;
+    (void)SendElem;
 
   sockpair_t right = MakeSocketPair();
   /* TODO: Spawn right child. */
+    (void)right;
 
   /* TODO: Send elements to children and merge returned values afterwards. */
 

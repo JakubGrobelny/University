@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
     }
 
     /* TODO: Attach new buffer to stdout stream. */
+    (void)mode; (void)size; buf = NULL;
 
     for (int j = 0; j < times; j++)
       for (int k = 0; k < length; k++)
@@ -67,6 +68,7 @@ int main(int argc, char *argv[]) {
     int n = sysconf(_SC_IOV_MAX);
     struct iovec iov[n];
     /* TODO: Write file by filling in iov array and issuing writev. */
+    (void)iov;
   }
 
   free(line);
