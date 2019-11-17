@@ -1,12 +1,11 @@
 # Spis treści
 
-**Uwaga**: w tym tygodniu mogę nie mieć zbyt wielu rozwiązań bo muszę zrobić prezentację na seminarium *xd*
-
 - [Zadanie 1](#zadanie-1)
 - Zadanie 2 – brak
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
 - [Zadanie 5](#zadanie-5)
+
 
 ***
 
