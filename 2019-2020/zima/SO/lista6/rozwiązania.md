@@ -5,6 +5,7 @@
 - [Zadanie 1](#zadanie-1)
 - Zadanie 2 – brak
 - [Zadanie 3](#zadanie-3)
+- [Zadanie 4](#zadanie-4)
 
 ***
 
@@ -57,3 +58,16 @@ getfattr kotek.jpg -d
 
 Rozwiązanie:
 - [id.c](./programy/id.c)
+
+***
+
+# Zadanie 4
+
+**numer urządzenia** – para liczb `major, minor`:
+- major – identyfikator sterownika powiązanego z urządzeniem (na przykład `/dev/null` i `/dev/zero` są zarządzane przez sterownik nr 1)
+- minor – numer używany przez sterownik. Często jeden sterownik kontroluje wiele urządzeń a numer `minor` pozwala mu je odróżnić.
+
+Rozwiązanie:
+- [listdir.c](./programy/listdir.c)
+
+
