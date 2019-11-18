@@ -7,21 +7,20 @@ przechowywanie dwóch 15-bitowych wskaźników w jednym słowie.
 
 Makra \texttt{car} i \texttt{cdr} w assemblerze 704:
 \begin{columns}
-\column{0.5\textwidth}
+\column{0.7\textwidth}
 \begin{verbatim}
-     # car:
-     LXD JSLOC 4
-     CLA 0, 4
-     PAX 0, 4
-     PXD 0, 4
+# car:
+CLA 0, i # wyczyść AC i dodaj i
+PAX 0, i # zapisz Address AC do i
+PXD 0, i # wyczyść AC i wczytaj
+         # i do Decrement AC
 \end{verbatim}
-\column{0.5\textwidth}
+\column{0.3\textwidth}
 \begin{verbatim}
-     # cdr:
-     LXD JLOC 4
-     CLA 0, 4
-     PDX 0, 4
-     PXD 0, 4
+# cdr:
+CLA 0, i
+PDX 0, i
+PXD 0, i
 \end{verbatim}
 \end{columns}
 
@@ -34,4 +33,3 @@ Makra \texttt{car} i \texttt{cdr} w assemblerze 704:
                     \textbf{D}ecrement \textbf{R}egister''
 \end{description}
 \n
-

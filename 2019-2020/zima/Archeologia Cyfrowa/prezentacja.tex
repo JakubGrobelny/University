@@ -49,18 +49,15 @@ dziedzina wiedzy.
         \begin{itemize}
             \item \pause 
                 \only<-5>{,,\textit{Czy maszyny myślą?}''}
-                \only<6-8>{\sout{,,\textit{Czy maszyny myślą?}''}}
+                \only<6-7>{\sout{,,\textit{Czy maszyny myślą?}''}}
             \item \pause 
                 \only<-5>{,,\textit{Czy maszyny mogą myśleć?}''}
-                \only<6-8>{\sout{,,\textit{Czy maszyny mogą myśleć?}''}}
+                \only<6-7>{\sout{,,\textit{Czy maszyny mogą myśleć?}''}}
             \item \pause,,\textit{Czy maszyny mogą działać nieodróżnialnie od ludzi?}''
         \end{itemize} \pause
-    \item[1951] Marvin Lee Minsky buduje sieć neuronową 
-                SNARC\footnotemark\pause
     \item[1951] Pierwsze programy grające w warcaby (Christopher 
                 Strachey) i szachy (Dietrich Prinz)
 \end{description}
-\only<7-8>{\footnotetext[1]{Stochastic neural analog reinforcement calculator}}
 \end{frame}
 
 \begin{frame}
@@ -74,13 +71,11 @@ dziedzina wiedzy.
             \item Program manipulujący \textbf{symbolami} \pause
             \item Udowodnił 38 z pierwszych 52 twierdzeń z ,,\textit{Principia 
                   Mathematica}''\footnotemark \pause \,(niektóre z dowodów były 
-                  bardziej eleganckie niż wcześniej istniejące)... \pause
-            \item ...i to wszystko zanim określenie ,,sztuczna inteligencja'' w 
-            ogóle zostało stworzone.
+                  bardziej eleganckie niż wcześniej istniejące) \pause
         \end{itemize}
 \end{description}
 
-\only<4-6>{\footnotetext[2]{Autorstwa Alfreda Northa Whiteheada i Bertranda 
+\only<4-5>{\footnotetext[2]{Autorstwa Alfreda Northa Whiteheada i Bertranda 
                             Russella}}
 \end{frame}
 
@@ -122,7 +117,8 @@ tworzeniu sztucznej inteligencji. \pause
 \begin{frame}
 \frametitle{Symbole}
 
-W 1959 roku John McCarthy pisze pracę ,,\textit{Programs with common sense}''.
+W 1959 roku John McCarthy pisze pracę ,,\textit{Programs with common sense}''
+zainspirowaną programem ,,Logic Theorist''.
 \pause
 
 \n Proponuje w niej stworzenie programu ,,\textit{Advice Taker}'', który rozwiązywałby problemy poprzez manipulację zdaniami (\textbf{symbole!}).
@@ -141,12 +137,12 @@ W 1959 roku John McCarthy pisze pracę ,,\textit{Programs with common sense}''.
 ,,\textit{A class of entities called terms
 is defined and a term is an expression. A sequence of expressions is an 
 expression. These expressions are represented in the machine by list 
-structures}'' -- reprezentacja przesłanek/faktów w postaci \textbf{list symboli}
+structures}'' \pause\,
+-- reprezentacja przesłanek/faktów w postaci \textbf{list symboli}
 \end{frame}
 
 \begin{frame}
 Przykłady:
-\pause
     $$at(I, desk)$$
     $$at(desk, home)$$
     $$at(car, home)$$
@@ -172,7 +168,7 @@ Prawie jak Prolog?
 programowania do manipulowania listami stworzony przez Newella, Shawa i Simona, 
 który posłużył do napisania programu. ,,\textit{Logic Theorist}''.
 \pause
-\n \n Dwa rodzaje wyrażeń:
+\n
 \begin{itemize}
     \item dane reprezentowane jako listy
     \item procedury operujące na danych
@@ -208,10 +204,8 @@ Nowe feature'y:\pause
 \begin{itemize}
     \item Manipulacja listami (tylko listy atomów)\pause
     \item Funkcje wyższego rzędu\pause
-    \item Obliczenia na symbolach (tylko litera+liczba)\pause
+    \item Obliczenia na symbolach (tylko litera+liczba)
 \end{itemize}
-
-\n Alternatywy?\pause\, Brak.
 
 \end{frame}
 
@@ -221,7 +215,7 @@ Nowe feature'y:\pause
 \section{,,\textit{Recursive Functions of Symbolic Expressions...}''}
 
 \begin{frame}
-\frametitle{Wymyślenie Lispu}
+\frametitle{LISt Processor}
 \pause
 W 1960 ukazuje się praca Johna McCarthy'ego pt.,,\textit{Recursive Functions of Symbolic Expressions
 Their Computation by Machine, Part I}''. \pause
@@ -232,47 +226,25 @@ Their Computation by Machine, Part I}''. \pause
 
 
 \begin{frame}
-\frametitle{Cele}
-\pause
-\begin{itemize}
-    \item Lisp został wymyślony ze względu na ,,\textit{Advice Taker'a}''.\pause
-    \item Języka programowania do manipulacji wyrażeniami reprezentującymi 
-    zdania, przy użyciu których ,,\textit{Advice Taker}'' mógłby 
-    przeprowadzać wnioskowania.
-\end{itemize}
-\end{frame}
-
-
-\begin{frame}
 \frametitle{Wyrażenia warunkowe}
-\pause
 Po raz pierwszy pojawiła się idea \textit{wyrażeń warunkowych}.
 \pause
 
 \begin{figure}
 \includegraphics[scale=0.6]{images/conditional.png}
 \end{figure}
-\pause
-
-Wyrażenia warunkowe są następującej postaci:
-$$(p_1 \rightarrow e_1,\,...\,, p_n \rightarrow e_n)$$
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Wyrażenia warunkowe}
 
-Wyrażenia warunkowe są następującej postaci:
+Wyrażenia warunkowe miały mieć następującą postać:
 $$(p_1 \rightarrow e_1,\,...\,, p_n \rightarrow e_n)$$
 
 Interpretacja:
 \pause
-\n ,,Jeżeli $p_1$ to $e_1$, w przeciwnym razie jeżeli $p_2$ to $e_2$, \,...\,, w przciwnym razie jeżeli $p_n$ to $e_n$''
-\pause
-\n \n lub
-\pause
-\n 
-,,$p_1$ daje $e_1$, \,...\,, $p_n$ daje $e_n$''
+\n ,,Jeżeli $p_1$ to $e_1$, w przeciwnym razie jeżeli $p_2$ to $e_2$, \,...\,, w przeciwnym razie jeżeli $p_n$ to $e_n$''
 
 \end{frame}
 
@@ -312,14 +284,20 @@ Wyrażenia warunkowe pozwalają na eleganckie zapisywanie funkcji:
 $$|x| = (x < 0 \rightarrow -x, T \rightarrow x)$$
 \pause
 $$sgn(x) = (x < 0 \rightarrow -1, x = 0 \rightarrow 0, T \rightarrow 1)$$
+\pause
+
+W ,,\textit{History of Lisp}'' McCarthy narzekał na niewygodne instrukcje 
+warunkowe w FORTRANie. \pause Naturalnym było wynalezienie funkcji 
+\texttt{XIF(M,N1,N2)}, która zwracała \texttt{N1} lub \texttt{N2} zależnie od 
+wartości \texttt{M}, ale FORTRAN miał ewaluację gorliwą.
+
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Funkcje rekurencyjne}
 
-Bardzo zwięzły staje się też zapis funkcji rekurencyjnych:
-\pause
+Zapis funkcji rekurencyjnych przy użyciu wyrażeń warunkowych:
 $$n! = (n = 0 \rightarrow 1, T \rightarrow n \cdot (n - 1)!)$$
 \pause
 \begin{equation*}
@@ -343,9 +321,9 @@ $$n! = (n = 0 \rightarrow 1, T \rightarrow n \cdot (n - 1)!)$$
 \begin{frame}
 \frametitle{Spójniki logiczne}
 \pause
-$$p \wedge q = (p \rightarrow q, T \rightarrow F)$$
-$$p \vee q = (p \rightarrow T, T \rightarrow q)$$
-$$ \sim{p} = (p \rightarrow F, T \rightarrow T)$$
+$$p \wedge q = (p \rightarrow q, T \rightarrow F)$$\pause
+$$p \vee q = (p \rightarrow T, T \rightarrow q)$$\pause
+$$ \sim{p} = (p \rightarrow F, T \rightarrow T)$$\pause
 $$p \Rightarrow q = (p \rightarrow q, T \rightarrow T)$$
 \end{frame}
 
@@ -360,7 +338,7 @@ $$p \Rightarrow q = (p \rightarrow q, T \rightarrow T)$$
 
 
 \begin{frame}
-\frametitle{Spójniki logiczne}
+\frametitle{Spójniki logiczne -- leniwa ewaluacja}
 $$ p \wedge q = (p \rightarrow q, T \rightarrow F)$$
 Argumenty funkcji ,,$\wedge$'' nie są poddawane ewaluacji przed jej aplikacją.
 \end{frame}
@@ -422,7 +400,6 @@ $$label(a, \mathcal{E})$$
 \pause
 
 Wyrażenie $\mathcal{E}$, w którym wszystkie wystąpienia $a$ interpretowane są jako odniesienia do całego wyrażenia $\mathcal{E}$.
-\pause
 \end{frame}
 
 
@@ -456,7 +433,8 @@ Czemu symbole składające się z wielu znaków?\pause
 
 \n Odpowiedź:
 \begin{itemize}
-    \item IBM 704 miał tylko 47 drukowalnych znaków \pause
+    \item IBM 704 miał tylko 47 drukowalnych znaków więc jednoliterowe symbole 
+    byłyby niewystarczające\pause
     \item Nazywanie atomowych bytów angielskimi słowami i zdaniami jest wygodne
 
 \end{itemize}
@@ -561,11 +539,13 @@ M-wyrażenia -- meta-wyrażenia
 
 Dalej McCarthy opisuje różne funkcje, które można zapisać przy użyciu wcześniej opisanej notacji.
     \begin{itemize}
-        \item $append[x;y]$
-        \item $among[x;y]$ -- czy $y$ zawiera $x$?
-        \item $pair[x;y]$ -- \texttt{zip}
-        \item $assoc[x;y]$ -- szukanie wartości dla klucza $x$ na liście par
-        \item $sublis[x;y]$ -- mamy listę symboli $y$, pod które chcemy podstawić przypisane im wartości w liście $x$.
+        \item $append[x;y]$\pause
+        \item $among[x;y]$ \pause-- czy $y$ zawiera $x$?\pause
+        \item $pair[x;y]$ \pause -- \texttt{zip}\pause
+        \item $assoc[x;y]$ \pause -- szukanie wartości dla klucza 
+            $x$ na liście par $y$\pause
+        \item $sublis[x;y]$ \pause-- mamy listę symboli $y$, pod które chcemy 
+        podstawić przypisane im wartości z listy asocjacji $x$ \pause
     \end{itemize}
 \end{frame}
 
@@ -582,7 +562,7 @@ Chcemy przetłumaczyć M-wyrażenie $\mathcal{E}$ na S-wyrażenie $\mathcal{E}^
     \item Zmienne i nazwy funkcji napisane małymi literami zamieniamy na 
           odpowiadające napisy złożone z wielkich liter (np. $car^* = CAR$).
           \pause
-    \item Forma $f[e_1 ; \,...\,;e_n] = (f^*, e_1^*, \,...\,,e_n^*)$ \pause
+    \item $\{f[e_1 ; \,...\,;e_n]\}^* = (f^*, e_1^*, \,...\,,e_n^*)$ \pause
     \item $\{[p_1 \rightarrow e_1; \,...\,; p_n \rightarrow e_n]\}^* =
           (COND, (p_1^*, e_1^*), \,...\, (p_n^*, e_n^*))$ \pause
     \item $\{[\lambda[[x_1;\,...\,;x_n]; \mathcal{E}]]\}^* =
@@ -604,7 +584,7 @@ Chcemy przetłumaczyć M-wyrażenie $\mathcal{E}$ na S-wyrażenie $\mathcal{E}^
 \begin{frame}
 \frametitle{$apply$}
 
-Funkcja $apply$ aplikuje S-wyrażenie $f$ reprezentujące S-funkcję $f'$ do listy argumentów $args$ postaci $(arg_1\,...\,arg_n)$.\pause
+Funkcja $apply$ aplikuje S-wyrażenie $f$ reprezentujące S-funkcję $f'$ do listy argumentów $args$ postaci $(arg_1,\,...\,arg_n)$.\pause
 
 $$apply [f;args] = eval [cons [f; appq [args]]; NIL]$$ \n gdzie \n
 
@@ -644,7 +624,7 @@ $$apply [f;args] = eval [cons [f; appq [args]]; NIL]$$ \n gdzie \n
 \frametitle{$eval$ cd.}
 \begin{description}
     \item \quad $eq [caar [e]; LABEL] \rightarrow$ \n
-          \quad\quad $[eval [cons[caddar [e]; cdr [e]];$ \n 
+          \quad\quad $eval [cons[caddar [e]; cdr [e]];$ \n 
           \quad\quad $cons[list [cadar [e]; car[e]; a]];$\pause
     \item \quad $eq [caar [e]; LAMBDA] \rightarrow$ \n
           \quad\quad $eval[caddar [e]; append[pair[cadar[e]; evlis[cdr [e]; a]; a]]$ 
@@ -700,12 +680,13 @@ $evlis[m;a] = [null [m] \rightarrow NIL; T \rightarrow cons[eval[car[m];a];evlis
 \begin{figure}
 \includegraphics[scale=0.4]{images/list-layout-a.png}
 \end{figure}
-Lista jest zbiorem słów maszynowych zaaranżowanych w sposób podobny jak na powyższym rysunku. 
-Każde słowo jest reprezentowane jako jeden z podzielonych na pół prostokątów.
+Lista jest zbiorem słów maszynowych połączonych wskaźnikami w jedną strukturę.
+Każde słowo na rysunku jest reprezentowane jako jeden z podzielonych na pół prostokątów.
 \pause
 
 \n
-Każde słowo dzieli się na dwa pola: lewe $address$ oraz prawe $decrement$.
+Słowo maszynowe w IBM 704 dzieli się na dwa pola: lewe $address$ oraz prawe 
+$decrement$ i 6 pozostałych bitów.
 \pause
 \end{frame}
 
@@ -742,12 +723,13 @@ Jedna podstruktura może pojawiać się więcej niż w jednym miejscu w struktu
 Benefity wynikające z używania list:\pause
 
 \begin{itemize}
-    \item Ani rozmiar ani liczba wyrażeń w programie nie może być przewidziana 
+    \item Ani rozmiar, ani liczba wyrażeń w programie nie może być przewidziana 
     wcześniej, więc ciężko byłoby zaaranżować bloki pamięci o stałym rozmiarze.
     \pause
     \item Rejestry można odkładać na listę dostępnej pamięci gdy nie są już 
     potrzebne. Nawet jeden wolny rejestr jest wartościowy w przeciwieństwie do 
-    sytuacji gdzie wyrażenia są przechowywane liniowo.
+    sytuacji gdzie wyrażenia są przechowywane liniowo w ciągłych obszarach 
+    pamięci.\pause
     \item Wyrażenie, które jest podwyrażeniem wielu wyrażeń, może być dzielone 
     i przechowywane jedynie raz.
 \end{itemize}
@@ -772,7 +754,7 @@ Benefity wynikające z używania list:\pause
 \begin{columns}
 \column{0.4\textwidth}
 \textit{Print names} są reprezentowane jako listy słów zawierających 
-maksymalnie sześć 6-bitowych znaków. Ostatnie słowo wypełnione jest wartościami,
+maksymalnie sześć 6-bitowych znaków. Ostatnie słowo dopełnione jest wartościami,
 które nie reprezentują drukowalnych znaków.
 \column{0.6\textwidth}
 \begin{figure}
@@ -781,6 +763,33 @@ które nie reprezentują drukowalnych znaków.
 \end{figure}
 \end{columns}
 \end{frame}
+
+
+\begin{frame}
+    \frametitle{IBM 704}
+    \pause
+    Kilka faktów o IBM 704:\n
+    \begin{itemize}
+        \item \pause 36-bitowe słowa
+        \item \pause 15-bitowa przestrzeń adresowa
+        \item \pause 38-bitowy akumulator
+        \item \pause 36-bitowy rejestr \textit{multiplier quotient}
+        \item \pause Trzy 15-bitowe rejestry \textit{index}
+        \item \pause Instrukcje miały dwa typy: \pause
+            \begin{description}
+                \item[B] -- nieciekawe \pause
+                \item[A] -- każda instrukcja typu A składa się z: \pause
+                    \begin{itemize}
+                        \item 3-bitowy prefiks (kod instrukcji) \pause
+                        \item 15-bitowe pole \textit{decrement} (niektóre 
+                        instrukcje odejmują tę wartość od wartości w rejestrze) 
+                        \pause
+                        \item 3-bitowe pole \textit{tag} (wskazuje rejestr) \pause
+                        \item 15-bitowe pole \textit{address}
+                    \end{itemize}
+            \end{description}
+\end{itemize}
+\end{frame}    
 
 
 \begin{frame}
@@ -819,14 +828,17 @@ programowi nie skończy się cała wolna pamięć. Gdy potrzebny jest wolny rej
 
 
 \begin{frame}
-\frametitle{\textit{Garbage collector}\only<3>{\,\,\,(mark-and-sweep)}}
+\frametitle{\textit{Garbage collector}\only<3,4>{\,\,\,(mark-and-sweep)}}
 \begin{enumerate}
-    \item \pause Znajdujemy wszystkie rejestry osiągalne z rejestrów 
+    \item \pause Znajdujemy wszystkie słowa osiągalne z rejestrów 
     bazowych i ustawiamy ich znak na ujemny.
     \item \pause Przeszukujemy obszar pamięci zarezerwowany dla struktur 
-    listowych i dodajemy wszystkie rejestry o znaku dodatnim do listy 
+    listowych i dodajemy wszystkie słowa o znaku dodatnim do listy 
     \textit{free-storage}.
 \end{enumerate}
+\pause \n \n
+Implementacja odśmiecania pamięci przez zliczanie referencji nie była praktyczna, bo dostępne było jedynie 6 bitów na każde słowo.
+
 \end{frame}
 
 
@@ -847,33 +859,6 @@ programowi nie skończy się cała wolna pamięć. Gdy potrzebny jest wolny rej
 \end{frame}
 
 
-\begin{frame}
-\frametitle{car i cdr}
-\pause
-Kilka faktów o IBM 704:\n
-\begin{itemize}
-    \item \pause 36-bitowe słowa
-    \item \pause 15-bitowa przestrzeń adresowa
-    \item \pause 38-bitowy akumulator
-    \item \pause 36-bitowy rejestr \textit{multiplier quotient}
-    \item \pause Trzy 15-bitowe rejestry \textit{index}
-    \item \pause Instrukcje miały dwa typy: \pause
-        \begin{description}
-            \item[B] -- nieciekawe \pause
-            \item[A] -- każda instrukcja typu A składa się z: \pause
-                \begin{itemize}
-                    \item 3-bitowy prefiks (kod instrukcji) \pause
-                    \item 15-bitowe pole \textit{decrement} (niektóre 
-                    instrukcje odejmują tę wartość od wartości w rejestrze) 
-                    \pause
-                    \item 3-bitowe pole \textit{tag} (wskazuje rejestr) \pause
-                    \item 15-bitowe pole \textit{address}
-                \end{itemize}
-        \end{description}
-\end{itemize}
-\end{frame}
-
-
 \begin{frame}[fragile]
 \frametitle{car i cdr}
 
@@ -884,21 +869,20 @@ przechowywanie dwóch 15-bitowych wskaźników w jednym słowie.
 
 Makra \texttt{car} i \texttt{cdr} w assemblerze 704:
 \begin{columns}
-\column{0.5\textwidth}
+\column{0.7\textwidth}
 \begin{verbatim}
-     # car:
-     LXD JSLOC 4  
-     CLA 0, 4   
-     PAX 0, 4   
-     PXD 0, 4   
+# car:
+CLA 0, i # wyczyść AC i dodaj i
+PAX 0, i # zapisz Address AC do i
+PXD 0, i # wyczyść AC i wczytaj 
+         # i do Decrement AC
 \end{verbatim}
-\column{0.5\textwidth}
+\column{0.3\textwidth}
 \begin{verbatim}
-     # cdr:
-     LXD JLOC 4
-     CLA 0, 4
-     PDX 0, 4
-     PXD 0, 4
+# cdr:
+CLA 0, i
+PDX 0, i
+PXD 0, i
 \end{verbatim}
 \end{columns}
 
@@ -911,22 +895,13 @@ Makra \texttt{car} i \texttt{cdr} w assemblerze 704:
                     \textbf{D}ecrement \textbf{R}egister''
 \end{description}
 \n
-
 \end{frame}
-
-\begin{frame}[label=current]
-\frametitle{Obliczanie funkcji rekurencyjnych}
-
-
-
-\end{frame}
-
 
 %==============================================================================%
 
 \section{Pierwsze implementacje}
 
-\begin{frame}
+\begin{frame}[label=current]
 \end{frame}
 
 %==============================================================================%
