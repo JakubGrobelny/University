@@ -255,7 +255,7 @@ Po raz pierwszy pojawiła się idea \textit{wyrażeń warunkowych}.
 \pause
 
 Wyrażenia warunkowe są następującej postaci:
-$$(p_1 \rightarrow e_1,\,...\, p_n \rightarrow e_n)$$
+$$(p_1 \rightarrow e_1,\,...\,, p_n \rightarrow e_n)$$
 \end{frame}
 
 
@@ -263,7 +263,7 @@ $$(p_1 \rightarrow e_1,\,...\, p_n \rightarrow e_n)$$
 \frametitle{Wyrażenia warunkowe}
 
 Wyrażenia warunkowe są następującej postaci:
-$$(p_1 \rightarrow e_1,\,...\, p_n \rightarrow e_n)$$
+$$(p_1 \rightarrow e_1,\,...\,, p_n \rightarrow e_n)$$
 
 Interpretacja:
 \pause
@@ -564,8 +564,8 @@ Dalej McCarthy opisuje różne funkcje, które można zapisać przy użyciu wcz
         \item $append[x;y]$
         \item $among[x;y]$ -- czy $y$ zawiera $x$?
         \item $pair[x;y]$ -- \texttt{zip}
-        \item $assoc[x;y]$ -- szukanie klucza $x$ na liście par
-        \item $sublis[x;y]$ -- mamy listę symboli $y$ pod które chcemy podstawić przypisane im wartości w liście $x$.
+        \item $assoc[x;y]$ -- szukanie wartości dla klucza $x$ na liście par
+        \item $sublis[x;y]$ -- mamy listę symboli $y$, pod które chcemy podstawić przypisane im wartości w liście $x$.
     \end{itemize}
 \end{frame}
 
@@ -728,9 +728,194 @@ Jedna podstruktura może pojawiać się więcej niż w jednym miejscu w struktu
 \end{frame}
 
 
-\begin{frame}[label=current]
+\begin{frame}
+\frametitle{Reprezentacja S-wyrażeń cd.}
+\begin{figure}
+\includegraphics[scale=2.3]{images/list-layout-circular.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
 \frametitle{Reprezentacja S-wyrażeń cd.}
 
+Benefity wynikające z używania list:\pause
+
+\begin{itemize}
+    \item Ani rozmiar ani liczba wyrażeń w programie nie może być przewidziana 
+    wcześniej, więc ciężko byłoby zaaranżować bloki pamięci o stałym rozmiarze.
+    \pause
+    \item Rejestry można odkładać na listę dostępnej pamięci gdy nie są już 
+    potrzebne. Nawet jeden wolny rejestr jest wartościowy w przeciwieństwie do 
+    sytuacji gdzie wyrażenia są przechowywane liniowo.
+    \item Wyrażenie, które jest podwyrażeniem wielu wyrażeń, może być dzielone 
+    i przechowywane jedynie raz.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Listy asocjacji}
+\begin{itemize}
+    \item \pause Każdy symbol może posiadać listę dowolnych dodatkowych 
+                 informacji z nim powiązanych.
+        \begin{itemize}
+            \item \pause \textit{print name} -- napis reprezentujący symbol na 
+            zewnątrz maszyny
+            \item \pause numeryczna wartość dla symboli, które są liczbami
+            \item \pause inne S-wyrażenie
+            \item \pause adres procedury dla symboli, które są nazwami dla 
+                         funkcji zaimplementowanych w kodzie maszynowym
+        \end{itemize}
+\end{itemize}
+\pause \n
+\begin{columns}
+\column{0.4\textwidth}
+\textit{Print names} są reprezentowane jako listy słów zawierających 
+maksymalnie sześć 6-bitowych znaków. Ostatnie słowo wypełnione jest wartościami,
+które nie reprezentują drukowalnych znaków.
+\column{0.6\textwidth}
+\begin{figure}
+\includegraphics[scale=1.4]{images/pname.png}
+\caption{\textit{pname} dla symbolu DIFFERENTIATE}
+\end{figure}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\textit{Free-Storage List}}
+\pause
+Specjalny rejestr FREE zawiera adres pierwszego słowa listy 
+\textit{free storage}.
+
+\pause \n
+Jak przebiega alokacja pamięci?
+\pause
+\begin{enumerate}
+    \item Weź pierwsze wolne słowo z listy
+    \item \pause Ustaw wartość rejestru FREE na adres drugiego słowa z listy
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\textit{Free-Storage List}}
+Istnieje ustalony zbiór bazowych rejestrów, które 
+zawierają adresy struktur listowych, do których istnieje dostęp w programie.
+
+\n
+\pause Każdy rejestr, który jest osiągalny przez program, jest osiągalny z 
+jednego lub więcej bazowych rejestrów poprzez łańcuch operacji 
+\textit{car} i \textit{cdr}.
+
+\n
+\pause Zmiana zawartości jednego z bazowych rejestrów może spowodować, że wskazywany dotychczas rejestr staje się nieosiągalny. Oznacza to wówczas, że jego zawartość nie jest już potrzebna.
+
+\n
+\pause Nie jest podejmowane żadne działanie w celu zwalniania pamięci, dopóki 
+programowi nie skończy się cała wolna pamięć. Gdy potrzebny jest wolny rejestr, rozpoczyna się \textit{reclamation cycle}.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\textit{Garbage collector}\only<3>{\,\,\,(mark-and-sweep)}}
+\begin{enumerate}
+    \item \pause Znajdujemy wszystkie rejestry osiągalne z rejestrów 
+    bazowych i ustawiamy ich znak na ujemny.
+    \item \pause Przeszukujemy obszar pamięci zarezerwowany dla struktur 
+    listowych i dodajemy wszystkie rejestry o znaku dodatnim do listy 
+    \textit{free-storage}.
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Implementacja wbudowanych funkcji}
+
+\pause
+\begin{description}
+    \item[atom] -- słowo reprezentujące symbol ma specjalną stałą w części 
+                   adresowej.\pause
+    \item[eq] -- numeryczna równość adresów słów. Dla symboli działa to dlatego,
+                 że każdy symbol ma tylko jedną listę asocjacji.\pause
+    \item[cons] -- wartością $cons[x;y]$ musi być adres rejestru, który ma 
+    adres $x$ jako część $address$ i $y$ jako część $decrement$. \n 
+    \textit{Cons} zawsze bierze nowe słowo z listy \textit{free-storage}.
+    Wywołanie \textit{cons} może uruchomić garbage collectora.
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{car i cdr}
+\pause
+Kilka faktów o IBM 704:\n
+\begin{itemize}
+    \item \pause 36-bitowe słowa
+    \item \pause 15-bitowa przestrzeń adresowa
+    \item \pause 38-bitowy akumulator
+    \item \pause 36-bitowy rejestr \textit{multiplier quotient}
+    \item \pause Trzy 15-bitowe rejestry \textit{index}
+    \item \pause Instrukcje miały dwa typy: \pause
+        \begin{description}
+            \item[B] -- nieciekawe \pause
+            \item[A] -- każda instrukcja typu A składa się z: \pause
+                \begin{itemize}
+                    \item 3-bitowy prefiks (kod instrukcji) \pause
+                    \item 15-bitowe pole \textit{decrement} (niektóre 
+                    instrukcje odejmują tę wartość od wartości w rejestrze) 
+                    \pause
+                    \item 3-bitowe pole \textit{tag} (wskazuje rejestr) \pause
+                    \item 15-bitowe pole \textit{address}
+                \end{itemize}
+        \end{description}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{car i cdr}
+
+IBM 704 miał specjalne instrukcje do oczytywania pól 
+\textit{address} i \textit{decrement} słowa. Pozwalało to na wydajne 
+przechowywanie dwóch 15-bitowych wskaźników w jednym słowie.
+\pause \n \n
+
+Makra \texttt{car} i \texttt{cdr} w assemblerze 704:
+\begin{columns}
+\column{0.5\textwidth}
+\begin{verbatim}
+     # car:
+     LXD JSLOC 4  
+     CLA 0, 4   
+     PAX 0, 4   
+     PXD 0, 4   
+\end{verbatim}
+\column{0.5\textwidth}
+\begin{verbatim}
+     # cdr:
+     LXD JLOC 4
+     CLA 0, 4
+     PDX 0, 4
+     PXD 0, 4
+\end{verbatim}
+\end{columns}
+
+
+\n \n
+\begin{description}
+    \item[car] -- ,,\textbf{C}ontents of the 
+                    \textbf{A}ddress \textbf{R}egister''
+    \item[cdr] -- ,,\textbf{C}ontents of the 
+                    \textbf{D}ecrement \textbf{R}egister''
+\end{description}
+\n
+
+\end{frame}
+
+\begin{frame}[label=current]
+\frametitle{Obliczanie funkcji rekurencyjnych}
 
 
 

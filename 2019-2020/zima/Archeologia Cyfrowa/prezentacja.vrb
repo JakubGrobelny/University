@@ -1,34 +1,37 @@
-\frametitle{Zapotrzebowanie na nowe języki}
+\frametitle{car i cdr}
 
+IBM 704 miał specjalne instrukcje do oczytywania pól
+\textit{address} i \textit{decrement} słowa. Pozwalało to na wydajne
+przechowywanie dwóch 15-bitowych wskaźników w jednym słowie.
+\pause \n \n
+
+Makra \texttt{car} i \texttt{cdr} w assemblerze 704:
 \begin{columns}
-\column{0.6\textwidth}
-\textbf{Information Processing Language} \normalsize -- niskopozimowy język
-programowania do manipulowania listami stworzony przez Newella, Shawa i Simona,
-który posłużył do napisania programu. ,,\textit{Logic Theorist}''.
-\pause
-\n \n Dwa rodzaje wyrażeń:
-\begin{itemize}
-    \item dane reprezentowane jako listy
-    \item procedury operujące na danych
-\end{itemize}
-
-\column{0.4\textwidth}
-\begin{figure}
+\column{0.5\textwidth}
 \begin{verbatim}
-     IPL-V  List
-      Structure
-       Example
-    Name SYMB LINK
-    L1   9-1  100
-    100  S4   101
-    101  S5   0
-    9-1  0    200
-    200  A1   201
-    201  V1   202
-    202  A2   203
-    203  V2   0
-
+     # car:
+     LXD JSLOC 4
+     CLA 0, 4
+     PAX 0, 4
+     PXD 0, 4
 \end{verbatim}
-\caption{Lista zapisana w IPL-V}
-\end{figure}
+\column{0.5\textwidth}
+\begin{verbatim}
+     # cdr:
+     LXD JLOC 4
+     CLA 0, 4
+     PDX 0, 4
+     PXD 0, 4
+\end{verbatim}
 \end{columns}
+
+
+\n \n
+\begin{description}
+    \item[car] -- ,,\textbf{C}ontents of the
+                    \textbf{A}ddress \textbf{R}egister''
+    \item[cdr] -- ,,\textbf{C}ontents of the
+                    \textbf{D}ecrement \textbf{R}egister''
+\end{description}
+\n
+
