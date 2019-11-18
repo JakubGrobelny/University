@@ -4,13 +4,18 @@
 \column{0.6\textwidth}
 \textbf{Information Processing Language} \normalsize -- niskopozimowy język
 programowania do manipulowania listami stworzony przez Newella, Shawa i Simona,
-który posłużył do napisania programu
-,,\textit{Logic Theorist}''.
+który posłużył do napisania programu. ,,\textit{Logic Theorist}''.
+\pause
+\,\\\,\\Dwa rodzaje wyrażeń:
+\begin{itemize}
+    \item dane reprezentowane jako listy
+    \item procedury operujące na danych
+\end{itemize}
 
 \column{0.4\textwidth}
 \begin{figure}
 \begin{verbatim}
-     IPL-V List
+     IPL-V  List
       Structure
        Example
     Name SYMB LINK
@@ -24,8 +29,6 @@ który posłużył do napisania programu
     203  V2   0
 
 \end{verbatim}
-\caption{Kod w IPL}
+\caption{Lista zapisana w IPL-V}
 \end{figure}
-
 \end{columns}
-

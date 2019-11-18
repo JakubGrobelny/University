@@ -2,8 +2,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
-
+\usepackage{amsmath}
 \usepackage{ulem}
+
 \renewcommand<>{\sout}[1]{
     \alt#2{\beameroriginal{\sout}{#1}}{#1}
 }
@@ -43,10 +44,10 @@ dziedzina wiedzy.
         \begin{itemize}
             \item \pause 
                 \only<-5>{,,\textit{Czy maszyny myślą?}''}
-                \only<6-10>{\sout{,,\textit{Czy maszyny myślą?}''}}
+                \only<6-8>{\sout{,,\textit{Czy maszyny myślą?}''}}
             \item \pause 
                 \only<-5>{,,\textit{Czy maszyny mogą myśleć?}''}
-                \only<6-10>{\sout{,,\textit{Czy maszyny mogą myśleć?}''}}
+                \only<6-8>{\sout{,,\textit{Czy maszyny mogą myśleć?}''}}
             \item \pause,,\textit{Czy maszyny mogą działać nieodróżnialnie od ludzi?}''
         \end{itemize} \pause
     \item[1951] Marvin Lee Minsky buduje sieć neuronową 
@@ -54,7 +55,7 @@ dziedzina wiedzy.
     \item[1951] Pierwsze programy grające w warcaby (Christopher 
                 Strachey) i szachy (Dietrich Prinz)
 \end{description}
-\only<7-10>{\footnotetext[1]{Stochastic neural analog reinforcement calculator}}
+\only<7-8>{\footnotetext[1]{Stochastic neural analog reinforcement calculator}}
 \end{frame}
 
 \begin{frame}
@@ -74,7 +75,7 @@ dziedzina wiedzy.
         \end{itemize}
 \end{description}
 
-\only<3-6>{\footnotetext[2]{Autorstwa Alfreda Northa Whiteheada i Bertranda 
+\only<4-6>{\footnotetext[2]{Autorstwa Alfreda Northa Whiteheada i Bertranda 
                             Russella}}
 \end{frame}
 
@@ -119,7 +120,7 @@ tworzeniu sztucznej inteligencji. \pause
 W 1959 roku John McCarthy pisze pracę ,,\textit{Programs with common sense}''.
 \pause
 
-\,\\Proponuje w niej stworzenie programu ,,\textit{advice taker}'', który rozwiązywałby problemy poprzez manipulację zdaniami (\textbf{symbole!}).
+\,\\Proponuje w niej stworzenie programu ,,\textit{Advice Taker}'', który rozwiązywałby problemy poprzez manipulację zdaniami (\textbf{symbole!}).
 \pause
 
 \,\\,,\textit{Our ultimate objective is to make programs that 
@@ -135,7 +136,7 @@ W 1959 roku John McCarthy pisze pracę ,,\textit{Programs with common sense}''.
 ,,\textit{A class of entities called terms
 is defined and a term is an expression. A sequence of expressions is an 
 expression. These expressions are represented in the machine by list 
-structures}'' -- reprezentacja programów w postaci \textbf{list symboli}
+structures}'' -- reprezentacja przesłanek/faktów w postaci \textbf{list symboli}
 \end{frame}
 
 \begin{frame}
@@ -164,13 +165,18 @@ Prawie jak Prolog?
 \column{0.6\textwidth}
 \textbf{Information Processing Language} \normalsize -- niskopozimowy język 
 programowania do manipulowania listami stworzony przez Newella, Shawa i Simona, 
-który posłużył do napisania programu
-,,\textit{Logic Theorist}''.
+który posłużył do napisania programu. ,,\textit{Logic Theorist}''.
+\pause
+\,\\\,\\Dwa rodzaje wyrażeń:
+\begin{itemize}
+    \item dane reprezentowane jako listy
+    \item procedury operujące na danych
+\end{itemize}
 
 \column{0.4\textwidth}
 \begin{figure}
 \begin{verbatim}
-     IPL-V List 
+     IPL-V  List 
       Structure 
        Example
     Name SYMB LINK
@@ -182,20 +188,169 @@ który posłużył do napisania programu
     201  V1   202
     202  A2   203
     203  V2   0
-    
-\end{verbatim}
-\caption{Kod w IPL}
-\end{figure}
 
+\end{verbatim}
+\caption{Lista zapisana w IPL-V}
+\end{figure}
 \end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Information Processing Language}
+Nowe feature'y:\pause
+
+\begin{itemize}
+    \item Manipulacja listami (tylko listy atomów)\pause
+    \item Funkcje wyższego rzędu\pause
+    \item Obliczenia na symbolach (tylko litera+liczba)\pause
+\end{itemize}
+
+\,\\Alternatywy?\pause\, Brak.
 
 \end{frame}
+
 
 %==============================================================================%
 
 \section{,,\textit{Recursive Functions of Symbolic Expressions...}''}
 
 \begin{frame}
+\frametitle{Wymyślenie Lispu}
+\pause
+W 1960 ukazuje się praca Johna McCarthy'ego pt.,,\textit{Recursive Functions of Symbolic Expressions
+Their Computation by Machine, Part I}''. \pause
+\begin{figure}
+\includegraphics[scale=2.3]{images/recursive-functions-1.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Cele}
+\pause
+\begin{itemize}
+    \item Lisp został wymyślony ze względu na ,,\textit{Advice Taker'a}''.\pause
+    \item Języka programowania do manipulacji wyrażeniami reprezentującymi 
+    zdania, przy użyciu których ,,\textit{Advice Taker}'' mógłby 
+    przeprowadzać wnioskowania.\pause
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Wyrażenia warunkowe}
+\pause
+Po raz pierwszy pojawiła się idea \textit{wyrażeń warunkowych}.
+\pause
+
+\begin{figure}
+\includegraphics[scale=0.6]{images/conditional.png}
+\end{figure}
+\pause
+
+Wyrażenia warunkowe są następującej postaci:
+$$(p_1 \rightarrow e_1,\,...\, p_n \rightarrow e_n)$$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Wyrażenia warunkowe}
+
+Wyrażenia warunkowe są następującej postaci:
+$$(p_1 \rightarrow e_1,\,...\, p_n \rightarrow e_n)$$
+
+Interpretacja:
+\pause
+\,\\,,Jeżeli $p_1$ to $e_1$, w przeciwnym razie jeżeli $p_2$ to $e_2$, \,...\,, w przciwnym razie jeżeli $p_n$ to $e_n$''
+\pause
+\,\\\,\\lub
+\pause
+\,\\
+,,$p_1$ daje $e_1$, \,...\,, $p_n$ daje $e_n$''
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Wyrażenia warunkowe}
+Zasady obliczania wartości wyrażeń warunkowych:
+\begin{itemize}
+    \item \pause Rozpatruj $p$ od lewej do prawej.
+    \item \pause Jeżeli $p$, którego wartość to $T$, występuje przed 
+                 jakimkolwiek innym $p$, którego wartość jest niezdefiniowana, 
+                 to wartością wyrażenia warunkowego jest wartość 
+                 odpowiadającego $e$ (jeżeli jest zdefiniowane).
+    \item \pause Jeżeli jakiekolwiek niezdefiniowane $p$ jest napotkane przed 
+                 prawdziwym $p$, lub gdy wszystkie $p$ są fałszywe, bądź gdy 
+                 $e$ odpowiadającego pierwszemu prawdziwemu $p$ jest 
+                 niezdefiniowane, to wartość wyrażenia jest niezdefiniowana.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Wyrażenia warunkowe}
+Przykłady:\pause
+
+$$(2 < 1 \rightarrow 4, T \rightarrow 3) = \pause 3$$\pause
+$$(2 < 1 \rightarrow \frac{0}{0}, T \rightarrow 3) = \pause 3$$\pause
+$$(2 < 1 \rightarrow 3, T \rightarrow \frac{0}{0}) = \pause undefined$$\pause
+$$(2 < 1 \rightarrow 3, 4 < 1 \rightarrow 1) = \pause undefined$$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Wyrażenia warunkowe}
+
+Wyrażenia warunkowe pozwalają na eleganckie zapisywanie funkcji:
+\pause
+$$|x| = (x < 0 \rightarrow -x, T \rightarrow x)$$
+\pause
+$$sgn(x) = (x < 0 \rightarrow -1, x = 0 \rightarrow 0, T \rightarrow 1)$$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Funkcje rekurencyjne}
+
+Bardzo zwięzły staje się też zapis funkcji rekurencyjnych:
+\pause
+$$n! = (n = 0 \rightarrow 1, T \rightarrow n \cdot (n - 1)!)$$
+\pause
+\begin{equation*}
+\begin{gathered}
+    gcd(m ,n) = (m > n \rightarrow gcd(n,m), \\
+                rem(n,m) = 0\rightarrow m, \\
+                T \rightarrow gcd(rem(n,m), m))
+\end{gathered}
+\end{equation*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Funkcje rekurencyjne}
+\begin{figure}
+\includegraphics[scale=2.20]{images/infinite-recursion.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Spójniki logiczne}
+\pause
+$$p \wedge q = (p \rightarrow q, T \rightarrow F)$$
+$$p \vee q = (p \rightarrow T, T \rightarrow q)$$
+$$ \sim{p} = (p \rightarrow F, T \rightarrow T)$$
+$$p \Rightarrow q = (p \rightarrow q, T \rightarrow T)$$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Spójniki logiczne}
+\begin{figure}
+\includegraphics[scale=2.1]{images/lazy.png}
+\caption{Ewaluacja leniwa?}
+\end{figure}
 \end{frame}
 
 %==============================================================================%
