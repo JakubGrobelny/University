@@ -1,0 +1,31 @@
+\frametitle{Zapotrzebowanie na nowe języki}
+
+\begin{columns}
+\column{0.6\textwidth}
+\textbf{Information Processing Language} \normalsize -- niskopozimowy język
+programowania do manipulowania listami stworzony przez Newella, Shawa i Simona,
+który posłużył do napisania programu
+,,\textit{Logic Theorist}''.
+
+\column{0.4\textwidth}
+\begin{figure}
+\begin{verbatim}
+     IPL-V List
+      Structure
+       Example
+    Name SYMB LINK
+    L1   9-1  100
+    100  S4   101
+    101  S5   0
+    9-1  0    200
+    200  A1   201
+    201  V1   202
+    202  A2   203
+    203  V2   0
+
+\end{verbatim}
+\caption{Kod w IPL}
+\end{figure}
+
+\end{columns}
+
