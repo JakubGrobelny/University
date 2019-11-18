@@ -6,7 +6,7 @@
 programowania do manipulowania listami stworzony przez Newella, Shawa i Simona,
 który posłużył do napisania programu. ,,\textit{Logic Theorist}''.
 \pause
-\,\\\,\\Dwa rodzaje wyrażeń:
+\n \n Dwa rodzaje wyrażeń:
 \begin{itemize}
     \item dane reprezentowane jako listy
     \item procedury operujące na danych

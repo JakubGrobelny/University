@@ -8,7 +8,12 @@
 \renewcommand<>{\sout}[1]{
     \alt#2{\beameroriginal{\sout}{#1}}{#1}
 }
-    
+
+% \includeonlyframes{current}
+
+
+\newcommand{\n}{\,\\}
+
 \usetheme{Boadilla}
 
 \title{Początki Lispu}
@@ -107,9 +112,9 @@ dziedzina wiedzy.
 Okazuje się, że operowanie na \textbf{symbolach} jest istotne przy 
 tworzeniu sztucznej inteligencji. \pause
 
-\,\\Ludzkie rozumowanie opiera się na manipulacji symbolami (\textit{physical symbol system hypothesis} -- Allan Newell i Herbert A. Simon)\pause
+\n Ludzkie rozumowanie opiera się na manipulacji symbolami (\textit{physical symbol system hypothesis} -- Allan Newell i Herbert A. Simon)\pause
 
-\,\\System symboli składa się z symboli, składania ich w struktury (wyrażenia) i manipulowania nimi (przetwarzania) w celu tworzenia nowych wyrażeń.
+\n System symboli składa się z symboli, składania ich w struktury (wyrażenia) i manipulowania nimi (przetwarzania) w celu tworzenia nowych wyrażeń.
 
 \end{frame}
 
@@ -120,10 +125,10 @@ tworzeniu sztucznej inteligencji. \pause
 W 1959 roku John McCarthy pisze pracę ,,\textit{Programs with common sense}''.
 \pause
 
-\,\\Proponuje w niej stworzenie programu ,,\textit{Advice Taker}'', który rozwiązywałby problemy poprzez manipulację zdaniami (\textbf{symbole!}).
+\n Proponuje w niej stworzenie programu ,,\textit{Advice Taker}'', który rozwiązywałby problemy poprzez manipulację zdaniami (\textbf{symbole!}).
 \pause
 
-\,\\,,\textit{Our ultimate objective is to make programs that 
+\n ,,\textit{Our ultimate objective is to make programs that 
               learn from their experience as effectively
               as humans do.}''
 \end{frame}
@@ -167,7 +172,7 @@ Prawie jak Prolog?
 programowania do manipulowania listami stworzony przez Newella, Shawa i Simona, 
 który posłużył do napisania programu. ,,\textit{Logic Theorist}''.
 \pause
-\,\\\,\\Dwa rodzaje wyrażeń:
+\n \n Dwa rodzaje wyrażeń:
 \begin{itemize}
     \item dane reprezentowane jako listy
     \item procedury operujące na danych
@@ -206,7 +211,7 @@ Nowe feature'y:\pause
     \item Obliczenia na symbolach (tylko litera+liczba)\pause
 \end{itemize}
 
-\,\\Alternatywy?\pause\, Brak.
+\n Alternatywy?\pause\, Brak.
 
 \end{frame}
 
@@ -233,7 +238,7 @@ Their Computation by Machine, Part I}''. \pause
     \item Lisp został wymyślony ze względu na ,,\textit{Advice Taker'a}''.\pause
     \item Języka programowania do manipulacji wyrażeniami reprezentującymi 
     zdania, przy użyciu których ,,\textit{Advice Taker}'' mógłby 
-    przeprowadzać wnioskowania.\pause
+    przeprowadzać wnioskowania.
 \end{itemize}
 \end{frame}
 
@@ -262,11 +267,11 @@ $$(p_1 \rightarrow e_1,\,...\, p_n \rightarrow e_n)$$
 
 Interpretacja:
 \pause
-\,\\,,Jeżeli $p_1$ to $e_1$, w przeciwnym razie jeżeli $p_2$ to $e_2$, \,...\,, w przciwnym razie jeżeli $p_n$ to $e_n$''
+\n ,,Jeżeli $p_1$ to $e_1$, w przeciwnym razie jeżeli $p_2$ to $e_2$, \,...\,, w przciwnym razie jeżeli $p_n$ to $e_n$''
 \pause
-\,\\\,\\lub
+\n \n lub
 \pause
-\,\\
+\n 
 ,,$p_1$ daje $e_1$, \,...\,, $p_n$ daje $e_n$''
 
 \end{frame}
@@ -352,6 +357,210 @@ $$p \Rightarrow q = (p \rightarrow q, T \rightarrow T)$$
 \caption{Ewaluacja leniwa?}
 \end{figure}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Spójniki logiczne}
+$$ p \wedge q = (p \rightarrow q, T \rightarrow F)$$
+Argumenty funkcji ,,$\wedge$'' nie są poddawane ewaluacji przed jej aplikacją.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Formy a funkcje}
+\pause
+Pojęcie formy zostało zapożyczone z rachunku lambda Churcha.
+
+\pause
+\n $y^2 + x$ -- forma
+
+
+\pause
+$(y^2 + x)(3,4)$ -- źle. Nie wiadomo czy wartością powinno być 13 czy 19.
+
+\pause
+\n Formę $\mathcal{E}$ możemy skonwertować na funkcję jeżeli ustalimy powiązanie między zmiennymi w formie a uporządkowaną listą argumentów funkcji:
+
+\pause
+\n $\lambda((x_1,\,...\,,x_n), \mathcal{E}))$ -- funkcja
+
+
+\pause
+$\lambda((x, y), y^2 + x)$ -- też funkcja
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Rekurencyjne $\lambda$-wyrażenia}
+\pause
+
+\begin{equation*}
+    \begin{gathered}
+    sqrt = \lambda((a,x,\epsilon),\\
+        (|x^2 - a| < \epsilon \rightarrow x, 
+        T \rightarrow sqrt(a, \frac{1}{2}(x + \frac{a}{x}), \epsilon)))
+    \end{gathered}
+\end{equation*}
+
+\pause
+Prawa strona wyrażenia nie może być wyrażeniem dla tej funkcji, bo nic nie wskazuje na to, że $sqrt$ do odnosi się do całego wyrażenia ($sqrt$ nie jest związane).
+
+
+\pause
+\n Operator punktu stałego? \pause-- zbyt długie i nieczytelne wyrażenia.
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Rekurencyjne $\lambda$-wyrażenia}
+
+Nowa notacja:
+\pause
+
+$$label(a, \mathcal{E})$$
+\pause
+
+Wyrażenie $\mathcal{E}$, w którym wszystkie wystąpienia $a$ interpretowane są jako odniesienia do całego wyrażenia $\mathcal{E}$.
+\pause
+\end{frame}
+
+
+\begin{frame}
+\frametitle{S-wyrażenia}
+\pause
+
+,,\textit{A Class of Symbolic Expressions}''.
+\pause
+
+\n Dopuszczalne znaki:
+\begin{itemize}
+    \item $.$ \pause
+    \item $)$ \pause
+    \item $($ \pause
+    \item Nieskończony zbiór rozróżnialnych symboli atomowych -- napisów złożonych z wielkich liter alfabetu łacińskiego, cyfr i pojedynczych spacji.
+    \pause\n Na przykład:
+        \begin{itemize}
+            \item A
+            \item ABA
+            \item APPLE PIE NUMBER 3
+        \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{S-wyrażenia}
+Czemu symbole składające się z wielu znaków?\pause
+
+\n Odpowiedź:
+\begin{itemize}
+    \item IBM 704 miał tylko 47 drukowalnych znaków \pause
+    \item Nazywanie atomowych bytów angielskimi słowami i zdaniami jest wygodne
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{S-wyrażenia}
+
+Definicja indukcyjna S-wyrażeń:
+
+\begin{enumerate}
+    \item\pause Symbole atomowe są S-wyrażeniami
+    \item\pause Jeżeli $e_1$ i $e_2$ są S-wyrażeniami, to $(e_1 \cdot e_2)$ 
+                również jest S-wyrażeniem.
+\end{enumerate}
+
+\pause \n Przykładowe S-wyrażenia:
+$$AB$$
+$$(A \cdot B)$$
+$$((AB \cdot C) \cdot D)$$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Listy (S-wyrażenia)}
+
+Możemy reprezentować listy dowolnej długości przy użyciu S-wyrażeń w następujący sposób:
+
+\pause \n
+$(m_1, m_2, \,...\, m_n) = (m_1 \cdot (m_2 \cdot (...(m_n \cdot NIL)...)))$
+\pause
+
+Gdzie NIL jest specjalnym symbolem kończącym listy.
+
+\pause \n
+Wprowadzamy zatem specjalną notację dla list:\pause
+\begin{enumerate}
+    \item $(m) = (m \cdot NIL)$
+    \item $(m_1, m_2, \,...\, m_n) = 
+           (m_1 \cdot (...(m_n \cdot NIL)...))$
+    \item $(m_1, \,...\, ,m_n \cdot x) = (m_1 \cdot (...(m_n \cdot x)...))$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{M-wyrażenia}
+\pause
+Aby odróżnić wyrażenia reprezentujące aplikację funkcji od S-wyrażeń, będziemy małych liter do nazywania funkcji i zmiennych.
+
+
+\pause \n
+Będziemy również używać nawiasów kwadratowych i średników zamiast nawiasów i przecinków.
+
+\pause
+Na przykład:
+$$car[x]$$
+$$car[cons[(A \cdot B); x]]$$
+
+\pause \n
+M-wyrażenia -- meta-wyrażenia
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Funkcje i predykaty dla S-wyrażeń}
+\pause
+\begin{description}
+    \item $atom[x]$ -- prawda tylko jeżeli $x$ jest symbolem
+    \item $eq[x;y]$ -- prawda tylko jeżeli $x$ i $y$ są tym samym symbolem
+    \item $car[x]$ -- zdefiniowany tylko jeżeli $x$ nie jest symbolem.\pause
+        \begin{description}
+            \item $car[(X\cdot A)] = X$
+            \item $car[((X \cdot A) \cdot Y)] = (X \cdot A)$
+        \end{description}
+    \item \pause $cdr[x]$ -- zdefiniowany tylko jeżeli $x$ nie jest 
+                             symbolem \pause
+        \begin{description}
+            \item $cdr[(X \cdot A)] = A$
+            \item $cdr[((X \cdot A) \cdot Y)] = Y$
+        \end{description}
+    \item \pause $cons[x;y] = (e_1 \cdot e_2)$
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Funkcje i predykaty dla S-wyrażeń}
+    Widać, że $car, cdr$ i $cons$ spełniają poniższe zależności: \pause
+    \begin{description}
+        \item $car[cons[x;y]] = x$
+        \item $cdr[cons[x;y]] = y$
+        \item $cons[car[x]; cdr[x]] = x$ (pod warunkiem, że $x$ nie jest 
+              atomowe)
+    \end{description}
+\end{frame}
+
+
+\begin{frame}[label=current]
+
+\end{frame}
+
+
 
 %==============================================================================%
 
