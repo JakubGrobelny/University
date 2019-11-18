@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
     /* TODO: Iterate over directory entries and call file_info on them. */
     const void* end = buf + n;
     void* it = buf;
-    while (it != end) {
+    while (it < end) {
       d = (struct linux_dirent*)it;
       file_info(dirfd, d->d_name);
       it += d->d_reclen;

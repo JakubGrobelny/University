@@ -556,15 +556,191 @@ M-wyrażenia -- meta-wyrażenia
 \end{frame}
 
 
-\begin{frame}[label=current]
+\begin{frame}
+\frametitle{Funkcje i predykaty dla S-wyrażeń}
 
+Dalej McCarthy opisuje różne funkcje, które można zapisać przy użyciu wcześniej opisanej notacji.
+    \begin{itemize}
+        \item $append[x;y]$
+        \item $among[x;y]$ -- czy $y$ zawiera $x$?
+        \item $pair[x;y]$ -- \texttt{zip}
+        \item $assoc[x;y]$ -- szukanie klucza $x$ na liście par
+        \item $sublis[x;y]$ -- mamy listę symboli $y$ pod które chcemy podstawić przypisane im wartości w liście $x$.
+    \end{itemize}
 \end{frame}
 
+
+\begin{frame}
+\frametitle{Tłumaczenie M-wyrażeń na S-wyrażenia}
+
+Chcemy przetłumaczyć M-wyrażenie $\mathcal{E}$ na S-wyrażenie $\mathcal{E}^*$
+\pause
+
+\begin{enumerate}
+    \item Jeżeli $\mathcal{E}$ jest S-wyrażeniem, to $\mathcal{E}^* = (QUOTE, 
+          \mathcal{E})$ \pause
+    \item Zmienne i nazwy funkcji napisane małymi literami zamieniamy na 
+          odpowiadające napisy złożone z wielkich liter (np. $car^* = CAR$).
+          \pause
+    \item Forma $f[e_1 ; \,...\,;e_n] = (f^*, e_1^*, \,...\,,e_n^*)$ \pause
+    \item $\{[p_1 \rightarrow e_1; \,...\,; p_n \rightarrow e_n]\}^* =
+          (COND, (p_1^*, e_1^*), \,...\, (p_n^*, e_n^*))$ \pause
+    \item $\{[\lambda[[x_1;\,...\,;x_n]; \mathcal{E}]]\}^* =
+          (LAMBDA, (x_1^*, \,...\,, x_n^*), \mathcal{E}^*)$ \pause
+    \item ${label[a;\mathcal{E}]}^* = (LABEL, a^*, \mathcal{E}^*)$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{S-wyrażenia}
+\begin{figure}
+\includegraphics[scale=0.6]{images/readable1.png}\pause\n
+\includegraphics[scale=0.6]{images/readable2.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{$apply$}
+
+Funkcja $apply$ aplikuje S-wyrażenie $f$ reprezentujące S-funkcję $f'$ do listy argumentów $args$ postaci $(arg_1\,...\,arg_n)$.\pause
+
+$$apply [f;args] = eval [cons [f; appq [args]]; NIL]$$ \n gdzie \n
+
+\begin{equation*}
+    \begin{gathered}    
+    appq[m] = \\
+    [null[m] \rightarrow NIL; \\
+    T \rightarrow cons [list [QUOTE; car [m]]; appq [cdr [m]]]]
+    \end{gathered}
+\end{equation*}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{$eval$}
+
+\begin{description}
+    \item $eval[e;a] = [$ \pause
+    \item \quad $atom[e] \rightarrow assoc[e; a]$ \pause
+    \item \quad $atom[car[e]] \rightarrow [$ \pause
+    \item \quad\quad $eq[car[e]; QUOTE] \rightarrow cadr[e];$ \pause
+    \item \quad\quad $eq[car[e]; ATOM] \rightarrow atom[eval[cadr[e];a]];$\pause
+    \item \quad\quad $eq[car[e]; EQ]
+                      \rightarrow eval[cadr [e];a]=eval[caddr[e];a];$\pause
+    \item \quad\quad $eq[car[e]; COND] \rightarrow evcon[cdr [e]; a];$\pause
+    \item \quad\quad $eq[car [e]; CAR] \rightarrow car[eval[cadr[e];a]];$\pause
+    \item \quad\quad $eq[car [e]; CDR] \rightarrow cdr[eval[cadr[e];a]];$\pause
+    \item \quad\quad $eq[car[e];CONS] \rightarrow $ \n
+          \quad\quad\quad$cons[eval[cadr[e];a];eval[caddr[e];a]];$\pause
+    \item \quad\quad $T\rightarrow eval[cons [assoc[car [e];a]; evlis[cdr [e];a]
+                    ];a]];$
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{$eval$ cd.}
+\begin{description}
+    \item \quad $eq [caar [e]; LABEL] \rightarrow$ \n
+          \quad\quad $[eval [cons[caddar [e]; cdr [e]];$ \n 
+          \quad\quad $cons[list [cadar [e]; car[e]; a]];$\pause
+    \item \quad $eq [caar [e]; LAMBDA] \rightarrow$ \n
+          \quad\quad $eval[caddar [e]; append[pair[cadar[e]; evlis[cdr [e]; a]; a]]$ 
+    \item $]$\pause
+\end{description}
+
+gdzie
+
+$evcon[e;a] = [eval [caar [e];a] \rightarrow eval [cadar [e]; a];  T \rightarrow evcon[cdr[e];a]]$
+
+\n
+
+$evlis[m;a] = [null [m] \rightarrow NIL; T \rightarrow cons[eval[car[m];a];evlis[cdr[m];a]]]$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Funkcje wyższego rzędu}
+\pause
+
+\begin{figure}
+\includegraphics[scale=2.3]{images/higher-order-functions.png}
+\end{figure}
+\pause
+
+\begin{description}
+    \item $maplist[x;f] = [$
+    \item \quad $null[x] \rightarrow NIL;$
+    \item \quad $T \rightarrow cons[f[x]; maplist[cdr [x]; f]]]$
+\end{description}
+\pause\n
+\begin{description}
+    \item $search[x;p;f;u] = [$
+    \item \quad $null [x] \rightarrow u;$
+    \item \quad $p[x] \rightarrow f[x]$;
+    \item \quad $T \rightarrow search [cdr [x]; p; f; u]]$
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\begin{figure}
+\includegraphics[scale=0.6]{images/diff.png}
+\caption{Funkcja obliczająca pochodne funkcji zaaplikowana do wyrażenia $
+         (TIMES, X, (PLUS, X, A), Y)$}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Reprezentacja S-wyrażeń w pamięci}
+\pause
+\begin{figure}
+\includegraphics[scale=0.4]{images/list-layout-a.png}
+\end{figure}
+Lista jest zbiorem słów maszynowych zaaranżowanych w sposób podobny jak na powyższym rysunku. 
+Każde słowo jest reprezentowane jako jeden z podzielonych na pół prostokątów.
+\pause
+
+\n
+Każde słowo dzieli się na dwa pola: lewe $address$ oraz prawe $decrement$.
+\pause
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Reprezentacja S-wyrażeń w pamięci}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}
+\includegraphics[scale=2.0]{images/list-layout-b.png}
+\end{figure}
+Jedna podstruktura może pojawiać się więcej niż w jednym miejscu w strukturze...
+\pause
+\column{0.5\textwidth}
+\begin{figure}
+\includegraphics[scale=2.0]{images/list-layout-c.png}
+\end{figure}
+...ale struktury nie mogą zawierać cyklów.
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[label=current]
+\frametitle{Reprezentacja S-wyrażeń cd.}
+
+
+
+
+\end{frame}
 
 
 %==============================================================================%
 
 \section{Pierwsze implementacje}
+
 \begin{frame}
 \end{frame}
 
