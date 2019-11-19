@@ -11,7 +11,7 @@ static sockpair_t MakeSocketPair(void) {
   return (sockpair_t){.child_fd = sv[0], .parent_fd = sv[1]};
 }
 
-static bool MaybeReadNum(int fd, int *num_p) {
+static bool MaybeReadNum(int fd, int* num_p) {
   return Read(fd, num_p, sizeof(int)) == sizeof(int);
 }
 

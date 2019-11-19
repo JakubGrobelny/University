@@ -53,7 +53,7 @@ static void print_mode(mode_t m) {
 }
 
 static void print_uid(uid_t uid) {
-  struct passwd *pw = getpwuid(uid);
+  struct passwd* pw = getpwuid(uid);
   if (pw)
     printf(" %10s", pw->pw_name);
   else
@@ -61,7 +61,7 @@ static void print_uid(uid_t uid) {
 }
 
 static void print_gid(gid_t gid) {
-  struct group *gr = getgrgid(gid);
+  struct group* gr = getgrgid(gid);
   if (gr)
     printf(" %10s", gr->gr_name);
   else
