@@ -3,7 +3,7 @@ fn dig_pow(n: i64, p: i32) -> i64 {
                .chars()
                .enumerate()
                .map(|(i, c)| (c.to_digit(10).unwrap() as i128)
-                               .pow(i as u32 + p as u32))
+                               .pow(i as u32 + p))
                .sum::<i128>();
 
     if sum % n as i128 == 0 { (sum / n as i128) as i64 } else { -1 }
