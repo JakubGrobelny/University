@@ -992,7 +992,7 @@ Wniosek? \pause Wiązanie dynamiczne to bug a nie feature.
 \begin{frame}
 \frametitle{Co po LISPie 1 i 1.5?}
 \begin{description}
-    \item[MacLisp] -- rozwijany na MIT. Nazwa pochodzi od Projektu MAC.
+    \item[MacLisp] \pause -- rozwijany na MIT. Nazwa pochodzi od Projektu MAC.
         \begin{itemize}
             \item \pause Wprowadzono ,,\textit{value cell}'' w celu 
                 przyspieszenia dostępu do zmiennych (w oryginalnym LISPie 
@@ -1011,7 +1011,7 @@ Wniosek? \pause Wiązanie dynamiczne to bug a nie feature.
 \begin{frame}
 \frametitle{Co po LISPie 1 i 1.5?}
 \begin{description}
-    \item[InterLisp] -- tworzony przez BBN Technologies na PDP-10\pause 
+    \item[InterLisp] \pause -- tworzony przez BBN Technologies na PDP-10\pause 
         \begin{itemize}
             \item   Wiele narzędzi programistycznych \pause
                 \begin{itemize}
@@ -1028,12 +1028,191 @@ Wniosek? \pause Wiązanie dynamiczne to bug a nie feature.
 \end{description}
 \end{frame}
 
+\begin{frame}
+    \frametitle{Co po LISPie 1 i 1.5?}
+    \begin{description}
+        \item[Scheme] \pause -- stworzony przez Geralda J. Sussmana i Guya 
+        Steele'a
+            \begin{itemize}
+                \item Statyczne wiązanie zmiennych
+                \item Wymóg optymalizacji wywołań ogonowych
+                \item Jeden z pierwszych języków wspierający 
+                    \textit{first-class continuations}
+            \end{itemize}
+    \end{description}
+    \end{frame}
+
 %==============================================================================%
 
 \section{Być może coś więcej}
-\begin{frame}[label=current]
+\begin{frame}
+\frametitle{Lisp-maszyny}
 
+\pause
+\textbf{Lisp-maszyna} -- komputer ogólnego przeznaczenia zaprojektowane do efektywnego wykonywania Lispu przy użyciu sprzetowego wsparcia.
 
+\pause
+\begin{columns}
+\column{0.3\textwidth}
+\begin{figure}
+    \includegraphics[scale=0.3]{images/lisp-machine-3640.jpeg}
+\end{figure}
+\column{0.7\textwidth}
+\pause
+
+W 1973 roku Richard Greenblatt i Thomas Knight z MIT rozpoczęli budowę komputera, który miałby wsparcie sprzętowe dla wykonywania Lispowych operacji.
+
+\pause
+Cele:
+\begin{itemize}
+    \item Sprzętowo wspomagane sprawdzanie typów \pause
+    \item Sprzętowy garbage collector
+    \item Jeden użytkownik \pause
+    \item Niska cena (mniej niż \$70,000 za sztukę)
+\end{itemize}
+\end{columns}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+\begin{description}
+    \item[CONS] -- pierwsza Lisp-maszyna zbudowana na MIT \pause
+    \item[CADR] -- ulepszona wersja CONSa \pause
+        \begin{itemize}
+            \item Została bardzo dobrze przyjęta\pause
+            \item Sprzedano około 25 (prototypowych) egzamplarzy\pause
+            \item DARPA (Defense Advanced Research Projects Agency) zaczęła 
+                  sponsorować jej rozwój
+        \end{itemize}
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+W 1979 Russell Noftsker przekonany o nieuniknionym sukcesie komercyjnym 
+Lisp-maszyn zaproponował Greenblattowi skomercjalizowanie tej technologii. 
+Niezgoda doprowadziła jednak do powstania dwóch oddzielnych firm: Lisp Machines 
+Incorporated (LMI) oraz Symbolics.
+\n\n
+\pause Na początku obydwie firmy produkowały klony maszyny CADR ale wkrótce 
+Symbolics wprowadziło linię 3600, która stała się liderem wydajności wśród 
+Lisp-maszyn na najbliższe 5 lat.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+
+\begin{figure}
+    \includegraphics[scale=0.175]{images/space-caded.jpg}
+\caption{Klawiature ,,space-cadet'' firmy Symbolics}
+\end{figure}
+    
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+Mimo tego, że Greenblattowi zależało na sprzętowym mechanizmie odśmiecania 
+pamięci, to wczesne Lisp-maszyny MIT nie implementowały garbage collectora.
+
+\n \n
+\pause
+Po pojawieniu się garbage collectora, użytkownicy i tak go wyłączali. Większość narzędzi programistycznych zaprojektowanych było tak, by unikać 
+alokacji pamięci
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+
+Dialekt Lispu używany przez wczesne Lisp-maszyny z MIT (Lisp Machine Lisp) był 
+bardzo podobny do MacLispu, ale miał kilka istotnych rozszerzeń:\pause
+\begin{itemize}
+    \item narzędzia programistyczne zbliżone bardziej do tego 
+        co oferował Interlisp \pause
+    \item specyfikatory argumentów lambd takie jak 
+        \texttt{\&optional, \&key, \&rest} i \texttt{\&aux}\pause
+    \item ,,\textit{locatives}'' (wskaźniki na wnętrza obiektów)\pause
+    \item \textit{backquote}'y (np. \texttt{`(1 ,(+ 1 1) 3)})\pause
+    \item ,,\textit{Stack groups}'' -- obiekty reprezentujące obliczenia i ich 
+        wewnętrzny stan\pause
+    \item możliwość zwracania wielu wartości z funkcji bez konstruowania 
+        listy\pause
+    \item \texttt{DEFSTRUCT} do tworzenia rekordów/struktur\pause
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+\begin{itemize}
+    \item domknięcia (wymagające podania zmiennych, które powinne 
+    przechwycić domknięcie)\pause
+    \item Flavors -- system programowania obiektowego\pause
+    \item \texttt{SETF}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny}
+
+BBN Technologies pracowało nad swoją własną Lisp-maszyną o nazwie Jericho, ktora miała użyć Interlispu. Nie została jednak nigdy wprowadzona na rynek, więc grupa zajmująca AI odeszła i w większości została zatrudniona przez Xerox.
+
+\pause\n\n
+Środowisko Interlispu zostało zaimplementowane na mikrokodowalnej maszynie Xerox Alto ale była ona zbyt słaba. Port na Xerox Dorado byłby bardzo dobrą Lisp-maszyną, gdyby komputer ten był szerzej dostępny.
+
+\pause\n\n
+Wszystkie Lisp-maszyny Xerox używały zliczania referencji w implementacji 
+garbage collectora.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Kodowanie CDR}
+\pause
+Często listy tworzone są w całości. Można wówczas zaoszczędzić miejsce w 
+pamięci i zwiększyć lokalność przestrzenną zamieniając referencje na faktyczne 
+wartości.
+\pause\n\n
+Przykład: chcemy utworzyć listę \texttt{'(1 2 3 4)}.
+\pause\n\n
+Normalnie w pamięci wyglądałaby tak:
+\begin{figure}
+\includegraphics[]{images/normal-list.png}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Kodowanie CDR}
+Jeżeli mamy do dyspozycji dodatkowe nieużywane bity w każdym słowie, to możemy 
+dla każdego słowa przechowywać informację o tym, jakiego jest rodzaju:
+\pause
+\begin{description}
+    \item[CDR-NORMAL] -- komórka jest pierwszą połową zwykłej pary\pause
+    \item[CDR-NEXT] -- następna komórka jest \textit{CAR}em komórki, na którą 
+    normalnie wskazywałby niejawny \textit{CDR}\pause
+    \item[CDR-NULL] -- ostatnia komórka na liście
+\end{description}
+\pause
+\begin{figure}
+    \includegraphics[scale=0.5]{images/list-cdr.png}
+    \caption{Reprezentacja skompresowanej listy \texttt{'(1 2 3 4)}}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Kodowanie CDR}
+Wady?\pause
+\begin{itemize}
+    \item W przypadku występowania mutowalnych par, modyfikacja \textit{CAR}a 
+    wymaga kopiowania części obiektu.
+\end{itemize}
+\end{frame}
+
 
 \end{document}
