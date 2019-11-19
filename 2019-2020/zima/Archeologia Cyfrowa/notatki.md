@@ -14,3 +14,4 @@
 - [How Lisp Became God's Own Programming Language](https://twobithistory.org/2018/10/14/lisp.html)
 - [Symbolic reasoning](https://skymind.ai/wiki/symbolic-reasoning)
 - [Funarg problem](https://en.wikipedia.org/wiki/Funarg_problem)
+- [Emaile do Russella](http://www.iwriteiam.nl/HaCAR_CDR.html)

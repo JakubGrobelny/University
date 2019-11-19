@@ -673,6 +673,8 @@ $evlis[m;a] = [null [m] \rightarrow NIL; T \rightarrow cons[eval[car[m];a];evlis
 \end{figure}
 \end{frame}
 
+%==============================================================================%
+\section{Pierwsze implementacje}
 
 \begin{frame}
 \frametitle{Reprezentacja S-wyrażeń w pamięci}
@@ -897,17 +899,141 @@ PXD 0, i
 \n
 \end{frame}
 
-%==============================================================================%
 
-\section{Pierwsze implementacje}
+\begin{frame}
+\frametitle{car i cdr}
 
-\begin{frame}[label=current]
+,,\textit{Because of an unfortunate temporary lapse of inspiration, we couldn't think of any other names for the 2 pointers in a list node than 'address' and 'decrement', so we called the functions CAR for 'Contents of Address of Register' and CDR for 'Contents of Decrement of Register'.}
+
+
+\textit{After several months and giving a few classes in LISP, we realized that 'first' and 'rest' were better names, and we (John McCarthy, I and some of the rest of the AI Project) tried to get people to use them instead.}
+
+
+\textit{Alas, it was too late! We couldn't make it stick at all. So we have CAR and CDR.}''
+\rightline{--- Steve Russell}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Steve Russell}
+
+\pause
+
+,,\textit{S.R. Russell noticed that eval could serve as an interpreter for LISP,
+promptly hand coded it, and we now had a programming language with an
+interpreter.}''
+\rightline{--- John McCarthy}
+
+\pause
+\begin{columns}
+\column{0.3\textwidth}
+\includegraphics[scale=0.55]{images/russell.jpg}
+\column{0.7\textwidth}
+\begin{itemize}
+    \item Napisał pierwszy interpreter LISPu \pause
+    \item W 1962 zaprojektował i napisał grę ,,\textit{Spacewar!}''
+        \begin{figure}
+            \includegraphics[scale=0.14]{images/spacewar.jpg}
+        \end{figure}
+\end{itemize}
+\begin{figure}
+\end{figure}
+\end{columns}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Wiązanie dynamiczne zmiennych}
+To, że LISP używa wiązania dynamicznego zmiennych wyszło na jaw (przypadkiem),
+gdy James R. Slagle napisał poniższą funkcję, i okazało się, że nie działa:
+\n\n\pause
+\begin{description}
+    \item $testr[x,p,f,u] \leftarrow$ \textbf{if} $p[x]$ \textbf{then} $f[x]$
+    \item \quad \quad \textbf{else if} $atom[x]$ \textbf{then} $u[]$
+    \item \quad \quad \textbf{else} $testr[cdr[x], p,f,\lambda : $
+                \only<2>{$testr[car[x],p,f,u]]$}
+                \only<3>{$testr[$\underline{$car[x]$}$,p,f,u]]$}
+\end{description}
+\pause\n
+Wbrew oczekiwaniom, wartość $car[x]$ z budowanej kontynuacji $u$ nie pochodziła 
+z zewnętrznego wywołania rekurencyjnego, ale z wewnętrznego, gdzie funkcja $u$ 
+została wywołana.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Wiązanie dynamiczne zmiennych}
+McCarthy powyższe zachowanie uznał za błąd i liczył na to, że Steve Rusell go naprawi.
+
+\n
+\pause
+Rozwiązanie: \pause ,,FUNARG device'' -- przekazywanie lokalnego środowiska razem z funkcją.
+
+\n \n \n 
+\pause
+Wniosek? \pause Wiązanie dynamiczne to bug a nie feature.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Co po LISPie 1 i 1.5?}
+\begin{description}
+    \item[LISP 2] -- język łączący semantykę LISPu i składnię Algola. Tworzony
+                     wspólnie przez Systems Development Corporation (pierwsza 
+                     firma wytwarzająca oprogramowanie) i Information International Inc. Planowano implementację na komputer Q32
+                     budowany przez IBM dla celów wojskowych (48-bitowe słowa i 18-bitowe adresy). \pause\n
+                     Gdy okazało się, że Q32 wyposażony będzie w nie więcej niż 48K słów pamięci, zdecydowano się zaimplementować język na komputery IBM 360/67 i PDP-6. \pause\n
+                     W związku z m.in. wysokimi kosztami projekt został porzucony.
+\end{description}
+\end{frame}
+
+\begin{frame}
+\frametitle{Co po LISPie 1 i 1.5?}
+\begin{description}
+    \item[MacLisp] -- rozwijany na MIT. Nazwa pochodzi od Projektu MAC.
+        \begin{itemize}
+            \item \pause Wprowadzono ,,\textit{value cell}'' w celu 
+                przyspieszenia dostępu do zmiennych (w oryginalnym LISPie 
+                przeszukiwano liniowo listę asocjacji)
+            \item \pause \texttt{DEFMACRO}
+            \item \pause \texttt{LEXPR} -- funkcje przyjmujące dowolną 
+                liczbę argumentów przekazywanych przez stos
+            \item \pause \texttt{ERRSET} -- funkcja pełniąca rolę \texttt{try} 
+                (w 1972 wprowadzono \texttt{TRY} i \texttt{CATCH})
+            \item \pause Bignumy
+        \end{itemize}
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Co po LISPie 1 i 1.5?}
+\begin{description}
+    \item[InterLisp] -- tworzony przez BBN Technologies na PDP-10\pause 
+        \begin{itemize}
+            \item   Wiele narzędzi programistycznych \pause
+                \begin{itemize}
+                    \item \textit{spelling corrector} \pause
+                    \item ,,\textit{Do what I mean}''\pause
+                    \item Masterscope -- narzędzie do wyszukiwania informacji 
+                    (np. która funkcja wywołuje którą) o funkcjach w dużych 
+                    systemach. \pause
+                \end{itemize}
+            \item Supernawiasy (nawias kwadratowy zamykał wszystkie otwarte 
+                nawiasy) \pause
+            \item ,,\textit{spaghetti stacks}''
+        \end{itemize}
+\end{description}
 \end{frame}
 
 %==============================================================================%
 
-\section{Być może coś więcej (Lisp-maszyny, Scheme)}
-\begin{frame}
+\section{Być może coś więcej}
+\begin{frame}[label=current]
+
+
 \end{frame}
 
 \end{document}
