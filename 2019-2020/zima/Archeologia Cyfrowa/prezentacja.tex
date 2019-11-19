@@ -29,9 +29,16 @@
 \titlepage
 \end{frame}
 
-\begin{frame}
+\begin{frame}[label=current]
 \frametitle{O czym będzie?}
-\tableofcontents
+\begin{enumerate}
+    \item \pause Dlaczego LISP był potrzebny?
+    \item \pause ,,\textit{Recursive Functions of Symbolic Expressions and 
+        Their Computation by Machine}''
+    \item \pause Wczesne implementacje
+    \item \pause Kolejne dialekty
+    \item \pause Lisp-maszyny
+\end{enumerate}
 \end{frame}
 
 %==============================================================================%
@@ -75,7 +82,7 @@ dziedzina wiedzy.
         \end{itemize}
 \end{description}
 
-\only<4-5>{\footnotetext[2]{Autorstwa Alfreda Northa Whiteheada i Bertranda 
+\only<4>{\footnotetext[2]{Autorstwa Alfreda Northa Whiteheada i Bertranda 
                             Russella}}
 \end{frame}
 
@@ -217,11 +224,11 @@ Nowe feature'y:\pause
 \begin{frame}
 \frametitle{LISt Processor}
 \pause
-W 1960 ukazuje się praca Johna McCarthy'ego pt.,,\textit{Recursive Functions of Symbolic Expressions
-Their Computation by Machine, Part I}''. \pause
+W 1960 ukazuje się praca Johna McCarthy'ego pt.,,\textit{Recursive Functions 
+of Symbolic Expressions And Their Computation by Machine, Part I}''. \pause
 \begin{figure}
 \includegraphics[scale=2.3]{images/recursive-functions-1.png}
-\end{figure}
+    \end{figure}
 \end{frame}
 
 
@@ -365,6 +372,11 @@ $(y^2 + x)(3,4)$ -- źle. Nie wiadomo czy wartością powinno być 13 czy 19.
 
 \pause
 $\lambda((x, y), y^2 + x)$ -- też funkcja
+
+\begin{figure}
+    \includegraphics[scale=1.5]{images/church-mccarthy.png}
+\end{figure}
+
 \end{frame}
 
 
@@ -481,6 +493,21 @@ Wprowadzamy zatem specjalną notację dla list:\pause
 \end{frame}
 
 
+\begin{frame}[label=current]
+\frametitle{Listy}
+\begin{figure}
+    \includegraphics[scale=0.4]{images/lists.png}    
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[label=current]
+\frametitle{Listy}
+\begin{figure}
+    \includegraphics[scale=0.4]{images/lists1.png}    
+\end{figure}
+\end{frame}
+    
 \begin{frame}
 \frametitle{M-wyrażenia}
 \pause
@@ -1011,7 +1038,8 @@ Wniosek? \pause Wiązanie dynamiczne to bug a nie feature.
 \begin{frame}
 \frametitle{Co po LISPie 1 i 1.5?}
 \begin{description}
-    \item[InterLisp] \pause -- tworzony przez BBN Technologies na PDP-10\pause 
+    \item[InterLisp] \pause -- tworzony przez BBN Technologies na PDP-10, 
+        później w  Xerox Palo Alto Research Center\pause 
         \begin{itemize}
             \item   Wiele narzędzi programistycznych \pause
                 \begin{itemize}
@@ -1040,7 +1068,16 @@ Wniosek? \pause Wiązanie dynamiczne to bug a nie feature.
                     \textit{first-class continuations}
             \end{itemize}
     \end{description}
-    \end{frame}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Co po LISPie 1 i 1.5?}
+    \begin{figure}
+        \includegraphics[scale=1.4]{images/timeline.png}
+    \end{figure}
+\end{frame}
+
 
 %==============================================================================%
 
@@ -1076,6 +1113,8 @@ Cele:
 
 \begin{frame}
 \frametitle{Lisp-maszyny}
+\begin{columns}
+\column{0.6\textwidth}
 \begin{description}
     \item[CONS] -- pierwsza Lisp-maszyna zbudowana na MIT \pause
     \item[CADR] -- ulepszona wersja CONSa \pause
@@ -1086,6 +1125,12 @@ Cele:
                   sponsorować jej rozwój
         \end{itemize}
 \end{description}
+\column{0.4\textwidth}
+\begin{figure}
+    \includegraphics[scale=0.6]{images/knight-machine.jpg}
+    \caption{CONS (\textit{Knight Machine})}
+\end{figure}
+\end{columns}
 \end{frame}
 
 
@@ -1100,18 +1145,6 @@ Incorporated (LMI) oraz Symbolics.
 Symbolics wprowadziło linię 3600, która stała się liderem wydajności wśród 
 Lisp-maszyn na najbliższe 5 lat.
 \end{frame}
-
-
-\begin{frame}
-\frametitle{Lisp-maszyny}
-
-\begin{figure}
-    \includegraphics[scale=0.175]{images/space-caded.jpg}
-\caption{Klawiature ,,space-cadet'' firmy Symbolics}
-\end{figure}
-    
-\end{frame}
-
 
 \begin{frame}
 \frametitle{Lisp-maszyny}
@@ -1148,7 +1181,7 @@ bardzo podobny do MacLispu, ale miał kilka istotnych rozszerzeń:\pause
 \begin{frame}
 \frametitle{Lisp-maszyny}
 \begin{itemize}
-    \item domknięcia (wymagające podania zmiennych, które powinne 
+    \item domknięcia (wymagające podania zmiennych, które powinno 
     przechwycić domknięcie)\pause
     \item Flavors -- system programowania obiektowego\pause
     \item \texttt{SETF}
@@ -1209,10 +1242,58 @@ dla każdego słowa przechowywać informację o tym, jakiego jest rodzaju:
 \frametitle{Kodowanie CDR}
 Wady?\pause
 \begin{itemize}
-    \item W przypadku występowania mutowalnych par, modyfikacja \textit{CAR}a 
+    \item W przypadku występowania mutowalnych par, modyfikacja \textit{CDR}a 
     wymaga kopiowania części obiektu.
 \end{itemize}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Lisp-maszyny -- kwestie techniczne}
+    \begin{itemize}
+        \item Początkowo Lisp-maszyny były osobistymi stacjami roboczymi 
+              bez obsługi wielu użytkowników \pause
+        \item Duży, czarno-bialy wyświetlacz \pause
+        \item Klawiatura i mysz \pause
+        \item Adapter sieciowy \pause
+        \item Dysk twardy i zwykle więcej niż 1 MB pamięci RAM \pause
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lisp-maszyny -- kwestie techniczne}
+    \begin{figure}
+        \includegraphics[scale=0.175]{images/space-caded.jpg}
+    \caption{Klawiature ,,space-cadet'' firmy Symbolics}
+    \end{figure}        
+\end{frame}
+    
+
+\begin{frame}
+\frametitle{Lisp maszyny -- kwestie techniczne}
+\begin{itemize}
+    \item Procesory zwykle nie wykonywały Lispu bezpośrednio 
+        ale działały jak maszynay stosowe z instrukcjami 
+        zoptymalizowanymi dla LISPu. \pause
+    \item Wczesne Lisp-maszyny implementowały instrukcje w mikrokodzie \pause
+    \item Hardware'owy type checking i dispatching w runtime (np. jedna 
+    operacja dodawania dla wszystkich typów numerycznych).\pause
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lisp maszyny -- kwestie techniczne}
+Przykład skompilowanej funkcji (mikroprocesor Ivory od Symbolics):
+\pause
+\begin{figure}
+    \includegraphics[scale=0.35]{images/compile-lisp.png}
+\end{figure}
+\pause
+\begin{figure}
+    \includegraphics[scale=0.35]{images/compile-assembly.png}
+\end{figure}
+\end{frame}
+
 
 
 \end{document}
