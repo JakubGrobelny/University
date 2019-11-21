@@ -25,7 +25,7 @@ auto random_str(size_t max_len) -> std::string {
                                          "QWERTYUIOPASDFGHJKLZXCVBNM"
                                          "1234567890";
     
-    const size_t len = random<size_t>(0, max_len);
+    const size_t len = random<size_t>(1, max_len);
     std::string result;
     
     for (size_t i = 0; i < len; i++) {
@@ -44,7 +44,6 @@ auto make_comparator(const T& a, const T& b) -> std::function<void(T)> {
             std::cout << x << ' ';
     };
 }
-
 
 
 auto main() -> int {
@@ -68,7 +67,24 @@ auto main() -> int {
         [](){ return random_str(20); }
     );
 
+    std::cout << "\u001b[31mvector<double>\u001b[0m: " << std::endl;
+    for (auto& x : vec)
+        std::cout << x << ' ';
+    std::cout << std::endl << std::endl;
+
+    std::cout << "\u001b[31mset<int>\u001b[0m: " << std::endl;
+    for (auto& x : set)
+        std::cout << x << ' ';
+    std::cout << std::endl << std::endl;
+
+    std::cout << "\u001b[31mlist<string>\u001b[0m: " << std::endl;
+    for (auto& x : list)
+        std::cout << x << ' ';
+    std::cout << std::endl << std::endl;
+
+
     // Zadanie 1
+    std::cout << "\u001b[31mZadanie 1\u001b[0m: " << std::endl;
     std::for_each(vec.begin(), vec.end(), make_comparator<int>(-10, 10));
     std::cout << std::endl;
 
@@ -80,16 +96,88 @@ auto main() -> int {
         list.end(), 
         make_comparator<std::string>("F", "M")
     );
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
+
+
+    // Zadanie 2
+    constexpr size_t k = 3;
+    constexpr size_t p = 14;
+    
+    std::cout << "\u001b[31mZadanie 2\u001b[0m: " << std::endl;
+    std::cout << "k = " << k << ", p = " << p << std::endl;
+
+    std::for_each(vec.begin() + p, vec.end(), [](double x) {
+        static size_t count = 0;
+        if (count++ % k == 0)
+            std::cout << x << ' ';
+    });
+    std::cout << std::endl << std::endl;
+
+    auto set_it = set.begin();
+    std::advance(set_it, p);
+    std::for_each(set_it, set.end(), [](int x) {
+        static size_t count = 0;
+        if (count++ % k == 0)
+            std::cout << x << ' ';
+    });
+    std::cout << std::endl << std::endl;
+
+    auto list_it = list.begin();
+    std::advance(list_it, p);
+    std::for_each(list_it, list.end(), [](const std::string& str) {
+        static size_t count = 0;
+        if (count++ % k == 0)
+            std::cout << str << ' ';
+    });
+    std::cout << std::endl << std::endl;
+
+    // Zadanie 3
+    std::cout << "\u001b[31mZadanie 3\u001b[0m: " << std::endl;
+    auto vec_sum = std::accumulate(vec.begin(), vec.end(), 0.0);
+    auto set_sum = std::accumulate(set.begin(), set.end(), 0);
+    auto list_sum = std::accumulate(list.begin(), list.end(), std::string());
+
+    std::cout << "Średnia wektora: " 
+              << vec_sum / vec.size()
+              << std::endl;
+
+    std::cout << "Średnia zbioru: " 
+              << set_sum / static_cast<double>(set.size())
+              << std::endl 
+              << std::endl;
+
+    // Zadanie 4
+    std::cout << "\u001b[31mZadanie 4\u001b[0m: " << std::endl;
+    auto [vmin, vmax] = std::minmax_element(vec.begin(), vec.end());
+    auto [smin, smax] = std::minmax_element(set.begin(), set.end());
+    auto [lmin, lmax] = std::minmax_element(list.begin(), list.end());
+
+    std::cout << "Min wektora: " 
+              << *vmin 
+              << ", max wektora: " 
+              << *vmax
+              << std::endl;
+
+    std::cout << "Min zbioru: " 
+              << *smin 
+              << ", max zbioru: " 
+              << *smax
+              << std::endl;
+
+    std::cout << "Min listy: " 
+              << *lmin 
+              << ", max listy: " 
+              << *lmax
+              << std::endl
+              << std::endl;
+
+    // Zadanie 5
+    std::cout << "\u001b[31mZadanie 5\u001b[0m: " << std::endl;
+
+    std::cout << "Suma wektora: " << vec_sum << std::endl;
+    std::cout << "Suma zbioru: " << set_sum << std::endl;
+    std::cout << "Suma listy: " << list_sum << std::endl;
+
 
     return EXIT_SUCCESS;
 }
-
-
-
-
-
-
-
-
-
