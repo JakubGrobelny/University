@@ -60,7 +60,7 @@ auto make_comparator(const T& a, const T& b) -> std::function<void(T)> {
 
 
 template <typename Collection>
-auto print_collection = [](const Collection& col) -> void {
+void print_collection(const Collection& col) {
     for (auto& x : col)
         std::cout << x << ' ';
     std::cout << std::endl;
@@ -68,37 +68,28 @@ auto print_collection = [](const Collection& col) -> void {
 
 
 template <typename Collection>
-auto sum = [](
-    Collection xs, 
-    typename Collection::value_type initial
-) -> typename Collection::value_type {
-    
-    auto it = xs.begin();
-    
-    typename Collection::value_type total = initial;
-    
-    while (it != xs.end()) {
-        total += *it;
-        it++;
-    }
-    return total;
+auto sum (Collection xs, typename Collection::value_type initial) {
+    std::for_each(xs.begin(), xs.end(), [&](auto x) {
+        initial += x;
+    });
+
+    return initial;
 };
 
 
 template <typename Collection>
-auto minmax = [](const Collection& xs) {
+auto minmax(const Collection& xs) {
     auto min = xs.begin();
     auto max = xs.begin();
     auto it = xs.begin();
 
-    while (it != xs.end()) {
-        if (*min > *it)
+    std::for_each(xs.begin(), xs.end(), [&](auto x) {
+        if (x < *min)
             min = it;
-        else if (*max < *it)
+        else if (*max < x)
             max = it;
-
         it++;
-    }
+    });
 
     return std::pair{min, max};
 };
