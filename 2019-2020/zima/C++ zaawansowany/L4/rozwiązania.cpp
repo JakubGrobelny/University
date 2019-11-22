@@ -69,7 +69,7 @@ void print_collection(const Collection& col) {
 
 template <typename Collection>
 auto sum (Collection xs, typename Collection::value_type initial) {
-    std::for_each(xs.begin(), xs.end(), [&](auto x) {
+    std::for_each(xs.begin(), xs.end(), [&](auto& x) {
         initial += x;
     });
 
@@ -83,7 +83,7 @@ auto minmax(const Collection& xs) {
     auto max = xs.begin();
     auto it = xs.begin();
 
-    std::for_each(xs.begin(), xs.end(), [&](auto x) {
+    std::for_each(xs.begin(), xs.end(), [&](auto& x) {
         if (x < *min)
             min = it;
         else if (*max < x)
