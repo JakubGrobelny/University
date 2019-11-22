@@ -68,7 +68,7 @@ void print_collection(const Collection& col) {
 
 
 template <typename Collection>
-auto sum (Collection xs, typename Collection::value_type initial) {
+auto sum(Collection xs, typename Collection::value_type initial) {
     std::for_each(xs.begin(), xs.end(), [&](auto& x) {
         initial += x;
     });
@@ -130,10 +130,10 @@ auto main() -> int {
 
     // Zadanie 1
     std::cout << red << "Zadanie 1" << normal << ": " << std::endl;
-    std::for_each(vec.begin(), vec.end(), make_comparator<int>(-10, 10));
+    std::for_each(vec.begin(), vec.end(), make_comparator<double>(-10.0, 10.0));
     std::cout << std::endl;
 
-    std::for_each(set.begin(), set.end(), make_comparator<double>(-10.0, 10.0));
+    std::for_each(set.begin(), set.end(), make_comparator<int>(-10, 10));
     std::cout << std::endl;
 
     std::for_each(
