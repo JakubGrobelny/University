@@ -8,6 +8,19 @@
 #include <iterator>
 
 
+auto red(std::ostream& out) -> std::ostream& {
+    out << "\u001b[31m";
+    return out;
+}
+
+
+auto normal(std::ostream& out) -> std::ostream& {
+    out << "\u001b[0m";
+    return out;
+}
+
+
+
 template <typename T, typename Generator = std::mt19937_64>
 auto random(T beginning, T end) -> T {
     static Generator gen(std::random_device{}());
@@ -46,6 +59,51 @@ auto make_comparator(const T& a, const T& b) -> std::function<void(T)> {
 }
 
 
+template <typename Collection>
+auto print_collection = [](const Collection& col) -> void {
+    for (auto& x : col)
+        std::cout << x << ' ';
+    std::cout << std::endl;
+};
+
+
+template <typename Collection>
+auto sum = [](
+    Collection xs, 
+    typename Collection::value_type initial
+) -> typename Collection::value_type {
+    
+    auto it = xs.begin();
+    
+    typename Collection::value_type total = initial;
+    
+    while (it != xs.end()) {
+        total += *it;
+        it++;
+    }
+    return total;
+};
+
+
+template <typename Collection>
+auto minmax = [](const Collection& xs) {
+    auto min = xs.begin();
+    auto max = xs.begin();
+    auto it = xs.begin();
+
+    while (it != xs.end()) {
+        if (*min > *it)
+            min = it;
+        else if (*max < *it)
+            max = it;
+
+        it++;
+    }
+
+    return std::pair{min, max};
+};
+
+
 auto main() -> int {
     constexpr size_t num = 42;
     
@@ -67,24 +125,20 @@ auto main() -> int {
         [](){ return random_str(20); }
     );
 
-    std::cout << "\u001b[31mvector<double>\u001b[0m: " << std::endl;
-    for (auto& x : vec)
-        std::cout << x << ' ';
-    std::cout << std::endl << std::endl;
+    std::cout << red << "vector<double>" << normal << ": " << std::endl;
+    print_collection<std::vector<double>>(vec);
+    std::cout << std::endl;
 
-    std::cout << "\u001b[31mset<int>\u001b[0m: " << std::endl;
-    for (auto& x : set)
-        std::cout << x << ' ';
-    std::cout << std::endl << std::endl;
+    std::cout << red << "set<int>" << normal << ": " << std::endl;
+    print_collection<std::set<int>>(set);
+    std::cout << std::endl;
 
-    std::cout << "\u001b[31mlist<string>\u001b[0m: " << std::endl;
-    for (auto& x : list)
-        std::cout << x << ' ';
-    std::cout << std::endl << std::endl;
-
+    std::cout << red << "list<string>" << normal << ": " << std::endl;
+    print_collection<std::list<std::string>>(list);
+    std::cout << std::endl;
 
     // Zadanie 1
-    std::cout << "\u001b[31mZadanie 1\u001b[0m: " << std::endl;
+    std::cout << red << "Zadanie 1" << normal << ": " << std::endl;
     std::for_each(vec.begin(), vec.end(), make_comparator<int>(-10, 10));
     std::cout << std::endl;
 
@@ -103,7 +157,7 @@ auto main() -> int {
     constexpr size_t k = 3;
     constexpr size_t p = 14;
     
-    std::cout << "\u001b[31mZadanie 2\u001b[0m: " << std::endl;
+    std::cout << red << "Zadanie 2" << normal << ": " << std::endl;
     std::cout << "k = " << k << ", p = " << p << std::endl;
 
     std::for_each(vec.begin() + p, vec.end(), [](double x) {
@@ -132,10 +186,13 @@ auto main() -> int {
     std::cout << std::endl << std::endl;
 
     // Zadanie 3
-    std::cout << "\u001b[31mZadanie 3\u001b[0m: " << std::endl;
-    auto vec_sum = std::accumulate(vec.begin(), vec.end(), 0.0);
-    auto set_sum = std::accumulate(set.begin(), set.end(), 0);
-    auto list_sum = std::accumulate(list.begin(), list.end(), std::string());
+    std::cout << red << "Zadanie 3" << normal << ": " << std::endl;
+    // auto vec_sum = std::accumulate(vec.begin(), vec.end(), 0.0);
+    auto vec_sum = sum<std::vector<double>>(vec, 0.0);
+    // auto set_sum = std::accumulate(set.begin(), set.end(), 0);
+    auto set_sum = sum<std::set<int>>(set, 0);
+    // auto list_sum = std::accumulate(list.begin(), list.end(), std::string());
+    auto list_sum = sum<std::list<std::string>>(list, std::string());
 
     std::cout << "Średnia wektora: " 
               << vec_sum / vec.size()
@@ -147,10 +204,13 @@ auto main() -> int {
               << std::endl;
 
     // Zadanie 4
-    std::cout << "\u001b[31mZadanie 4\u001b[0m: " << std::endl;
-    auto [vmin, vmax] = std::minmax_element(vec.begin(), vec.end());
-    auto [smin, smax] = std::minmax_element(set.begin(), set.end());
-    auto [lmin, lmax] = std::minmax_element(list.begin(), list.end());
+    std::cout << red << "Zadanie 4" << normal << ": " << std::endl;
+    auto [vmin, vmax] = minmax<std::vector<double>>(vec);
+    // auto [vmin, vmax] = std::minmax_element(vec.begin(), vec.end());
+    auto [smin, smax] = minmax<std::set<int>>(set);
+    // auto [smin, smax] = std::minmax_element(set.begin(), set.end());
+    auto [lmin, lmax] = minmax<std::list<std::string>>(list);
+    // auto [lmin, lmax] = std::minmax_element(list.begin(), list.end());
 
     std::cout << "Min wektora: " 
               << *vmin 
@@ -172,7 +232,7 @@ auto main() -> int {
               << std::endl;
 
     // Zadanie 5
-    std::cout << "\u001b[31mZadanie 5\u001b[0m: " << std::endl;
+    std::cout << red << "Zadanie 5" << normal << ": " << std::endl;
 
     std::cout << "Suma wektora: " << vec_sum << std::endl;
     std::cout << "Suma zbioru: " << set_sum << std::endl;
