@@ -2,11 +2,11 @@
 
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
-- Zadanie 3 - brak
+- [Zadanie 3](#zadanie-3)
 - Zadanie 4 - brak
 - Zadanie 5 - brak
 - Zadanie 6 - brak
-- Zadanie 7 - brak
+- [Zadanie 7](#zadanie-7)
 - Zadanie 8 - brak
 
 ***
@@ -97,23 +97,46 @@ Za pomocą flagi `MAP_NORESERVE` można ustalić czy należy zarezerwować miej
 
 ***
 
-# Zadanie 3 (TODO)
+# Zadanie 3
 
 ### Na podstawie slajdów do wykładu wyjaśnij w jaki sposób system Linux obsługuje błąd strony.
 
 ![slajd](zad3_slajd.png)
 
+*Page fault* następuje gdy proces
+1) próbuje odczytać coś z nieistniejącej strony
+2) próbuje dostać się do strony, która nie znajduje się jeszcze w pamięci
+3) próbuje dostać się do strony bez odpowiednich uprawnień
 
+Obsługa błędu (nie ze slajdów):
+1. przekazanie kontroli do jądra. Zapisanie kontekstu.
+2. jądro sprawdza jaka strona wywołała błąd
+3. Jeżeli adres wirtualny jest poprawny, system wczytuje odpowiednią ramkę strony. Jeżeli trzeba ją zapisać to na czas tej akcji I/O kernel przekazuje kontrolę innemu procesowi.
+4. Jeżeli adres nie jest poprawny (np. NULL) bądź strona nie ma odpowiednich uprawnień do wykonywanej akcji (np. zapis do strony *read-only*), to wówczas kernel wysyła procesowi sygnał `SIGSEGV`.
 
 ### Kiedy jądro wyśle procesowi sygnał `SIGSEGV` z kodem `SEGV_MAPERR` lub `SEGV_ACCERR`? 
 
+- `SEGV_MAPPER` – strona nie była odwzorowana w przestrzeni adresowej procesu.
+- `SEGV_ACCERR` – strona nie miała odpowiednich uprawnień.
+
 ### W jakiej sytuacji wystąpi <u>*pomniejszy*</u> (ang. minor) błąd strony lub <u>*poważny*</u> (ang. major) błąd strony?
+
+- **major** – strona nie znajduje się w pamięci. Inaczej *hard page fault*. Występuje przez to, że system odracza ładowanie rzeczy do pamięci aż do pierwszego dostępu do danych.
+- **minor** – strona jest załadowana do pamięci ale nie jest oznaczona jako załadowana prezz MMU dla danego procesu. Jądro musi jedynie oznaczyć tę stronę jako załadowaną. Może się to wydarzyć kiedy pamięć jest dzielona przez różne programy i strona została już załadowana, dla któregoś z nich lub gdy strona została usunięta ze zbioru roboczego procesu ale nie została zapisana na dysk ani usunięta.
 
 ### Jaką rolę pełni <u>*bufor stron*</u> (ang. page cache)?
 
+- **bufor stron** (ang. *page cache*) – fragment pamięci RAM wykorzystywany do przyspieszenia odczytów i zapisów na dysku. Przy zapisie, zamiast od razu zapisywać wszystko na dysku, zmiany zostają dokonane jedynie w buforze stron a modyfikowane przechowywane tam strony oznaczone jako *dirty*. Zmiany zapisywane są na dysk regularnie lub przy użyciu `sync`/`fsync`. Poprawiona zostaje również szybkość odczytu, gdyż kolejne wczytania tej samej strony mogą odbyć się poprzez bufor stron o ile szukana strona dalej się tam znajduje.
+
 ### Kiedy wystąpi błąd strony przy zapisie mimo, że pole `vm_prot` pozwala na zapis do <u>*obiektu wspierającego*</u> (ang. backing object)?
 
+-- **obiekt wspierający** – plik przy odwzorowaniu pliku „lub inny objekt” (??!).
+
+(**Uwaga** – zgaduję) błąd strony może wystąpić gdy strona, do której piszemy, nie jest załadowana do pamięci?
+
 ### Kiedy jądro wyśle `SIGBUS` do procesu posiadającego odwzorowanie pliku w pamięć (§49.4.3)?
+
+- `SIGBUS` – sygnał wysyłany procesowi, który próbuje uzyskać dostęp do pamięci, której CPU nie jest w stanie fizyzcnie zaadresować (na przykład adres niepodzielny przez 4).
 
 ***
 
