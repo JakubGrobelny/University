@@ -47,6 +47,12 @@ static int QuickSort(long table[], size_t left, size_t right) {
   pid_t pid_left = -1, pid_right = -1, pid = -1;
 
   /* TODO: If there is more to sort than FORKSORT_MIN start a subprocess. */
+  bool forked = right - left >= FORKSORT_MIN;
+  if (forked) {
+    if ((pid = Fork())) {
+      return pid;
+    }
+  }
 
   if (left < right) {
     if (right - left <= INSERTSORT_MAX) {
@@ -65,6 +71,17 @@ static int QuickSort(long table[], size_t left, size_t right) {
       pid_right = QuickSort(table, split, right);
 
       /* TODO: Wait for possible children and exit if created a subprocess. */
+      if (pid_left != -1) {
+        Waitpid(pid_left, NULL, 0);
+      }
+      
+      if (pid_right != -1){
+        Waitpid(pid_right, NULL, 0);
+      }
+
+      if (forked) {
+        exit(0);
+      }
     }
   }
 
@@ -84,6 +101,14 @@ int main(void) {
   srandom(tv.tv_usec);
 
   /* TODO: Allocate table... */
+  long* table = Mmap(
+    NULL, 
+    size, 
+    PROT_READ  | PROT_WRITE, 
+    MAP_SHARED | MAP_ANONYMOUS, 
+    -1, 
+    0
+  );
 
   /* ... and fill it in with random elements. */
   for (size_t i = 0; i < NELEMS; i++)

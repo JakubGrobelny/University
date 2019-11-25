@@ -2,7 +2,12 @@
 
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
-- [Zadanie 3](#zadanie-3)
+- Zadanie 3 - brak
+- Zadanie 4 - brak
+- Zadanie 5 - brak
+- Zadanie 6 - brak
+- Zadanie 7 - brak
+- Zadanie 8 - brak
 
 ***
 
@@ -78,7 +83,7 @@ Odwzorowania są dziedziczone po wywołaniu `fork()` (zarówno prywatne jak i dz
 
 Wywołanie `execve()` nie zachowuje odwzorowań pamięci.
 
-(**???** *zgaduję bo nic nie jest napisane nigdzie*) – execve tworzy odwzorowanie prywatne pliku wykonywalnego (np. sekcje `text` lub `data` uruchamianego programu) + odwzorowanie anonimowe np. dla stosu. (**???**)
+(**???** *zgaduję bo nic nie jest napisane nigdzie*) – execve tworzy odwzorowanie prywatne pliku wykonywalnego (np. sekcje `text` lub `data` uruchamianego programu) + odwzorowanie anonimowe np. dla stosu + odwzorowania dla bibliotek dzielonych. (**???**)
 
 ### Które z wymienionych odwzorowań mogą wymagać użycia <u>*pamięci wymiany*</u> (ang. swap space) i dlaczego?
 
@@ -92,9 +97,11 @@ Za pomocą flagi `MAP_NORESERVE` można ustalić czy należy zarezerwować miej
 
 ***
 
-# Zadanie 3
+# Zadanie 3 (TODO)
 
 ### Na podstawie slajdów do wykładu wyjaśnij w jaki sposób system Linux obsługuje błąd strony.
+
+![slajd](zad3_slajd.png)
 
 
 
@@ -107,3 +114,54 @@ Za pomocą flagi `MAP_NORESERVE` można ustalić czy należy zarezerwować miej
 ### Kiedy wystąpi błąd strony przy zapisie mimo, że pole `vm_prot` pozwala na zapis do <u>*obiektu wspierającego*</u> (ang. backing object)?
 
 ### Kiedy jądro wyśle `SIGBUS` do procesu posiadającego odwzorowanie pliku w pamięć (§49.4.3)?
+
+***
+
+# Zadanie 7
+
+- **zużycie procesora** (ang. *CPU time*) – czas jaki procesor spędził na wykonywaniu instrukcji procesu.
+
+- **czas przebywania w systemie** (ang. *turnaround time*) – czas od utworzenia do ukończenia procesu.
+
+Program:
+- [forksort.c](./programy/forksort.c)
+
+### Porównaj <u>*zużycie procesora*</u> (ang. CPU time) i <u>*czas przebywania w systemie*</u> (ang. turnaround time) przed i po wprowadzeniu delegacji zadań do podprocesów. 
+
+Przed:
+```
+real	0m8,366s
+user	0m8,083s
+sys	    0m0,236s
+```
+Po:
+```
+real	0m3,177s
+user	0m8,427s
+sys	    0m0,603s
+```
+
+Uzyskane przyspieszenie: $\frac{8,366}{3,177} \approx 2.6333$
+
+### Na podstawie prawa [Amdahla](https://pl.wikipedia.org/wiki/Prawo_Amdahla) wyjaśnij zaobserwowane różnice. 
+
+**Uwaga** – wszystko co jest tutaj napisane jest z całkiem sporym prawdopodobieństwem fałszem.
+
+![perf](./zad7.png)
+
+Jak widać, około ~80% czasu spędzamy na zadaniach, które można było liczyć równolegle (pomijając np. liczenie jednocześnie `Partition` na fragmencie tablicy i jej podprzedziale).
+
+$$ \frac{1}{(1 - P) + \frac{P}{N}} \approx S, $$
+gdzie $S$ jest przyspieszeniem.
+
+- $N = 4$ – liczba procesorów
+- $P \approx 0.8$ – procent programu, który można zrównoleglić
+
+$$\frac{1}{(1 - 0.8) + \frac{0.8}{4}} = \frac{1}{0.2 + 0.2} = \frac{1}{0.4} \approx 2.5$$
+więc mniej więcej się zgadza.
+
+### Których elementów naszego algorytmu nie da się wykonywać równolegle?
+
+Równolegle nie da się:
+- `InsertSort`
+- `Partition`
