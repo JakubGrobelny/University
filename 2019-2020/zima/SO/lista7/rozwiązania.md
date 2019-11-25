@@ -3,7 +3,7 @@
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
-- Zadanie 4 - brak
+- [Zadanie 4](#zadanie-4)
 - Zadanie 5 - brak
 - Zadanie 6 - brak
 - [Zadanie 7](#zadanie-7)
@@ -140,6 +140,42 @@ Obsługa błędu (nie ze slajdów):
 
 ***
 
+# Zadanie 4
+
+### Niech właścicielem programu A oraz B są odpowiednio użytkownik 0 `root` i 1000 `cahir`. Obydwa pliki mają ustawiony bit `set-uid`. Proces o uruchomiony na uprawnieniach użytkownika 2000 `student` używa wywołania [execve(2)](http://man7.org/linux/man-pages/man2/execve.2.html) do wykonania procesu A i B. 
+### Podaj wartości <u>*rzeczywistego*</u>, <u>*obowiązującego*</u> i <u>*zachowanego*</u> identyfikatora użytkownika po wywołaniu `execve`.
+
+- **rzeczywiste id** (ang. *real id*) – użytkownik, który jest właścicielem procesu. Decyduje o uprawnieniach do wysyłania sygnałów.
+- **obowiązujące id** (ang. *effective id*) – zwykle to samo co rzeczywiste ale czasami jest zmieniane żeby umożliwić nieuprzywilejowanemu użytkownik dostęp do plików, do których dostęp ma tylko *root*. Używane do sprawdzania dostępu. Tworzone pliki należą do użytkownika o obowiązującym id. Programy z bitem *setuid* zmieniają obowiązujące id.
+- **zachowane id** (ang. *saved id*) – zapisane poprzednie *id* w przypadku tymczasowych zmian obowiązującego id. Nieuprzywilejowany proces może ustawić swoje obowiązujące id na rzeczywiste id, obowiązujące id bądź zachowane id.
+
+- Po wywołaniu programu **A**:
+    - *rzeczywiste id*: 2000 (`student`)
+    - *obowiązujące id*: 0 (`root`)
+    - *zachowane id*: 0 (`root`)
+- Po wywołaniu programu **B**:
+    - *rzeczywiste id*: 2000 (`student`)
+    - *obowiązujące id*: 1000 (`cahir`)
+    - *zachowane id*:  1000 (`cahir`)
+
+### Jakie instrukcje muszą wykonać programy A i B, aby prawidłowo przywrócić tożsamość użytkownika student? Należy użyć wywołań [seteuid(2)](http://man7.org/linux/man-pages/man2/seteuid.2.html) i [setreuid(2)](http://man7.org/linux/man-pages/man2/setreuid.2.html).
+
+- program **A**:
+```C
+seteuid(0) // jeżeli obowiązujące id != 0 i zapisane id = 0
+// obowiązujące id = root
+setuid(2000)
+// obowiązujące id = rzeczywiste id = zachowane id = student
+```
+- program **B**:
+```C
+// obowiązujące id = cahir
+setreuid(2000, 2000)
+// obowiązujące id = zapisane id = student
+```
+
+***
+
 # Zadanie 7
 
 - **zużycie procesora** (ang. *CPU time*) – czas jaki procesor spędził na wykonywaniu instrukcji procesu.
@@ -153,14 +189,14 @@ Program:
 
 Przed:
 ```
-real	0m8,366s
-user	0m8,083s
+real    0m8,366s
+user    0m8,083s
 sys	    0m0,236s
 ```
 Po:
 ```
-real	0m3,177s
-user	0m8,427s
+real    0m3,177s
+user    0m8,427s
 sys	    0m0,603s
 ```
 
