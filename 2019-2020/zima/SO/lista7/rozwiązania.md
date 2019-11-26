@@ -4,7 +4,7 @@
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
-- Zadanie 5 - brak
+- [Zadanie 5](#zadanie-5)
 - Zadanie 6 - brak
 - [Zadanie 7](#zadanie-7)
 - Zadanie 8 - brak
@@ -174,6 +174,37 @@ setreuid(2000, 2000)
 // obowiązujące id = zapisane id = student
 ```
 
+***
+
+# Zadanie 5
+
+### Co mówi „zasada najbardziej ograniczonych uprawnień” (ang. *principle of least privilege*) w kontekście projektowania oprogramowania?
+
+Każdy proces powinien mieć tylko minimalne przywileje, które są niezbędne, żeby mógł wykonywać swoją funkcję, aby zminimalizować ryzyko, że ktoś wykorzysta podatność w celu uzyskania dostępu do wrażliwych danych bądź krytycznych systemów.
+
+### Zreferuj sekcję 4.3 artykułu [Capsicum: practical capabilities for UNIX](https://www.usenix.org/legacy/event/sec10/tech/full_papers/Watson.pdf) opisującego [capsicum(4)](https://www.freebsd.org/cgi/man.cgi?query=capsicum&sektion=4).
+
+- narzędzie `gzip` implementuje ryzykowne algorytmy kompresji i dekompresji, w których występowały podatności
+- kod `gzip`a można można naturalnie podzielić na części:
+    - główna pętla aplikacji przetwarza argumenty linii poleceń, otwiera pliki i przekazuje deskryptory procedurom kompresji/dekompresji.
+    - sandboxowana część wykonująca kompresję/dekompresję będzie jedynie otrzymywać parę deskryptorów otworzonych z *ambient privilege*
+- `gzip` został zmodyfikowany żeby używać `libcapsicum`. Wydzielono trzy główne funkcje przekazywane przez RPC (*Remote Procedure Call* sandboxom. RPC przekazuje sandboxowi dwie  *capabilities* (wejście/wyjście) wraz z danymi takimi jak zwrócony rozmiar, oryginalna nazwa pliku i czas modyfikacji. Uprawnienia *capabilities* zostały ograniczone do `CAP_READ`, `CAP_WRITE`, `CAP_SEEK` aby zapobiec dostępowi do innych plików w systemie plików lub innych zasobach o globalnych nazwach na wypadek próby wykorzystania podatności w algorytmie kompresji.
+- Do wprowadzenia zmian potrzebne było 409 linii kodu (16% oryginalnego rozmiaru programu). Przy implementacji popełniono błąd polegający na tym, że globalna zmienna przechowująca poziom kompresji nie była poprawnie przekazywana dalej sandboxowi przez co program działał szybciej niż oczekiwano. Pokazuje to, że kod, który nie został stworzony z myślą o wprowadzaniu wydzielania wymaga ostrożnej analizy, bo takie błędy nie mogą zostać wychwycone przez kompilator.
+- Dodanie wydzielania do `gzipa` wymagało małych ale nietrywialnych zmian. Rodzi to pytanie, czy nie istnieje lepszy sposób implementacji sandboxowania w aplikacjach używanych głownie w potokach. Jednym z proponowanych rozwiązań jest *Principle of Least Authority Shell* (*PLASH*), tj. shell który działa z *ambient privilege* i sandboxuje każdą część składową potoku. Rodzi to jednak problemy przy użyciu `gzipa` poza potokami gdzie wykonywane są liczne operacje wymagające *ambient privilege*.
+- Inną eksplorowaną dziedziną jest sandboxowanie bibliotek. Np. kodeki z sandboxowaniem działające w niezmodyfikowanej przeglądarce. Często jednak API bibliotek nie jest przyjazne sandboksowaniu. Jednym z powodów, dla których wydzielanie dodano do `gzip` a nie `libz` jest to, że `gzip` dostarczał wewnętrznego API opartego na deskryptorach plików podczas gdy `libz` na buforach. 
+
+### Przeanalizuj sposób wydzielenia (ang. sandboxing) z programu [gzip(1)](https://www.freebsd.org/cgi/man.cgi?query=gzip&sektion=1) funkcji podatnych na ataki.
+
+![zad5](./zad5.png)
+
+Trzy funkcje podatne na ataki uruchamiane są przechwytywane i przekazywane sandboxom poprzez RPC. Każde RPC przekazuje dwie *capabilities* do wejścia i wyjścia oraz różne dodatkowe informacje o plikach, które mogą być przydatne. Uprawnienia są ograniczone do `CAP_READ`, `CAP_WRITE` i `CAP_SEEK` żeby zapobiec dostępom do innych plików w systemie poprzez podatności w funkcjach kompresji. Funkcje kompresji nie muszą mieć możliwości otwierania plików. Potrzebują jedynie wejścia i wyjścia.
+
+### Zastanów się, które prawa [rights(4)](https://www.freebsd.org/cgi/man.cgi?query=rights&sektion=4) oraz operacje na deskryptorach plików [cap_rights_limits(2)]() powinny zostać nadane podprocesowi przeprowadzającemu dekompresję danych.
+
+- prawa i operacje na deskryptorach plików:
+    - `CAP_READ` – do oczytywania wejścia
+    - `CAP_WRITE` – do zapisywania zdekompresowanych danych
+    - `CAP_SEEK` – do zapisywania w dowolny mmiejscu pliku / przesuwania kursora
 ***
 
 # Zadanie 7
