@@ -58,7 +58,7 @@
     ;;; build a dictionary of fresh names for vertices
     (define (rename-vertices)
         (let ([names (make-hasheq)]
-              [count 0])
+              [count 1])
             (hash-for-each graph
                 (lambda (vertex _)
                     (hash-set! names vertex count)
@@ -104,7 +104,7 @@
                       (list g3 g4))))
         (if (= name-count 0)
             '()
-            (let* ([name (* 4 (- name-count 1))]
+            (let* ([name (+ 1 (* 4 (- name-count 1)))]
                    [any-group (build-any-group-clause name)]
                    [one-group (build-one-group-clauses name)])
                 (append (cons any-group one-group)
@@ -133,8 +133,21 @@
 
 ;;; prints the SAT instance in the correct format
 (define (print-sat sat)
-    ;TODO: implement
-    (fprintf (current-output-port) "~a" (sat-instance-clauses sat)))
+    ;;; print CNF clauses in separate lines
+    (define (print-clauses clauses)
+        ;;; print a single clause
+        (define (print-clause clause)
+            (map (lambda (var) (fprintf (current-output-port) "~a " var)) 
+                 clause))
+        (unless (null? clauses)
+            (print-clause (car clauses))
+            (fprintf (current-output-port) "0\n")
+            (print-clauses (cdr clauses))))
+    (let* ([var-count (sat-instance-var-count sat)]
+           [clauses (sat-instance-clauses sat)]
+           [clause-count (length clauses)])
+        (fprintf (current-output-port) "p cnf ~a ~a\n" var-count clause-count)
+        (print-clauses clauses)))
 
 (module+ main
     (let* ([problem (read-json)]
