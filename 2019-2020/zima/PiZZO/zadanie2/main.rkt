@@ -148,8 +148,14 @@
     (let* ([var-count (sat-instance-var-count sat)]
            [clauses (sat-instance-clauses sat)]
            [clause-count (length clauses)])
-        (fprintf (current-output-port) "p cnf ~a ~a\n" var-count clause-count)
-        (print-clauses clauses)))
+        (if (= clause-count 0)
+            (fprintf (current-output-port) "p cnf 1 1\n1 0\n")
+            (begin
+                (fprintf (current-output-port) 
+                     "p cnf ~a ~a\n" 
+                     var-count 
+                     clause-count)
+                (print-clauses clauses)))))
 
 (module+ main
     (let* ([problem (read-json)]
