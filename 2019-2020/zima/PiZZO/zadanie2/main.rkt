@@ -61,9 +61,10 @@
               [count 1])
             (hash-for-each graph
                 (lambda (vertex _)
-                    (hash-set! names vertex count)
-                    ; each student has 4 variables
-                    (set! count (+ 4 count))))
+                    (unless (hash-has-key? names vertex)
+                        (hash-set! names vertex count)
+                        ; each student has 4 variables
+                        (set! count (+ 4 count)))))
         names))
     ;;; build a set of pairs that are in conflicts without repretitions
     (define (create-unique-pairs names)
@@ -76,10 +77,11 @@
                 (lambda (vertex neighbours)
                     (set-for-each neighbours
                         (lambda (neighbour)
-                            (let* ([v0 (hash-ref names vertex)]
-                                   [v1 (hash-ref names neighbour)]
-                                   [pair (make-pair v0 v1)])
-                                (set-add! pairs pair))))))
+                            (when (hash-has-key? names neighbour)
+                                (let* ([v0 (hash-ref names vertex)]
+                                       [v1 (hash-ref names neighbour)]
+                                       [pair (make-pair v0 v1)])
+                                    (set-add! pairs pair)))))))
             pairs))
     ;;; builds a list of clauses that encode the requirement of
     ;;; being in exactly one group
