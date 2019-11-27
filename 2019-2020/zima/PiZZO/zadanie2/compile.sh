@@ -1,0 +1,1 @@
+raco exe -o tutorzy main.rkt
