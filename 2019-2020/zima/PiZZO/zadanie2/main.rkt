@@ -37,12 +37,17 @@
     ;;; destructively removes vertices of degree lesser than 4 and 
     ;;; returns the number of removed vertices
     (define (reduce-once! graph)
-        (let ([count 0])
+        (let ([count 0]
+              [removed (mutable-seteq)])
             (hash-for-each graph
                 (lambda (vertex neighbours)
                     (when (< (set-count neighbours) 4)
                         (hash-remove! graph vertex)
+                        (set-add! removed vertex)
                         (set! count (+ 1 count)))))
+            (hash-for-each graph
+                (lambda (_ neighbours)
+                    (set-subtract! neighbours removed)))
             count))
     (if (= (reduce-once! graph) 0)
         graph
