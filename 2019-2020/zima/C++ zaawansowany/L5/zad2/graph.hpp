@@ -28,6 +28,11 @@ class graph {
     void assert_unique_vertex(const std::string&, int) const;
     void assert_vertex_id_exists(int) const;
     void assert_vertex_name_exists(const std::string&) const;
+    void assert_has_edge(int, int);
+
+    void internal_add_edge(int, int, float);
+    void internal_remove_edge(int, int);
+    void internal_change_weight(int, int, float);
 
 public:
 
@@ -50,17 +55,17 @@ public:
     void add_edge(const std::string&, const std::string&, float);
     void add_edge(int, int, float);
     void add_edge(int, const std::string&, float);
-    void add_edge(std::string&, int, float);
+    void add_edge(const std::string&, int, float);
 
     void remove_edge(const std::string&, const std::string&);
     void remove_edge(int, int);
     void remove_edge(int, const std::string&);
-    void remove_edge(std::string&, int);
+    void remove_edge(const std::string&, int);
 
     void change_edge_weight(const std::string&, const std::string&, float);
     void change_edge_weight(int, int, float);
     void change_edge_weight(const std::string&, int, float);
-    void change_edge_weighT(int, const std::string&, float);
+    void change_edge_weight(int, const std::string&, float);
 
     auto get_vertices() const -> std::list<vertex>;
     auto get_neighbours(int) const -> std::list<std::pair<vertex, float>>;

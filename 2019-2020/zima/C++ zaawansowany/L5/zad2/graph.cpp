@@ -95,11 +95,93 @@ void graph::remove_vertex(int id) {
 }
 
 
+void graph::add_edge(const std::string& v1, const std::string& v2, float w) {
+    this->assert_vertex_name_exists(v1);
+    this->assert_vertex_name_exists(v2);
+    this->internal_add_edge(this->vertex_ids[v1], this->vertex_ids[v2], w);
+}
 
 
+void graph::add_edge(const std::string& v1, int v2, float w) {
+    this->assert_vertex_name_exists(v1);
+    this->assert_vertex_id_exists(v2);
+    this->internal_add_edge(this->vertex_ids[v1], v2, w);
+}
 
 
+void graph::add_edge(int v1, const std::string& v2, float w) {
+    this->add_edge(v2, v1, w);
+}
 
 
+void graph::add_edge(int v1, int v2, float w) {
+    this->assert_vertex_id_exists(v1);
+    this->assert_vertex_id_exists(v2);
+    this->internal_add_edge(v1, v2, w);
+}
 
 
+void graph::internal_add_edge(int v1, int v2, float weight) {
+    this->vertices[v1].push_front({v2, weight});
+    this->vertices[v2].push_front({v1, weight});
+}
+
+
+void graph::remove_edge(const std::string& v1, const std::string& v2) {
+    this->assert_vertex_name_exists(v1);
+    this->assert_vertex_name_exists(v2);
+    this->internal_remove_edge(this->vertex_ids[v1], this->vertex_ids[v2]);
+}
+
+
+void graph::remove_edge(const std::string& v1, int v2) {
+    this->assert_vertex_name_exists(v1);
+    this->assert_vertex_id_exists(v2);
+    this->internal_remove_edge(this->vertex_ids[v1], v2);
+}
+
+
+void graph::remove_edge(int v1, const std::string& v2) {
+    this->remove_edge(v2, v1);
+}
+
+
+void graph::remove_edge(int v1, int v2) {
+    this->internal_remove_edge(v1, v2);
+}
+
+
+void graph::assert_has_edge(int v1, int v2) {
+    const auto& v1_edges = this->vertices[v1];
+    const auto& v2_edges = this->vertices[v2];
+
+    bool v1_edge_exists = std::any_of(
+        v1_edges.begin(), 
+        v1_edges.end(), 
+        [&](graph::edge e) -> bool {
+            return e.to == v2;
+        }
+    );
+
+    bool v2_edge_exists = std::any_of(
+        v2_edges.begin(), 
+        v2_edges.end(), 
+        [&](graph::edge e) -> bool {
+            return e.to == v1;
+        }
+    );
+
+    if (!v1_edge_exists || !v2_edge_exists) {
+        std::stringstream error_msg;
+        error_msg << "Edge <" << v1 << ", " << v2 << "> does not exist!";
+        throw std::invalid_argument(error_msg.str());
+    }
+}
+
+
+void graph::internal_remove_edge(int v1, int v2) {
+    this->assert_has_edge(v1, v2);
+
+    this->vertices[v1].remove_if([&](graph::edge e) { return e.to == v2; });
+    this->vertices[v2].remove_if([&](graph::edge e) { return e.to == v1; });
+}
