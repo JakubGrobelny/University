@@ -1,6 +1,9 @@
 #include "graph.hpp"
 #include <algorithm>
 #include <sstream>
+#include <queue>
+#include <set>
+#include <iostream>
 
 
 graph::graph(
@@ -11,6 +14,8 @@ graph::graph(
         this->vertex_ids[name] = id;
         this->vertex_names[id] = name;
         this->vertices.insert({id, {}});
+        if (id > this->max_id)
+            this->max_id = id;
     }
 
     for (auto& [from, to, weight] : edges) {
@@ -51,7 +56,7 @@ void graph::assert_vertex_name_exists(const std::string& name) const {
 
 
 void graph::add_vertex(const std::string& name) {
-    this->add_vertex(this->max_id++, name);
+    this->add_vertex(++this->max_id, name);
 }
 
 
@@ -83,13 +88,18 @@ void graph::remove_vertex(int id) {
     this->vertex_names.erase(id);
     this->vertices.erase(id);
 
+    // https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
+    // ??!
     for (auto& vertex : this->vertices) {
-        std::remove_if(
-            vertex.second.begin(), 
-            vertex.second.end(), 
-            [&](graph::edge e) -> bool {
-                return e.to == id;
-            }
+        vertex.second.erase(
+            std::remove_if(
+                vertex.second.begin(), 
+                vertex.second.end(), 
+                [&](graph::edge e) -> bool {
+                    return e.to == id;
+                }
+            ),
+            vertex.second.end()
         );
     }
 }
@@ -122,6 +132,12 @@ void graph::add_edge(int v1, int v2, float w) {
 
 
 void graph::internal_add_edge(int v1, int v2, float weight) {
+    if (this->has_edge(v1, v2)) {
+        std::stringstream error_msg;
+        error_msg << "Graph already has an edge <" << v1 << ", " << v2 << ">!";
+        throw std::invalid_argument(error_msg.str());
+    }
+
     this->vertices[v1].push_front({v2, weight});
     this->vertices[v2].push_front({v1, weight});
 }
@@ -151,7 +167,7 @@ void graph::remove_edge(int v1, int v2) {
 }
 
 
-void graph::assert_has_edge(int v1, int v2) const {
+auto graph::has_edge(int v1, int v2) const -> bool {
     const auto& v1_edges = this->vertices.find(v1)->second;
     const auto& v2_edges = this->vertices.find(v2)->second;
 
@@ -171,7 +187,13 @@ void graph::assert_has_edge(int v1, int v2) const {
         }
     );
 
-    if (!v1_edge_exists || !v2_edge_exists) {
+    return v1_edge_exists && v2_edge_exists;
+}
+
+
+
+void graph::assert_has_edge(int v1, int v2) const {
+    if (!this->has_edge(v1, v2)) {
         std::stringstream error_msg;
         error_msg << "Edge <" << v1 << ", " << v2 << "> does not exist!";
         throw std::invalid_argument(error_msg.str());
@@ -290,4 +312,58 @@ auto graph::get_vertex_id(const std::string& name) -> std::optional<int> {
     }
 
     return it->second;
+}
+
+
+auto graph::has_path(int from, int to) const -> bool {
+    return this->find_path(from, to).has_value();
+}
+
+
+auto graph::find_path(int from, int to) const -> std::optional<std::list<int>> {
+    this->assert_vertex_id_exists(from);
+    this->assert_vertex_id_exists(to);
+
+    std::queue<int> queue;
+    std::set<int> visited;
+    std::map<int, int> parents;
+
+    visited.insert(from);
+    queue.push(from);
+
+    const auto backtrack = [&](int child) -> std::list<int> {
+        std::list<int> path;
+
+        while (child != parents[child]) {
+            path.push_front(child);
+            child = parents[child];
+        }
+
+        path.push_front(from);
+
+        return path;
+    };
+
+    parents[from] = from;
+
+    while (!queue.empty()) {
+        int v = queue.front();
+        queue.pop();
+
+        if (v == to) {
+            return backtrack(v);
+        }
+
+        auto& neighbours = this->vertices.find(v)->second;
+        for (auto& w : neighbours) {
+            auto id = w.to;
+            if (!visited.count(id)) {
+                visited.insert(id);
+                parents[id] = v;
+                queue.push(id);
+            }
+        }
+    }
+
+    return {};
 }
