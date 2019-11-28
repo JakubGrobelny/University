@@ -1,7 +1,8 @@
 #include <iostream>
+#include "graph.hpp"
 
 
-auto main(int argc, char* argv[]) -> int {
+auto main(void) -> int {
     std::cout << "Hello, world!" << std::endl;
     return EXIT_SUCCESS;
 }

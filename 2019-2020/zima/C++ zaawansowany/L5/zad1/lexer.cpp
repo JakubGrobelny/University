@@ -90,6 +90,8 @@ auto get_priority(op_token token) -> int {
         case op_token::power:
             return 2;
     }
+
+    throw std::invalid_argument("Invalid operator!");
 }
 
 
