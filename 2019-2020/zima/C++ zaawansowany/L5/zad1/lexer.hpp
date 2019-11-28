@@ -5,10 +5,14 @@
 #include <string>
 #include <queue>
 
-enum class token_type {
-    plus, minus, div, mult,
-    left_bracket, right_bracket,
-    comma
+enum class token_type : char {
+    plus          = '+', 
+    minus         = '-', 
+    div           = '/', 
+    mult          = '*', 
+    power         = '^',
+    left_bracket  = '(', 
+    right_bracket = ')'
 };
 
 using token = std::variant<std::string, token_type, int>;
