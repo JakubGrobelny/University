@@ -1,5 +1,4 @@
 #include <iostream>
-#include "lexer.hpp"
 
 
 auto main(int argc, char* argv[]) -> int {
