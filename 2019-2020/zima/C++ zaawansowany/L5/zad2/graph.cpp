@@ -151,9 +151,9 @@ void graph::remove_edge(int v1, int v2) {
 }
 
 
-void graph::assert_has_edge(int v1, int v2) {
-    const auto& v1_edges = this->vertices[v1];
-    const auto& v2_edges = this->vertices[v2];
+void graph::assert_has_edge(int v1, int v2) const {
+    const auto& v1_edges = this->vertices.find(v1)->second;
+    const auto& v2_edges = this->vertices.find(v2)->second;
 
     bool v1_edge_exists = std::any_of(
         v1_edges.begin(), 
@@ -184,4 +184,110 @@ void graph::internal_remove_edge(int v1, int v2) {
 
     this->vertices[v1].remove_if([&](graph::edge e) { return e.to == v2; });
     this->vertices[v2].remove_if([&](graph::edge e) { return e.to == v1; });
+}
+
+
+void graph::change_edge_weight(
+    const std::string& v1, 
+    const std::string& v2, 
+    float weight
+) {
+    this->assert_vertex_name_exists(v1);
+    this->assert_vertex_name_exists(v2);
+    this->internal_change_weight(
+        this->vertex_ids[v1], 
+        this->vertex_ids[v2], 
+        weight
+    );
+}
+
+
+void graph::change_edge_weight(const std::string& v1, int v2, float weight) {
+    this->assert_vertex_name_exists(v1);
+    this->assert_vertex_id_exists(v2);
+    this->internal_change_weight(this->vertex_ids[v1], v2, weight);
+}
+
+
+void graph::change_edge_weight(int v1, const std::string& v2, float weight) {
+    this->assert_vertex_id_exists(v1);
+    this->assert_vertex_name_exists(v2);
+    this->internal_change_weight(v1, this->vertex_ids[v2], weight);
+}
+
+
+void graph::change_edge_weight(int v1, int v2, float weight) {
+    this->assert_vertex_id_exists(v1);
+    this->assert_vertex_id_exists(v2);
+    this->internal_change_weight(v1, v2, weight);
+}
+
+
+void graph::internal_change_weight(int v1, int v2, float weight) {
+    this->assert_has_edge(v1, v2);
+
+    for (auto& neighbour : this->vertices[v1]) {
+        if (neighbour.to == v2) {
+            neighbour.weight = weight;
+            break;
+        }
+    }
+
+    for (auto& neighbour : this->vertices[v2]) {
+        if (neighbour.to == v1) {
+            neighbour.weight = weight;
+            break;
+        }
+    }
+}
+
+
+auto graph::get_vertices() const -> std::list<vertex> {
+    std::list<graph::vertex> vertices;
+
+    for (auto& vertex : this->vertices) {
+        auto& id = vertex.first;
+        auto& name = this->vertex_names.find(id)->second;
+        vertices.push_front({id, name});
+    }
+
+    return vertices;
+}
+
+
+auto graph::get_neighbours(int v) const -> std::list<std::pair<vertex, float>> {
+    this->assert_vertex_id_exists(v);
+
+    auto& neighbours = this->vertices.find(v)->second;
+    std::list<std::pair<vertex, float>> result;
+
+    for (auto& neighbour : neighbours) {
+        int id = neighbour.to;
+        auto& name = this->vertex_names.find(id)->second;
+        float weight = neighbour.weight;
+
+        result.push_front({{id, name}, weight});
+    }
+
+    return result;
+}
+
+
+auto graph::get_vertex_name(int id) const -> std::optional<std::string> {
+    const auto& it = this->vertex_names.find(id);
+    if (it == this->vertex_names.end()) {
+        return {};
+    }
+
+    return it->second;
+}
+
+
+auto graph::get_vertex_id(const std::string& name) -> std::optional<int> {
+    const auto& it = this->vertex_ids.find(name);
+    if (it == this->vertex_ids.end()) {
+        return {};
+    }
+
+    return it->second;
 }

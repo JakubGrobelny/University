@@ -28,7 +28,7 @@ class graph {
     void assert_unique_vertex(const std::string&, int) const;
     void assert_vertex_id_exists(int) const;
     void assert_vertex_name_exists(const std::string&) const;
-    void assert_has_edge(int, int);
+    void assert_has_edge(int, int) const;
 
     void internal_add_edge(int, int, float);
     void internal_remove_edge(int, int);
