@@ -163,8 +163,11 @@
                 (print-clauses clauses)))))
 
 (module+ main
-    (let* ([problem (read-json)]
+    (let* ([path (read-line)]
+           [file (open-input-file path)]
+           [problem (read-json file)]
            [graph (instance->graph problem)]
            [reduced-graph (reduce-graph! graph)]
            [sat (graph->sat-instance reduced-graph)])
+        (close-input-port file)
         (print-sat sat)))
