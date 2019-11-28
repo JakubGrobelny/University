@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include "lexer.hpp"
+#include "parser.hpp"
 
 
 auto main(int argc, char* argv[]) -> int {
@@ -14,15 +14,24 @@ auto main(int argc, char* argv[]) -> int {
         sstream << argv[i] << ' ';
     }
 
-    auto tokens = tokenize_string(sstream.str());
+    std::queue<token> tokens;
+
+    try {
+        tokens = tokenize_string(sstream.str());
+    } catch (std::exception exc) {
+        std::cerr << exc.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
     while (!tokens.empty()) {
         auto token = tokens.front();
 
         if (std::holds_alternative<int>(token)) {
             std::cout << std::get<int>(token);
+        } else if (std::holds_alternative<bracket>(token)) {
+            std::cout << static_cast<char>(std::get<bracket>(token));
         } else {
-            std::cout << static_cast<char>(std::get<token_type>(token));
+            std::cout << static_cast<char>(std::get<op_token>(token));
         }
 
         std::cout << std::endl;

@@ -5,18 +5,29 @@
 #include <string>
 #include <queue>
 
-enum class token_type : char {
+enum class op_token : char {
     plus          = '+', 
     minus         = '-', 
     div           = '/', 
     mult          = '*', 
-    power         = '^',
-    left_bracket  = '(', 
-    right_bracket = ')'
+    power         = '^'
 };
 
-using token = std::variant<std::string, token_type, int>;
+enum class bracket : char {
+    left  = '(',
+    right = ')'
+};
+
+enum class associativity {
+    left, right
+};
+
+using token = std::variant<op_token, bracket, int>;
 
 auto tokenize_string(const std::string&) -> std::queue<token>;
+
+auto get_priority(op_token) -> int;
+
+auto get_associativity(op_token) -> associativity;
 
 #endif

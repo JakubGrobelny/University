@@ -5,15 +5,13 @@
 
 
 static
-auto is_valid_character(char c) -> bool {
+auto is_valid_op_token(char c) -> bool {
     switch (c) {
-        case static_cast<char>(token_type::plus):
-        case static_cast<char>(token_type::minus):
-        case static_cast<char>(token_type::div):
-        case static_cast<char>(token_type::mult):
-        case static_cast<char>(token_type::power):
-        case static_cast<char>(token_type::left_bracket):
-        case static_cast<char>(token_type::right_bracket):
+        case static_cast<char>(op_token::plus):
+        case static_cast<char>(op_token::minus):
+        case static_cast<char>(op_token::div):
+        case static_cast<char>(op_token::mult):
+        case static_cast<char>(op_token::power):
             return true;
         default:
             return false;
@@ -45,10 +43,15 @@ auto next_token(std::string_view& str) -> std::optional<token> {
         return val;
     }
 
-    if (is_valid_character(str.front())) {
-        auto token = token_type(str.front());
-        str.remove_prefix(1);
-        return token;
+    char c = str.front();
+    str.remove_prefix(1);
+
+    if (is_valid_op_token(c)) {
+        return op_token(c);
+    }
+
+    if (c == '(' || c == ')') {
+        return bracket(c);
     }
 
     throw std::invalid_argument("Invalid character in an expression!");
@@ -65,3 +68,25 @@ auto tokenize_string(const std::string& str) -> std::queue<token> {
     return tokens;
 }
 
+
+auto get_priority(op_token token) -> int {
+    switch (token) {
+        case op_token::plus:
+        case op_token::minus:
+            return 0;
+        case op_token::div:
+        case op_token::mult:
+            return 1;
+        case op_token::power:
+            return 2;
+    }
+}
+
+auto get_associativity(op_token token) -> associativity {
+    switch (token) {
+        case op_token::power:
+            return associativity::right;
+        default:
+            return associativity::left;
+    }
+}
