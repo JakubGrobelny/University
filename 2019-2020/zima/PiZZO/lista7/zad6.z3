@@ -1,0 +1,22 @@
+(push)
+(assert (exists ((p Bool) (q Bool))
+    (and (and (or p q) (or (not p) (not q)) (or p (not q)))
+	 (not (= p q))
+	 (not (= (not p) (not q)))
+	 (not (= p (not q))))))
+(check-sat)
+(get-model)
+(pop)
+
+
+(push)
+(assert (exists ((p Bool) (q Bool))
+    (and (and (or p q) (=> p q) (=> q p) (or (not p) (not q)))
+	 (not (= p q))
+	 (not (= (not p) q))
+	 (not (= (not q) p))
+	 (not (= (not p) (not q))))))
+(check-sat)
+(get-model)
+(pop)
+	     
