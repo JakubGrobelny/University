@@ -5,6 +5,6 @@
 #include <stack>
 
 
-auto parse_to_rpn(std::queue<token>&&) -> std::stack<token>;
+auto parse_to_rpn(std::queue<token>&&) -> std::queue<token>;
 
 #endif

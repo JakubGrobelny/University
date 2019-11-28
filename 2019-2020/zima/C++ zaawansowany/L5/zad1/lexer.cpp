@@ -18,12 +18,21 @@ auto is_valid_op_token(char c) -> bool {
     }
 }
 
+
+static
+auto is_valid_bracket(char c) -> bool {
+    return c == static_cast<char>(bracket_token::left) ||
+           c == static_cast<char>(bracket_token::right);
+}
+
+
 static
 void skip_whitespace(std::string_view& str) {
     while (!str.empty() && std::isspace(str.front())) {
         str.remove_prefix(1);
     }
 }
+
 
 static
 auto next_token(std::string_view& str) -> std::optional<token> {
@@ -50,12 +59,13 @@ auto next_token(std::string_view& str) -> std::optional<token> {
         return op_token(c);
     }
 
-    if (c == '(' || c == ')') {
-        return bracket(c);
+    if (is_valid_bracket(c)) {
+        return bracket_token(c);
     }
 
     throw std::invalid_argument("Invalid character in an expression!");
 }
+
 
 auto tokenize_string(const std::string& str) -> std::queue<token> {
     std::string_view view = str;
@@ -81,6 +91,7 @@ auto get_priority(op_token token) -> int {
             return 2;
     }
 }
+
 
 auto get_associativity(op_token token) -> associativity {
     switch (token) {

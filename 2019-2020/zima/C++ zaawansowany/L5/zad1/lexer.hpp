@@ -13,7 +13,7 @@ enum class op_token : char {
     power         = '^'
 };
 
-enum class bracket : char {
+enum class bracket_token : char {
     left  = '(',
     right = ')'
 };
@@ -22,7 +22,7 @@ enum class associativity {
     left, right
 };
 
-using token = std::variant<op_token, bracket, int>;
+using token = std::variant<op_token, bracket_token, int>;
 
 auto tokenize_string(const std::string&) -> std::queue<token>;
 
