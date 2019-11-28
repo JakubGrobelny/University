@@ -1,0 +1,16 @@
+(declare-const ziemniaki Int)
+(declare-const surowka Int)
+(declare-const zupa Int)
+(declare-const kasza Int)
+(declare-const makaron Int)
+(declare-const schabowy Int)
+
+(assert (or (= ziemniaki 430) (= ziemniaki 0)))
+(assert (or (= surowka 550) (= surowka 0)))
+(assert (or (= zupa 670) (= zupa 0)))
+(assert (or (= kasza 710) (= kasza 0)))
+(assert (or (= makaron 820) (= makaron 0)))
+(assert (or (= schabowy 1060) (= schabowy 0)))
+
+(assert (= 3010 (+ ziemniaki surowka zupa kasza makaron schabowy)))
+(check-sat)
