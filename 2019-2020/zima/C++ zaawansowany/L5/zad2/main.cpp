@@ -61,8 +61,8 @@ auto main(void) -> int {
     );
 
     print_graph(g);
-    std::cout << std::endl << "Po dodaniu wierzchołków: " << std::endl;
-
+    
+    std::cout << std::endl << "Added vertices: " << std::endl;
     g.add_edge(3, 1, 10.0);
     g.add_vertex("sześć?");
     g.add_vertex("siedem?");
