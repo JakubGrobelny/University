@@ -3,6 +3,12 @@
 #include <random>
 #include <vector>
 
+template <typename T>
+void shuffle(std::vector<T>& vec) {
+    static std::mt19937 gen {std::random_device{}()};
+    std::shuffle(vec.begin(), vec.end(), gen);
+}
+
 
 auto main(int argc, char* argv[]) -> int {
 
@@ -19,7 +25,7 @@ auto main(int argc, char* argv[]) -> int {
 
     std::mt19937 gen {std::random_device{}()};
 
-    std::shuffle(strings.begin(), strings.end(), gen);
+    shuffle(strings);
 
     for (auto& str : strings) {
         std::cout << str << ' ';
