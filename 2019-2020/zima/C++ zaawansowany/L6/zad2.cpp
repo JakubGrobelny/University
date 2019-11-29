@@ -25,13 +25,7 @@ auto main(int argc, char* argv[]) -> int {
 
     for (int i = 0; i < count; i++) {
         uniform << uniform_distr(gen) << std::endl;
-    }
-
-    for (int i = 0; i < count; i++) {
         binomial << binomial_distr(gen) << std::endl;
-    }
-
-    for (int i = 0; i < count; i++) {
         normal << normal_distr(gen) << std::endl;
     }
 
