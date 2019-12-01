@@ -3,7 +3,7 @@ CFLAGS = -Og -Wall -Werror
 AS = as -g
 ASFLAGS = 
 CPPFLAGS = -Iinclude
-LDLIBS = -Llibcsapp -lcsapp
+LDLIBS = -L../../lib/libcsapp -lcsapp
 
 # Recognize operating system
 ifeq ($(shell uname -s), Darwin)
@@ -23,12 +23,12 @@ ifneq ($(VERBOSE), 1)
 .SILENT:
 endif
 
-LIBSRC_C = $(wildcard libcsapp/*.c)
-LIBSRC_S = $(wildcard libcsapp/*.s)
-LIBSRC_H = $(wildcard include/*.h)
+LIBSRC_C = $(wildcard ../../lib/libcsapp/*.c)
+LIBSRC_S = $(wildcard ../../lib/libcsapp/*.s)
+LIBSRC_H = $(wildcard ../../lib/include/*.h)
 LIBSRCS = $(LIBSRC_C) $(LIBSRC_S) $(LIBSRC_H)
 LIBOBJS = $(LIBSRC_C:%.c=%.o) $(LIBSRC_S:%.s=%.o)
-LIB = libcsapp/libcsapp.a
+LIB = ../../lib/libcsapp/libcsapp.a
 
 SRC_C = $(wildcard *.c)
 SRC_S = $(wildcard *.s)
@@ -84,10 +84,10 @@ format:
 	clang-format --style=file -i $(LIBSRC_C) $(LIBSRC_H) $(SRC_C)
 
 archive: clean
-	mkdir -p $(ARCHIVE) $(ARCHIVE)/libcsapp $(ARCHIVE)/include
+	mkdir -p $(ARCHIVE) $(ARCHIVE)/../../lib/libcsapp $(ARCHIVE)/../../lib/include
 	cp -L $(SRCS) $(FILES) $(ARCHIVE)/
-	cp -L $(LIBSRCS) $(ARCHIVE)/libcsapp/
-	cp -L $(LIBSRC_H) $(ARCHIVE)/include/
+	cp -L $(LIBSRCS) $(ARCHIVE)/../../lib/libcsapp/
+	cp -L $(LIBSRC_H) $(ARCHIVE)/../../lib/include/
 	for f in $(SRCS:%=$(ARCHIVE)/%); do \
 	  sed --in-place='' -e '/^#if.*STUDENT/,/^#endif.*STUDENT/d' $$f; \
 	done

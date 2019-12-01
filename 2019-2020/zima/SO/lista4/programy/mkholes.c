@@ -1,4 +1,4 @@
-#include "csapp.h"
+#include "../../lib/libcsapp/csapp.h"
 
 #define BLKSZ 4096 /* block size */
 #define NBLKS 8192 /* number of blocks written to a file */

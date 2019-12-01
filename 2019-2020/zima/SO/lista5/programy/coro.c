@@ -1,5 +1,5 @@
-#include "queue.h"
-#include "csapp.h"
+#include "../../lib/include/queue.h"
+#include "../../lib/libcsapp/csapp.h"
 
 #define CORO_STKSIZE 4096
 #define CORO_STKALIGN 16 /* As required by SysV ABI ! */

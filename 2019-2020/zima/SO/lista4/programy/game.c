@@ -1,5 +1,5 @@
-#include "csapp.h"
-#include "terminal.h"
+#include "../../lib/libcsapp/csapp.h"
+#include "../../lib/include/terminal.h"
 
 #define MAXLINE 120
 

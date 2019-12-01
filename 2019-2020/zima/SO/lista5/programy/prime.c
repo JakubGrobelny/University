@@ -1,5 +1,5 @@
-#include "csapp.h"
-#include "pipeio.h"
+#include "../../lib/libcsapp/csapp.h"
+#include "../../lib/include/pipeio.h"
 
 static bool ReadNum(pipe_t p, long *valp) {
   return Read(p.read, valp, sizeof(long)) == sizeof(long);

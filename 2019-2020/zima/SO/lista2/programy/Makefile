@@ -1,14 +1,14 @@
 CC = gcc -g
 CFLAGS = -Og -Wall
 CPPFLAGS = -Iinclude -DLINUX -D_GNU_SOURCE 
-LDFLAGS = -Llibcsapp -lcsapp
+LDFLAGS = -L../../lib/libcsapp -lcsapp
 
-LIBCSAPP = libcsapp/libcsapp.a 
-LIBCSAPP_SRC = $(wildcard libcsapp/*.c)
+LIBCSAPP = ../../lib/libcsapp/libcsapp.a 
+LIBCSAPP_SRC = $(wildcard ../../lib/libcsapp/*.c)
 LIBCSAPP_OBJ = $(patsubst %.c,%.o,$(LIBCSAPP_SRC))
 
 ARCHIVE = so$(shell date +'%y')_$(shell basename $(PWD))
-FILES = *.c libcsapp include test.txt Makefile 
+FILES = *.c ../../lib/libcsapp ../../lib/include test.txt Makefile 
 PROGS =	fileref het
 
 all: $(PROGS)

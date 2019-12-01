@@ -1,4 +1,4 @@
-#include "csapp.h"
+#include "../../lib/include/csapp.h"
 
 
 static int conflict(int x1, int y1, int x2, int y2) 

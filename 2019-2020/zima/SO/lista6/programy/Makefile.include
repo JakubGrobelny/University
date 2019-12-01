@@ -2,7 +2,7 @@ CC = gcc -g
 CFLAGS = -Og -Wall -Werror
 AS = as -g
 CPPFLAGS = -Iinclude
-LDFLAGS = -Llibcsapp -lcsapp
+LDFLAGS = -L../../lib/libcsapp -lcsapp
 
 ifeq ($(shell uname -s), Darwin)
 CPPFLAGS += -DMACOS
@@ -16,15 +16,15 @@ ifeq ($(shell uname -s), FreeBSD)
 CPPFLAGS += -DFREEBSD
 endif
 
-LIBCSAPP = libcsapp/libcsapp.a 
-LIBCSAPP_CSRC = $(wildcard libcsapp/*.c)
-LIBCSAPP_ASRC = $(wildcard libcsapp/*.s)
-LIBCSAPP_HDR = $(wildcard include/*.h)
+LIBCSAPP = ../../lib/libcsapp/libcsapp.a 
+LIBCSAPP_CSRC = $(wildcard ../../lib/libcsapp/*.c)
+LIBCSAPP_ASRC = $(wildcard ../../lib/libcsapp/*.s)
+LIBCSAPP_HDR = $(wildcard ../../lib/include/*.h)
 LIBCSAPP_OBJ += $(patsubst %.c,%.o,$(LIBCSAPP_CSRC))
 LIBCSAPP_OBJ += $(patsubst %.s,%.o,$(LIBCSAPP_ASRC))
 
 ARCHIVE = so$(shell date +'%y')_$(shell basename $(PWD))
-FILES = *.c libcsapp include Makefile Makefile.include $(EXTRA-FILES)
+FILES = *.c ../../lib/libcsapp ../../lib/include Makefile Makefile.include $(EXTRA-FILES)
 
 all: $(PROGS)
 
