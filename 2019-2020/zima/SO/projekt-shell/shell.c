@@ -3,7 +3,7 @@
 #define DEBUG 0
 #include "shell.h"
 
-static int command(char **argv, bool bg) {
+static int command(char** argv, bool bg) {
   int exitcode = 0;
 
   if ((exitcode = builtin_command(argv)) >= 0)
@@ -11,12 +11,16 @@ static int command(char **argv, bool bg) {
 
   sigset_t sigchld_mask, prev_mask;
   /* TODO: Block SIGCHLD temporarily. */ 
-  (void)prev_mask;
-  (void)sigchld_mask;
+  sigemptyset(&sigchld_mask);
+  sigemptyset(&prev_mask);
+  sigaddset(&sigchld_mask, SIGCHLD);
+  sigprocmask(SIG_BLOCK, &sigchld_mask, &prev_mask);
 
   pid_t pid = Fork();
   if (pid == 0) {
     /* TODO: Restore signal mask and put new process into separate group. */
+    sigprocmask(SIG_SETMASK, &prev_mask, NULL);
+    setpgid(0, 0);
     external_command(argv);
   }
 
@@ -26,18 +30,24 @@ static int command(char **argv, bool bg) {
     while (true) {
       exitcode = jobdone(jid);
       /* TODO: If job is not done then wait for SIGCHLD, otherwise break. */
+      if (exitcode == -1) {
+        Sigsuspend(&prev_mask);
+      } else {
+        break;
+      }
     }
   }
 
   /* TODO: Restore signal mask. */
+  sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 
   return exitcode;
 }
 
-static int eval(char *cmdline) {
+static int eval(char* cmdline) {
   int argc;
   int exitcode = 0;
-  token_t *argv = tokenize(cmdline, &argc);
+  token_t* argv = tokenize(cmdline, &argc);
 
   if (argc > 0) {
     bool bg = false;
@@ -69,7 +79,7 @@ int main(int argc, char *argv[]) {
 
   initjobs();
 
-  char *line;
+  char* line;
   while (true) {
     __unused int exitcode = 0;
     line = readline("# ");

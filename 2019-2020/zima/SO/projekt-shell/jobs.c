@@ -15,7 +15,7 @@ static void sigchld_handler(int sig) {
   /* TODO: Bury all children that finished saving their status in jobs. */
   for (int job = 0; job < njobmax; job++) {
     pid = jobs[job].pid;
-    if (!waitpid(pid, &status, WNOHANG)) {
+    if (pid && waitpid(pid, &status, WNOHANG)) {
       jobs[job].status = status;
     }
   }
