@@ -5,7 +5,7 @@ typedef struct {
   sig_atomic_t status; /* -1 if exit status not yet received */
 } job_t;
 
-static job_t *jobs = NULL;
+static job_t* jobs = NULL;
 static int njobmax = 1;
 
 static void sigchld_handler(int sig) {
@@ -13,8 +13,12 @@ static void sigchld_handler(int sig) {
   pid_t pid;
   int status;
   /* TODO: Bury all children that finished saving their status in jobs. */
-  (void)status;
-  (void)pid;
+  for (int job = 0; job < njobmax; job++) {
+    pid = jobs[job].pid;
+    if (!waitpid(pid, &status, WNOHANG)) {
+      jobs[job].status = status;
+    }
+  }
 
   errno = old_errno;
 }
@@ -70,7 +74,7 @@ void watchjobs(void) {
 
 int jobdone(jobid_t jobidx) {
   assert(jobidx < njobmax);
-  job_t *job = &jobs[jobidx];
+  job_t* job = &jobs[jobidx];
   assert(job->pid);
   int status = job->status;
   if (status >= 0)
@@ -92,7 +96,7 @@ void killjob(jobid_t jobidx, int sig) {
       }
   } else {
     assert(jobidx < njobmax);
-    job_t *job = &jobs[jobidx];
+    job_t* job = &jobs[jobidx];
     if (job->pid) {
       if (jobidx != JOBID_FG)
         msg("[%d] Killing %d\n", jobidx, job->pid);

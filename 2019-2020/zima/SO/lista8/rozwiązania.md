@@ -8,7 +8,7 @@
 - Zadanie 5 (bonus) - brak
 - [Zadanie 6](#zadanie-6)
 - [Zadanie 7](#zadanie-7)
-- Zadanie 8 - brak
+- [Zadanie 8](#zadanie-8)
 - Zadanie 9 – brak
 
 ***
@@ -197,4 +197,15 @@ Rozwiązanie: [command.c](./../projekt-shell/command.c)
 
 ***
 
+# Zadanie 8
 
+### Przeczytaj i wyjaśnij co robią procedury `addjob`, `watchjobs`, `jobdone` i `killjob`.
+
+- `addjob` – dodaje zadanie do tablicy zadań. Jeżeli zadanie ma być pierwszoplanowe, to otrzymuje zawsze numer 0. W przeciwnym razie szuka się pustego miejsca w tablicy zadań drugoplanowych dla zadania. Jeżeli nie udało się go znaleźć to tablica jest powiększana. 
+- `watchobs` – wypisz statusy wszystkich zakończonych zadań.
+- `jobdone` – usuń zakończone zadanie z tablicy.
+- `killjob` – wysyła sygnał `sig` do jednego lub wszystkich działających zadan.
+
+Rozwiązanie: [jobs.c](./../projekt-shell/jobs.c)
+
+***
