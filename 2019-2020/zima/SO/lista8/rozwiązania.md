@@ -3,7 +3,8 @@
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
-- Zadanie 4 - brak
+- [Pojęcia do wytłumaczenia w zadaniach programistycznych](#pojęcia-do-wytłumaczenia-w-zadaniach-programistycznych)
+- [Zadanie 4](#zadanie-4)
 - Zadanie 5 - brak
 - Zadanie 6 - brak
 - Zadanie 7 - brak
@@ -86,7 +87,7 @@ Nie można zastosować **kompaktowania** w bibliotecznym algorytmie przydziału
         - duża liczba małych bloków (*splinters*) na początku listy powstałych przez rozdzielanie prowadzi do wydłużonego czasu wyszukiwania
     - mocne strony:
         - proste
-        - użycie *Address-ordered first-fit* (umieszczanie bloków na liście w kolejności ich adresów) pozwala na szybką konsolidację bloków ze względu na to, że sąsiadujące ze sobą bloki są obok siebie na liście
+        - użycie *Address-ordered first-fit* (umieszczanie bloków na liście w kolejności ich adresów) pozwala na szybką konsolidację bloków ze względu na to, że sąsiadujące ze sobą bloki są obok siebie na liście <sup>(ale to chyba bez sensu bo to przecież chyba można zrobić w każdej z tych trzech strategii)</sup>
 - **next-fit** – wyszukiwanie bloków dla kolejnych alokacji jest kontynuowane od miejsca gdzie nastąpiła poprzednia alokacja.
     - słabe strony:
         - obiekty z tych samych faz programu są rozrzucone w różnych miejscach w pamięci co zwiększa fragmentację w przypadku, gdy obiekty w różnych fazach mają różne czasy życia
@@ -103,6 +104,40 @@ Nie można zastosować **kompaktowania** w bibliotecznym algorytmie przydziału
 
 ***
 
+# Pojęcia do wytłumaczenia w zadaniach programistycznych
 
+- **metadane** – dane przechowywane razem z blokiem/areną, które opisują ten blok/arenę (np. mówią o jego/jej rozmiarze bądź czy jest zajęty/jakie bloki są zajęte)
+- **nieużytki** – zaalokowana pamięć, której nie można użyć
+- **fragmentacja wewnętrzna** i **fragmentacja zewnętrzna** – [tutaj](#zadanie-2)
 
+***
 
+# Zadanie 4
+
+**bitmapowy przydział** – tablica bitów wskazuje, które bloki są wolne, a które zajęte.
+
+Rozwiązanie: [objpool.c](./programy/objpool.c)
+
+Odpowiedzi na pytania:
+
+- jak wygląda struktura danych przechowująca informację o zajętych i wolnych blokach?
+    - tablica bitów typu `bitstr_t`
+- jak przebiegają operacje `alloc` i `free`?
+    - `alloc`:
+        1) znajdź pierwszą arenę z wolnymi blokami
+        2) znajdź indeks wolnego bloku w danej arenie
+        3) zmniejsz liczbę wolnych bloków w arenie i oznacz blok jako zajęty
+        4) zwróć wskaźnik na blok
+    - `free`:
+        1) znajdź arenę, która posiada odpowiedni zakres wskaźników
+        2) zamień wskaźnik na indeks bloku w danej arenie
+        3) oznacz dany blok jako niezajęty i zwiększ liczbe wolnych bloków w arenie
+- jaka jest pesymistyzcna złożoność czasowa powyższych operacji?
+    - `alloc`: *O(n·m)* gdzie *n* to liczba aren a *m* to liczba bitów w bitmapie.
+    - `free`: *O(n)* gdzie *n* to liczba aren
+- jaki jest narzut pamięciowy metadanych?
+    - `nitems` bitów (zaokrąglone do rozmiaru `object_t`) + 24 bajty na `nitems`, `nfree`, `items`.
+- jaki jest maksymalny rozmiar nieużytków (ang. *waste*)?
+    - brak nieużytków – wszystkie alokowane obiekty są jednakowego rozmiaru `sizeof(object_t)` więc każdy blok jest dobry i może podlegać alokacji. Z drugiej strony stworzone areny nigdy nie zostają zwolnione, więc po zwolnieniu całej pamięci nie zostanie ona oddana systemowi.
+- czy w danym przypadku **fragmentacja wewnętrzna** lub **zewnętrzna** jest istotnym problemem?
+    - nie, bo wszystkie bloki mają jednakowy rozmiar

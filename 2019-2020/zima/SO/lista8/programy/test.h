@@ -1,8 +1,8 @@
-static char *ptrs[MAX_PTRS];
+static char* ptrs[MAX_PTRS];
 static int ptrn = 0;
 
-static void randfill(void *ptr, size_t len) {
-  char *buf = ptr;
+static void randfill(void* ptr, size_t len) {
+  char* buf = ptr;
   for (int i = 0; i < len; i++)
     buf[i] = rand();
 }
