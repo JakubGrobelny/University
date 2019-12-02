@@ -7,7 +7,7 @@
 - [Zadanie 4](#zadanie-4)
 - Zadanie 5 (bonus) - brak
 - [Zadanie 6](#zadanie-6)
-- Zadanie 7 - brak
+- [Zadanie 7](#zadanie-7)
 - Zadanie 8 - brak
 - Zadanie 9 – brak
 
@@ -189,3 +189,12 @@ Odpowiedzi na pytania:
     - **wewnętrzna** – nie, bo nie musimy wyrównywać wskaźników
     - **zewnętrzna** – tak, bo powstają wolne miejsca
 ***
+
+# Zadanie 7
+
+Rozwiązanie: [command.c](./../projekt-shell/command.c)
+
+
+***
+
+

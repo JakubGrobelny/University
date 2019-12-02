@@ -10,7 +10,9 @@ static int command(char **argv, bool bg) {
     return exitcode;
 
   sigset_t sigchld_mask, prev_mask;
-  /* TODO: Block SIGCHLD temporarily. */
+  /* TODO: Block SIGCHLD temporarily. */ 
+  (void)prev_mask;
+  (void)sigchld_mask;
 
   pid_t pid = Fork();
   if (pid == 0) {

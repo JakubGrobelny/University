@@ -13,6 +13,9 @@ static void sigchld_handler(int sig) {
   pid_t pid;
   int status;
   /* TODO: Bury all children that finished saving their status in jobs. */
+  (void)status;
+  (void)pid;
+
   errno = old_errno;
 }
 

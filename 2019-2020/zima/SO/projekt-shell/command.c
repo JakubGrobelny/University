@@ -1,13 +1,13 @@
 #include "shell.h"
 
-typedef int (*func_t)(char **argv);
+typedef int (*func_t)(char** argv);
 
 typedef struct {
-  const char *name;
+  const char* name;
   func_t func;
 } command_t;
 
-static int do_quit(char **argv) {
+static int do_quit(char** argv) {
   exit(EXIT_SUCCESS);
 }
 
@@ -15,8 +15,8 @@ static int do_quit(char **argv) {
  * 'cd' - change directory to $HOME
  * 'cd path' - change directory to path
  */
-static int do_chdir(char **argv) {
-  char *path = argv[0];
+static int do_chdir(char** argv) {
+  char* path = argv[0];
   if (path == NULL)
     path = getenv("HOME");
   int rc = chdir(path);
@@ -33,8 +33,8 @@ static command_t builtins[] = {
   {NULL, NULL},
 };
 
-int builtin_command(char **argv) {
-  for (command_t *cmd = builtins; cmd->name; cmd++) {
+int builtin_command(char** argv) {
+  for (command_t* cmd = builtins; cmd->name; cmd++) {
     if (strcmp(argv[0], cmd->name))
       continue;
     return cmd->func(&argv[1]);
@@ -44,11 +44,24 @@ int builtin_command(char **argv) {
   return -1;
 }
 
-noreturn void external_command(char **argv) {
-  const char *path = getenv("PATH");
-
+noreturn void external_command(char** argv) {
+  const char* path = getenv("PATH");
   if (!index(argv[0], '/') && path) {
     /* TODO: For all paths in PATH construct an absolute path and execve it. */
+    while (true) {
+      size_t len = strcspn(path, ":");
+
+      if (!len)
+        break;
+      
+      char* full = strndup(path, len);
+      strapp(&full, "/");
+      strapp(&full, argv[0]);
+
+      (void)execve(full, argv, environ);
+      path += len + 1;
+      free(full);
+    }
   } else {
     (void)execve(argv[0], argv, environ);
   }
