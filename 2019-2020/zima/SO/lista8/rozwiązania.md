@@ -9,7 +9,7 @@
 - [Zadanie 6](#zadanie-6)
 - Zadanie 7 - brak
 - Zadanie 8 - brak
-- Zdanie 0 – brak
+- Zadanie 9 – brak
 
 ***
 
