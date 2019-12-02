@@ -5,10 +5,11 @@
 - [Zadanie 3](#zadanie-3)
 - [Pojęcia do wytłumaczenia w zadaniach programistycznych](#pojęcia-do-wytłumaczenia-w-zadaniach-programistycznych)
 - [Zadanie 4](#zadanie-4)
-- Zadanie 5 - brak
-- Zadanie 6 - brak
+- Zadanie 5 (bonus) - brak
+- [Zadanie 6](#zadanie-6)
 - Zadanie 7 - brak
 - Zadanie 8 - brak
+- Zdanie 0 – brak
 
 ***
 
@@ -87,7 +88,6 @@ Nie można zastosować **kompaktowania** w bibliotecznym algorytmie przydziału
         - duża liczba małych bloków (*splinters*) na początku listy powstałych przez rozdzielanie prowadzi do wydłużonego czasu wyszukiwania
     - mocne strony:
         - proste
-        - użycie *Address-ordered first-fit* (umieszczanie bloków na liście w kolejności ich adresów) pozwala na szybką konsolidację bloków ze względu na to, że sąsiadujące ze sobą bloki są obok siebie na liście <sup>(ale to chyba bez sensu bo to przecież chyba można zrobić w każdej z tych trzech strategii)</sup>
 - **next-fit** – wyszukiwanie bloków dla kolejnych alokacji jest kontynuowane od miejsca gdzie nastąpiła poprzednia alokacja.
     - słabe strony:
         - obiekty z tych samych faz programu są rozrzucone w różnych miejscach w pamięci co zwiększa fragmentację w przypadku, gdy obiekty w różnych fazach mają różne czasy życia
@@ -132,7 +132,7 @@ Odpowiedzi na pytania:
         1) znajdź arenę, która posiada odpowiedni zakres wskaźników
         2) zamień wskaźnik na indeks bloku w danej arenie
         3) oznacz dany blok jako niezajęty i zwiększ liczbe wolnych bloków w arenie
-- jaka jest pesymistyzcna złożoność czasowa powyższych operacji?
+- jaka jest pesymistyczna złożoność czasowa powyższych operacji?
     - `alloc`: *O(n·m)* gdzie *n* to liczba aren a *m* to liczba bitów w bitmapie.
     - `free`: *O(n)* gdzie *n* to liczba aren
 - jaki jest narzut pamięciowy metadanych?
@@ -141,3 +141,51 @@ Odpowiedzi na pytania:
     - brak nieużytków – wszystkie alokowane obiekty są jednakowego rozmiaru `sizeof(object_t)` więc każdy blok jest dobry i może podlegać alokacji. Z drugiej strony stworzone areny nigdy nie zostają zwolnione, więc po zwolnieniu całej pamięci nie zostanie ona oddana systemowi.
 - czy w danym przypadku **fragmentacja wewnętrzna** lub **zewnętrzna** jest istotnym problemem?
     - nie, bo wszystkie bloki mają jednakowy rozmiar
+
+***
+
+# Zadanie 6
+
+Rozwiązanie: [stralloc.c](./programy/stralloc.c)
+
+**niejawna lista** (ang. *implicit list*) – lista, która nie przechowuje wskaźników na kolejne elementy a zamiast pozycja elementów i niewielka liczba dodatkowych danych określa relację między elementami.
+
+### Rozważ następujący scenariusz: program poprosił o blok długości *n* (zamiast *n + 1)*, po czym wpisał tam *n* znaków i zakończył ciąg zerem. Co się stanie z naszym algorytmem?
+
+Nasz algorytm przy przechodzeniu listy stwierdzi, że doszedł do jej końca pomimo tego, że dalej jest najprawdopodbniej inna zaalokowana pamięć.
+
+### Czy da się wykryć taki błąd?
+
+Jeżeli znamy rozmiar całej areny, to wówczas napotkawszy na nagłówek równy zero jesteśmy w stanie stwierdzić, czy faktycznie znajdujemy się na końcu listy, czy jest to zero wstawione tam przez użytkownika. Algorytm sam nie tworzy nigdzie nagłówków zerowych poza inicjalizacją nowej areny.
+
+Odpowiedzi na pytania:
+
+- jak wygląda struktura danych przechowująca informację o zajętych i wolnych blokach?
+    - jest to jednokierunkowa lista wiązana bloków wraz z nagłówkiem, który przechowuje długość bloku i w sposób niejawny wskazuje na następnika.
+- jak przebiegają operacje `alloc` i `free`?
+    - `alloc`:
+        1) Jeżeli nie istnieje żadna arena, to utwórz nową
+        2) Spróbuj zaalokować pamięć o danym rozmiarze w każdej arenie po kolei
+            - alokacja w obrębie jednej areny przebiega następująco:
+                - 2.1.1. Jeżeli dotarłeś na koniec, zwróć NULL
+                - 2.1.2. Jeżeli aktualny blok jest zajęty to przejdź do następnika
+                - 2.1.3. Jeżeli aktualny blok ma dokładnie taką samą długość jaka jest potrzebna, oznacz go jako zajęty i zwróć wskaźnik do niego
+                - 2.1.4. Jeżeli aktualny blok jest większy niż trzeba, to podziel go na część o poszukiwanym rozmiarze i część o pozostałym rozmiarze. Oznacz pierwszy jako zajęty i zwróć wskaźnik do niego.
+                - 2.1.5. Jeżeli następny blok jest zajęty bądź jest końcem listy, to przejdź do kolejnego bloku
+                - 2.1.6. Jeżeli dwa sąsiadujące bloki są wolne, ale są sumarycznie zbyt małe, to połącz je i przejdź do 2.1.1
+                - 2.1.7. W przeciwnym wypadku połącz dwa sąsidnie bloki i przejdź do 2.1.4
+            - 2.1. Jeżeli nie udało się zaalokować miejsca w żadnej arenie to utwórz nową
+    - `free`:
+        1) Wyznacz arenę, w której leży wskaźnik
+        2) Oznacz blok jako wolny
+- jaka jest pesymistyczna złożoność czasowa powyższych operacji?
+    - `alloc`: *O(n)* gdzie *n* to liczba wszystkich bloków
+    - `free`: *O(m)* gdzie *m* to liczba aren
+- jaki jest narzut pamięciowy metadanych?
+    - 1 bajt na każdy blok
+- jaki jest maksymalny rozmiar nieużytków (ang. *waste*)?
+    - `MAX_LENGTH -1` (*chyba, bo do końca nie wiem o co tak naprawdę jest pytanie*)
+- czy w danym przypadku **fragmentacja wewnętrzna** lub **zewnętrzna** jest istotnym problemem?
+    - **wewnętrzna** – nie, bo nie musimy wyrównywać wskaźników
+    - **zewnętrzna** – tak, bo powstają wolne miejsca
+***
