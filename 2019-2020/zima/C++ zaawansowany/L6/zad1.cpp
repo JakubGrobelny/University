@@ -7,8 +7,8 @@ template <typename T>
 void shuffle(std::vector<T>& vec) {
     static std::mt19937 gen {std::random_device{}()};
 
-    for (size_t i = 0; i < vec.size(); i++) {
-        size_t j = std::uniform_int_distribution<size_t>{0, i}(gen);
+    for (int i = vec.size() - 1; i >= 0; i--) {
+        int j = std::uniform_int_distribution<int>{0, i}(gen);
         std::swap(vec[i], vec[j]);
     }
 }

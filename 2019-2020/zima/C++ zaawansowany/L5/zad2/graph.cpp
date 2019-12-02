@@ -320,7 +320,7 @@ auto graph::has_path(int from, int to) const -> bool {
 }
 
 
-auto graph::find_path(int from, int to) const -> std::optional<std::list<int>> {
+auto graph::find_path(int from, int to) const -> std::.<std::list<int>> {
     this->assert_vertex_id_exists(from);
     this->assert_vertex_id_exists(to);
 
