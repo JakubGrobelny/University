@@ -12,7 +12,6 @@ static int command(char** argv, bool bg) {
   sigset_t sigchld_mask, prev_mask;
   /* TODO: Block SIGCHLD temporarily. */ 
   sigemptyset(&sigchld_mask);
-  sigemptyset(&prev_mask);
   sigaddset(&sigchld_mask, SIGCHLD);
   sigprocmask(SIG_BLOCK, &sigchld_mask, &prev_mask);
 
@@ -20,7 +19,7 @@ static int command(char** argv, bool bg) {
   if (pid == 0) {
     /* TODO: Restore signal mask and put new process into separate group. */
     sigprocmask(SIG_SETMASK, &prev_mask, NULL);
-    setpgid(0, 0);
+    // setpgid(0, 0);
     external_command(argv);
   }
 
