@@ -99,6 +99,7 @@ Problemy: komplikuje algorytm alokacji? *(ja nie zauważam żadnych)*.
 - [bad-4.c](./programy/bad-4.c)
     - w pętli próbujemy dokonywać dereferencji/dostępu do elementów zwolnionego wskaźnika/tablicy `x`.
 - [bad-5.c](./programy/bad-5.c)
+    - `new_node(i)` wykonuje się dwa razy bo jest wklejane przez makro w dwóch miejscach
     - zwalniany jest tylko pierwszy element listy zamiast całej listy
     - w `SLIS_INSERT_HEAD` jest `(elm)->field.sle_next = (head)->slh_first` a `head` nie jest przecież zainicjowane żadną sensowną wartością (w tym przypadku nie ma `NULL`a na końcu).
     - *(bonus (niezwiązane z pamięcią): sufiks `_t` jest zarezerwowany dla typów z POSIX)*

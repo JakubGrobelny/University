@@ -15,7 +15,10 @@ node_t* new_node(long value) {
 }
 
 void free_list(node_t* list) {
-
+  if (list) {
+    free_list(SLIST_NEXT(list, link));
+    free(list);
+  }
 }
 
 #define N 10
@@ -23,17 +26,10 @@ void free_list(node_t* list) {
 int main(void) {
   list_t head = {.slh_first = NULL};
   for (int i = 0; i < N; i++) {
-    SLIST_INSERT_HEAD(&head, new_node(i), link);
-  }
-
-// TODO: todo
-  node_t* node;
-  node_t* node_temp;
-  SLIST_FOREACH_SAFE(node, &head, link, node_temp) {
-    printf("%ld\n", node->value);
+    node_t* node = new_node(i);
+    SLIST_INSERT_HEAD(&head, node, link);
   }
 
   free_list(SLIST_FIRST(&head));
-
   return 0;
 }
