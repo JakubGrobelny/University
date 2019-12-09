@@ -1,7 +1,7 @@
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
-- Zadanie 2 – brak
+- [Zadanie 2 (bonus)](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
 - Zadanie 5 – brak
@@ -41,6 +41,31 @@ Symulacja przebiegu przydziałów pamięci (<span style="color: red">czerwona st
 
 ***
 
+# Zadanie 2 (bonus)
+
+### Rozważmy algorytm przydziału pamięci z zadania pierwszego. Załóżmy, że implementujemy go na architekturze 64-bitowej – zatem słowo maszynowe ma 8 bajtów. Zarządzane areny będą nie większe niż 512KiB. Wskaźnik zwracany przez operację `malloc` będzie podzielny przez 16. 
+
+### Zaproponuj metodę efektywnego kodowania metadanych, aby zminimalizować narzut pamięciowy...
+
+Mamy areny o rozmiarze maksymalnie 512 KiB. Nasz `malloc` zwraca zawsze wskaźniki podzielne przez 16, więc tak naprawdę wystarczy żebyśmy potrafili zaadresować 32768 różnych miejsc w pamięci (512 KiB / 16). 32768 daje się zapisać na 16 bitach. Znamy adres początku areny. Dzięki temu wskaźniki na następny i poprzedni element listy potrzebują łącznie jedynie 32 bity.
+Analogicznie, boundary tagi również potrzebują po 16 bitów na header i footer.
+Możemy zaoszczędzić pamięć przechowując footer poprzedniego bloku w pierwszym słowie kolejnego. Dzięki temu wszystkie metadane mieszczą się w jednym słowie 64-bitowym.
+
+Layout bloku:
+```
+[  16  ] [  16  ] [  16  ] [  16  ]
+ footer   header    prev     next
+```
+
+`pointer(index) = &arena + index * 16`
+
+### ...oraz strategię wykrywania uszkodzenia danych algorytmu (tj. lista dwukierunkowa, *boundary tags*).
+
+1) sprawdzanie, czy wskaźniki `prev` i `next` leżą w aktualnej arenie
+2) sprawdzanie, czy `footer` aktualnego bloku przechowywany w następnym bloku jest taki jak `header`.
+
+***
+
 # Zadanie 3
 
 ### Rozważmy <u>*algorytm kubełkowy*</u> (§3.6) (ang. *segregated-fit*) przydziału pamięci z <u>*gorliwym złączaniem*</u> wolnych bloków.
@@ -70,6 +95,8 @@ Szuka bloku o większym rozmiarze (który następnie podzieli). Jeżeli w ogóle
 ### Jak poradzić sobie w trakcie złączania wolnych bloków w procedurze `free`, jeśli chcemy usunąć ostatni element z listy? 
 
 Jeżeli zwalniamy blok, który jest ostatni w swoim kubełku, to wówczas nie dzieje się nic specjalnego. Lista staje się pusta i tyle. *(nie rozumiem gdzie miałby być problem xd)*.
+
+*EDIT:* jeżeli przyjmiemy, że ostatni element listy zawiera wskaźnik na początek listy większego kubełka, to trzeba jakoś przepiąć wskaźniki. Do końca listy z poprzedniego kubełka i początku następnego możemy dostać się w $O(1)$ więc to nie jest problem.
 
 ### Rozważ zastosowanie <u>*leniwego złączania*</u> wolnych bloków w algorytmie kubełkowym przydziału pamięci – jakie problemy zauważasz?
 
