@@ -3,7 +3,7 @@
 - [Zadanie 1](#zadanie-1)
 - Zadanie 2 – brak
 - [Zadanie 3](#zadanie-3)
-- Zadanie 4 – brak
+- [Zadanie 4](#zadanie-4)
 - Zadanie 5 – brak
 
 ***
@@ -78,3 +78,57 @@ Jeżeli zwalniamy blok, który jest ostatni w swoim kubełku, to wówczas nie dz
 Leniwe złączanie zmniejsza czas wyszukiwania bloków gdy chcemy dokonywać małych alokacji: przy złączaniu gorliwym małe bloki zostają skonsolidowane i w większości przypadków trzeba szukać miejsca wśrod tych większych. Leniwe złączanie pozwala również przenieść ciężar pracy ze zwalniania na alokowanie nowych obiektów.
 
 Problemy: komplikuje algorytm alokacji? *(ja nie zauważam żadnych)*.
+
+***
+
+# Zadanie 4
+
+### Programy `bad-*.c` posiadają kilka ukrytych błędów związanych z używaniem bloków pamięci przydzielonych dynamicznie. Zauważ, że kompilator nie zgłosił żadnych błędów ani ostrzeżeń, a uruchomienie tych programów nie kończy się błędem. 
+
+### Wytypuj błędy i zapisz je w swoich notatkach. 
+
+*(najgorszym błędem to jest nieludzkie zapisywanie gwiazdki przy nazwie zmiennej zamiast przy typie)*
+
+- [bad-1.c](./programy/bad-1.c):
+    - zły rozmiar: `int*` ma rozmiar 64 bitów a int 32 (oczywiście zależnie od architektury).
+- [bad-2.c](./programy/bad-2.c)
+    - `strlen` zwróci długość napisu `argv[1]` nie licząc znaku `'\0'`. Przy wywołaniu `strcpy` nastąpi próba zapisu `'\0'` z `s` pod błędny adres w `p`.
+- [bad-3.c](./programy/bad-3.c)
+    - w drugim `memset` jest `N` zamiast `M`. (`N` > `M` więc wykraczamy poza zaalokowaną pamięć).
+    - dwa razy zwalniamy `x`
+- [bad-4.c](./programy/bad-4.c)
+    - w pętli próbujemy dokonywać dereferencji/dostępu do elementów zwolnionego wskaźnika/tablicy `x`.
+- [bad-5.c](./programy/bad-5.c)
+    - zwalniany jest tylko pierwszy element listy zamiast całej listy
+    - w `SLIS_INSERT_HEAD` jest `(elm)->field.sle_next = (head)->slh_first` a `head` nie jest przecież zainicjowane żadną sensowną wartością (w tym przypadku nie ma `NULL`a na końcu).
+    - *(bonus (niezwiązane z pamięcią): sufiks `_t` jest zarezerwowany dla typów z POSIX)*
+    - *(bonus2 (offtop): używanie tych paskudnych makr)*
+
+Dodatkowo we wszystkich nie jest sprawdzane, czy `malloc` nie zakończył się błędem.
+
+### Następnie skompiluj programy z instrumentacją kodu dodaną przez [address sanitizer](https://en.wikipedia.org/wiki/AddressSanitizer) – wystarczy odkomentować odpowiednią linię w pliku `Makefile` i ponownie zbudować pliki wykonywalne. Po uruchomieniu programów otrzymasz komunikaty błędów – wyjaśnij je. 
+
+- bad-1: <span style="color:red">AddressSanitizer: heap-buffer-overflow</span>
+    - miejsce na wskaźniki jest ucięte o połowę więc od pewnego momentu `p[i]` powoduje overflow
+- bad-2: <span style="color:red">AddressSanitizer: heap-buffer-overflow</span>
+    - wykraczamy poza tablicę o jeden bajt, więc jest overflow
+- bad-3: <span style="color:red">AddressSanitizer: heap-buffer-overflow</span>
+    - analogicznie jak w 2 ale o trochę więcej
+- bad-4: <span style="color:red">AddressSanitizer: heap-use-after-free</span>
+    - `use-after-free` czyli dereferencja zwolnionej pamięci (`x`)
+- bad-5: <span style="color:red">LeakSanitizer: detected memory leaks</span>
+    - memory-leak: zwalniana jest jedynie głowa listy
+
+### Porównaj znalezione błędy z zanotowanymi kandydatami, a następnie popraw kod źródłowy.
+
+Znalezione błędy są takie jak zanotowani kandydaci.
+
+Poprawki:
+- [good-1.c](./programy/good-1.c)
+- [good-2.c](./programy/good-2.c)
+- [good-3.c](./programy/good-3.c)
+- [good-4.c](./programy/good-4.c)
+- [good-5.c](./programy/good-5.c)
+
+***
+
