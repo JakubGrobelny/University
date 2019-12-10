@@ -192,7 +192,7 @@ Odpowiedzi na pytania:
 
 # Zadanie 7
 
-Rozwiązanie: [command.c](./../projekt-shell/command.c)
+Rozwiązanie: [command.c](https://i.pinimg.com/originals/81/6d/a5/816da533638aee63cfbd315ea24cccbd.jpg)
 
 
 ***
@@ -206,13 +206,13 @@ Rozwiązanie: [command.c](./../projekt-shell/command.c)
 - `jobdone` – zwróć status zadania i usuń zadanie z tablicy jeżeli jest zakończone.
 - `killjob` – wysyła sygnał `sig` do jednego lub wszystkich działających zadan.
 
-Rozwiązanie: [jobs.c](./../projekt-shell/jobs.c)
+Rozwiązanie: [jobs.c](https://static.boredpanda.com/blog/wp-content/uploads/2016/08/cute-kittens-29-57b30ad229af3__605.jpg)
 
 ***
 
 # Zadanie 9
 
-Rozwiązanie: [shell.c](./../projekt-shell/shell.c)
+Rozwiązanie: [shell.c](https://i.ytimg.com/vi/gUIJ-UkQsXI/maxresdefault.jpg)
 
 
 
