@@ -208,4 +208,4 @@ Rozwiązanie:
 
 Rozwiązanie:
 - [coro.c](programy/coro.c)
-- [Setjmp.s z komentarzami](programy/libcsapp/Setjmp.s)
+- [Setjmp.s z komentarzami](./Setjmp.s)
