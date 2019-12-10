@@ -1,10 +1,12 @@
 # Spis treści
 
+*Dla spotęgowania intensywności doznań wizualnych wynikających z czytania tych rozwiązań polecam oglądanie ich gdzieś indziej niż bezpośrednio na githubie, bo nie renderuje on tam ani html-a, ani LaTeXa*
+
 - [Zadanie 1](#zadanie-1)
-- [Zadanie 2 (bonus)](#zadanie-2)
+- [Zadanie 2 (bonus)](#zadanie-2-bonus)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
-- Zadanie 5 – brak
+- [Zadanie 5 (bonus)](#zadanie-5-bonus)
 
 ***
 
@@ -160,3 +162,148 @@ Poprawki:
 
 ***
 
+# Zadanie 5 (bonus)
+
+### Zapoznaj się z artykułem [AddressSanitizer: A Fast Address Sanity Checker](https://www.usenix.org/system/files/conference/atc12/atc12-final39.pdf).
+
+### Jaki jest koszt używania tego narzędzia (§4)?
+
+Średnie spowolnienie według `perlbench` i `xalancbmk` to kolejno 2.60x i 2.67x. Oba benchmarki intensywnie korzystały z `malloc`-a i robiły ogromną liczbę jedno- i dwubajtowych dostępów do pamięci (programy przetwarzające tekst).
+
+W przypadku instrumentacji wyłącznie zapisów, średnia spowolnienie to 26%. Użycie tego trybu umożliwa wykrywanie bugów związanych z pamięcią w programach wymagających wysokiej wydajności.
+
+Użycie *AddressSanitizer*a powoduje również wzrost zużycia pamięci oraz stosu.
+
+Zmniejszenie `Offset`-u powoduje wzrost wydajności tak jak zwiększenie `Scale`.
+
+![zad5_wykres](./zad5_wykres.png)
+![zad5_tabelka](./zad5_tabelka.png)
+![zad5_tabelka2](./zad5_tabelka2.png)
+
+### Przedstaw zasadę działania tego narzędzia – w szczególności opowiedz o instrumentacji kodu (§3.1) i shadow map (§3.2).
+
+*AddressSanitizer* przeznacza $1/8$ wirtualnej przestrzeni adresowej na tzw. *shadow memory*. Mapowanie wskaźnika `Addr` na *shadow memory* odbywa się za pomocą wzoru `(Addr >> Scale) + Offset`, gdzie `Scale` leży w przedziale 1...7 (domyślnie `Scale = 3`). `Scale=N` oznacza, że *shadow memory* zajmuje $1/2^N$ wirtualnej przestrzeni adresowej a minimalny rozmiar *redzone* wynosi $2^N$ bajtów. Każdy *shadow byte* opisuje stan $2^N$ bajtów z prawdziwej pamięci. Wskaźniki zwracane przez `malloc` zwykle są wyrównane do przynajmniej 8 bajtów. Oznacza to, że każda 8-bajtowa sekwencja pamięci na stercie jest w jednym z 9 stanów: pierwsze k $(0 \leq k \leq 8)$ bajtów jest adresowalnych a pozostałe $(8 - k)$ nie. Stany te można zakodowywać w pojedynczych bajtach *shadow memory*. `Offset` musi zostać tak wybrany, żeby obszar dla *shadow memory* nie był zajmowany przy uruchomieniu programu. `Offset` jest statycznie wybrany dla każdej platformy.
+
+![zad5_rysunek](./zad5_rysunek.png)
+
+Jak widać na powyższym rysunku, pamięć jest podzielona na dwie części (górną i dolną). Górna mapuje się do górnej części *shadow memory* a dolna do dolnej. *Shadow memory* mapuje się do obszaru *bad*, który jest oznaczony jako niedostępny.
+
+Bajt 0 oznacza, że wszystkie 8 bajtów w danym obszarze jest adresowalnych. $k$ $(1 \leq k \leq 7)$ oznacza, że pierwsze $k$ jest adresowalne. Wartość ujemna oznacza, że całe 8-bajtowe słowo jest nieadresowalne (różne wartości oznaczjaą różne rodzaje pamięci: *heap redzones*, *stack redzones*, *global redzones*, zwolnona pamięć).
+
+Podczas instrumentacji dostępu do pamięci, *AddressSanitizer* oblicza adres odpowiadającego *shadow byte*, ładuje ten bajt i sprawdza, czy jest zerem. 
+```c
+ShadowAddr = (Addr >> 3) + Offset;
+if (*ShadowAddr != 0)
+ReportAndCrash(Addr);
+```
+W przypadku dodatnich wartości należy porównać 3 ostatnie bity adresu z $k$ (wartością bajtu).
+```c
+ShadowAddr = (Addr >> 3) + Offset;
+k = *ShadowAddr;
+if (k != 0 && ((Addr & 7) + AccessSize > k))
+ReportAndCrash(Addr);
+```
+
+W obu przypadkach instrumentacja dodaje jedynie jeden doczyt pamięci dla każdego odczytu w oryginalnym kodzie przy założeniu, że N-bajtowy dostęp jest wyrównany do N (w innych przypadkach *AddressSanitizer* może potencjalnie nie wykryć błędu).
+*AddressSanitizer* wstawia instrumentację na końcu *pipeline*'u LLVM aby testować jedynie dostępy do pamięci, które *przeżyły* optymalizację.
+
+`ReportAndCrash(Addr)` jest funkcją wywoływaną co najwyzej raz (rozważane jest użycie instrukcji, która wywołałaby wyjątek procesora).
+
+### W poprzednim zadaniu nie zaprogramowano wszystkich błędów, z których wykryciem radzi sobie *address sanitizer* – podaj kilka przykładów.
+
+Ukradzione [stąd](https://github.com/google/sanitizers/wiki/AddressSanitizer).
+
+- *use after free* – dereferencja wiszacego wskaźnika.
+```cpp
+int main(int argc, char **argv) {
+  int *array = new int[100];
+  delete [] array;
+  return array[argc];  // BOOM
+}
+```
+- *heap buffer overflow* – nielegalny odczyt pamięci na stercie
+```cpp
+int main(int argc, char **argv) {
+  int *array = new int[100];
+  array[0] = 0;
+  int res = array[argc + 100];  // BOOM
+  delete [] array;
+  return res;
+}
+```
+- *stack buffer overflow* – zwykłe przepełnienie stosu (np. zbyt głęboka rekursja) lub przekroczenie końca stosu.
+```cpp
+int main(int argc, char **argv) {
+  int stack_array[100];
+  stack_array[1] = 0;
+  return stack_array[argc + 100];  // BOOM
+}
+```
+- *global buffer overflow* – np. wykroczenie poza globalną tablicę.
+```cpp
+int global_array[100] = {-1};
+int main(int argc, char **argv) {
+  return global_array[argc + 100];  // BOOM
+}
+```
+- *use after return* – dostęp do zmiennej lokalnej funkcji po wyjściu z niej.
+```cpp
+int *ptr;
+__attribute__((noinline))
+void FunctionThatEscapesLocalObject() {
+  int local[100];
+  ptr = &local[0];
+}
+
+int main(int argc, char **argv) {
+  FunctionThatEscapesLocalObject();
+  return ptr[argc];
+}
+```
+- *use after scope* – dostęp do zmiennej, która istniała w nieistniejącym już *scope*.
+```cpp
+volatile int *p = 0;
+
+int main() {
+  {
+    int x = 0;
+    p = &x;
+  }
+  *p = 5;
+  return 0;
+}
+```
+- *initialization order fiasco* – bugi wynikające z nieprawidłowej kolejności inicjalizacji zmiennych (kolejność inicjalizacji globalnych zmiennych w róznych jednostkach translacji nie jest zdefiniowana).
+```cpp
+// a.cpp
+#include <stdio.h>
+extern int extern_global;
+int __attribute__((noinline)) read_extern_global() {
+  return extern_global;
+}
+int x = read_extern_global() + 1;
+int main() {
+  printf("%d\n", x);
+  return 0;
+}
+
+// b.cpp
+int foo() { return 42; }
+int extern_global = foo();
+```
+- *memory leaks* – zwykły wyciek pamięci
+```c
+#include <stdlib.h>
+
+void *p;
+
+int main() {
+  p = malloc(7);
+  p = 0; 
+  // The memory is leaked here.
+  return 0;
+}
+```
+
+
+***
