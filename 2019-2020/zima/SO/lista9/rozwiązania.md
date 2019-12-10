@@ -1,3 +1,4 @@
+
 # Spis treści
 
 *Dla spotęgowania intensywności doznań wizualnych wynikających z czytania tych rozwiązań polecam oglądanie ich gdzieś indziej niż bezpośrednio na githubie, bo nie renderuje on tam ani html-a, ani LaTeXa*
@@ -60,6 +61,14 @@ Layout bloku:
 ```
 
 `pointer(index) = &arena + index * 16`
+
+*Edit*: alternatywnie:
+```
+[  16  ] [  16  ] [  16  ] [  16  ]
+ footer   header  kanarek1 kanarek2
+```
+gdzie kanarek1 to np. footer z poprzedniego bloku a kanarek2 to header z poprzedniego bloku.
+
 
 ### ...oraz strategię wykrywania uszkodzenia danych algorytmu (tj. lista dwukierunkowa, *boundary tags*).
 
