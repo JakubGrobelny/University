@@ -68,7 +68,7 @@ Layout bloku:
  footer   header  kanarek1 kanarek2
 ```
 gdzie kanarek1 to np. footer z poprzedniego bloku a kanarek2 to header z poprzedniego bloku.
-
+Wskaźników nie trzeba pamiętać bo mamy zagwarantowane 16 bajtów w wolnych blokach.
 
 ### ...oraz strategię wykrywania uszkodzenia danych algorytmu (tj. lista dwukierunkowa, *boundary tags*).
 
