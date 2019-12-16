@@ -41,6 +41,7 @@ static void delclient(pid_t pid) {
 static void sigchld_handler(int sig) {
   pid_t pid;
   /* TODO: Delete clients as they die. */
+  (void)pid;
 }
 
 static void sigint_handler(int sig) {
@@ -91,3 +92,5 @@ int main(int argc, char **argv) {
     Sigprocmask(SIG_BLOCK, &sig_mask, &mask);
 
     /* TODO: Start client in subprocess, close unused file descriptors. */
+    (void)connfd; (void)echo; (void)delclient; (void)addclient;
+  }}

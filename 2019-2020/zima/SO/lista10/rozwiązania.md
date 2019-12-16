@@ -1,7 +1,7 @@
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
-- Zadanie 2 (brak)
+- [Zadanie 2](#zadanie-2)
 - Zadanie 3 (brak)
 - Zadanie 4 (brak)
 
@@ -39,3 +39,10 @@ Należy używać wywołań `recfrom()` i `sendto()`, gdyż w przypadku protoko
 
 ***
 
+# Zadanie 2
+
+### Zmodyfikuj program [hostinfo.c](./programy/hostinfo.c) w taki sposób, aby wyświetlał zarówno adresy IPv4, jak i IPv6 dla danej nazwy serwera. Dodatkowo należy przekształcić nazwę usługi przekazanej jako opcjonalny trzeci parametr programu na numer portu. Co należałoby zrobić, żeby program rozpoznawał usługę o nazwie `tftp`?
+
+Rozwiązanie: [hostinfo.c](./programy/hostinfo.c)
+
+***
