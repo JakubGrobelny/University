@@ -3,7 +3,7 @@
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
-- Zadanie 4 (brak)
+- [Zadanie 4](#zadanie-4)
 
 ***
 
@@ -81,4 +81,11 @@ tcp        0      0 127.0.0.1:40792         127.0.0.1:2137          ESTABLISHED 
 
 Na wydruku pojawiło się połączenie z klienta 40798 do serwera, ale serwer jest połączony jedynie z klientem 40792.
 
+***
+
+# Zadanie 4
+
+### Serwer z poprzedniego zadania nie radził sobie ze współbieżną obsługą wielu połączeń. Serwer z pliku «echoclient-fork.c» naprawia to poważne ograniczenie z użyciem wywołania `fork`. Zadaniem głównego procesu jest odbieranie połączeń i delegowanie ich obsługi do podprocesów. Proces serwera musi zliczać liczbę bajtów odebranych od klientów. W tym celu przydziela dzieloną pamięć anonimową, w której przechowuje tablicę `client`. Przy starcie podprocesu umieszcza w tablicy odpowiedni wpis za pomocą procedury `addclient`. Żeby uniknąć wyścigów każdy podproces zwiększa własny licznik `nread`. Po zakończeniu podprocesu należy wywołać procedurę `delclient`, która doda zawartość prywatnego licznika klienta, do globalnego licznika serwera. W dowolnym momencie działanie serwera może zostać przerwane przy pomocy sygnału `SIGINT`. Należy wtedy poczekać na zakończenie podprocesów i wydrukować zawartość globalnego licznika serwera.
+
+Rozwiązanie: [echoserver-fork.c](./programy/echoserver-fork.c)
 ***
