@@ -2,7 +2,7 @@
 
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
-- Zadanie 3 (brak)
+- [Zadanie 3](#zadanie-3)
 - Zadanie 4 (brak)
 
 ***
@@ -44,5 +44,41 @@ Należy używać wywołań `recfrom()` i `sendto()`, gdyż w przypadku protoko
 ### Zmodyfikuj program [hostinfo.c](./programy/hostinfo.c) w taki sposób, aby wyświetlał zarówno adresy IPv4, jak i IPv6 dla danej nazwy serwera. Dodatkowo należy przekształcić nazwę usługi przekazanej jako opcjonalny trzeci parametr programu na numer portu. Co należałoby zrobić, żeby program rozpoznawał usługę o nazwie `tftp`?
 
 Rozwiązanie: [hostinfo.c](./programy/hostinfo.c)
+
+***
+
+# Zadanie 3
+
+### Zapoznaj się z kodem źródłowym serwera [echoserver.c](./programy/echoserver.c) i klienta [echoclient.c](./programy/echoclient.c) usługi podobnej do `echo`. Twoim zadaniem jest taka modyfikacja serwera, by po odebraniu sygnału `SIGINT` wydrukował liczbę bajtów odebranych od wszystkich klientów, po czym zakończył swe działanie.
+
+Rozwiązanie: [echoserver.c](./programy/echoserver.c)
+
+
+
+### Używając programu `watch` uruchom polecenie `netstat -ptn`, aby obserwować stan połączeń sieciowych. Wystartuj po jednym procesie serwera i klienta. Wskaż na wydruku końce połączenia należące do serwera i klienta. Następnie wystartuj drugą instancję klienta. Czemu nie zachowuje się ona tak samo jak pierwsza? Co zmieniło się na wydruku z `netstat`?
+
+```bash
+# wszystko w oddzielnych terminalach
+watch netstat -ptn
+./echoserver 2137 
+./echoclient localhost 2137
+./echoclient localhost 2137
+```
+
+Druga instancja nie zachowuje się tak jak pierwsza, gdyż serwer jest w stanie obsługiwać jedynie jednego klienta jednocześnie (reszta czeka w kolejce na połączenie). Kiedy pierwszy klient zamknie połączenie, to drugi połączy się z serwerem.
+
+Jeden klient:
+```
+tcp        0      0 127.0.0.1:2137          127.0.0.1:40792         ESTABLISHED 20097/./echoserver
+tcp        0      0 127.0.0.1:40792         127.0.0.1:2137          ESTABLISHED 20157/./echoclient
+```
+Dwóch klientów:
+```
+tcp        0      0 127.0.0.1:40798         127.0.0.1:2137          ESTABLISHED 20274/./echoclient
+tcp        0      0 127.0.0.1:2137          127.0.0.1:40792         ESTABLISHED 20097/./echoserver
+tcp        0      0 127.0.0.1:40792         127.0.0.1:2137          ESTABLISHED 20157/./echoclient
+```
+
+Na wydruku pojawiło się połączenie z klienta 40798 do serwera, ale serwer jest połączony jedynie z klientem 40792.
 
 ***
