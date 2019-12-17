@@ -45,7 +45,7 @@ Należy używać wywołań `recfrom()` i `sendto()`, gdyż w przypadku protoko
 
 Rozwiązanie: [hostinfo.c](./programy/hostinfo.c)
 
-Żeby program rozpoznawał usługę `tftp` należy zmienić rodzaj gniazda na `SOCK_DGRAM`, gdyż `tftp` używa UDP.
+Żeby program rozpoznawał usługę `tftp` należy zmienić rodzaj gniazda na 0.
 
 ***
 
