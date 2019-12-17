@@ -114,6 +114,7 @@ int main(int argc, char** argv) {
 
         pid_t pid = Fork();
         if (!pid){
+            Close(listenfd);
             setpgid(0, 0); // to prevent children from getting SIGINT
             echo(client, connfd);
             Close(connfd);
