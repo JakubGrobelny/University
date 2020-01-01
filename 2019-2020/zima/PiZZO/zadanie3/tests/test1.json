@@ -1,0 +1,41 @@
+{
+    "parametry": [
+        "kalorie",
+        "białko",
+        "żelazo"
+    ],
+    "składniki": [
+        {
+            "nazwa": "ziemniak",
+            "kalorie": 60.0,
+            "białko": 2.02,
+            "żelazo": 0.74
+        },
+        {
+            "nazwa": "kostka czekolady",
+            "kalorie": 34.1,
+            "białko": 0.3,
+            "żelazo": 0.5
+        }
+    ],
+    "konflikty": [
+        {
+            "nazwa1": "ziemniak",
+            "nazwa2": "kostka czekolady"
+        }
+    ],
+    "cel": {
+        "kalorie": {
+            "min": 1600,
+            "max": 1800
+        },
+        "białko": {
+            "min": 70,
+            "max": 80
+        },
+        "żelazo": {
+            "min": 10,
+            "max": 20
+        }
+    }
+}
