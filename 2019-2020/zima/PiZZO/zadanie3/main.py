@@ -27,23 +27,27 @@ class Target:
 class Instance:
     def __init__(self, filename: str):
         with open(filename) as file:
-            instance = json.loads(file.read().replace('\n', ''))
+            instance = json.loads(file.read())
         self.macros : List[str] = instance['parametry']
         self.ingredients : List[Ingredient] = []
         for ingredient in instance['składniki']:
             self.ingredients.append(Ingredient(ingredient))
-        self.conflicts : Set[Tuple[str, str]] = set()
+        self.conflicts : List[Tuple[str, str]] = []
         for conflict in instance['konflikty']:
             first, second = conflict['nazwa1'], conflict['nazwa2']
-            self.conflicts.add((first, second))
+            self.conflicts.append((first, second))
         self.targets : List[Target] = []
         raw_targets = instance['cel']
         for macro in raw_targets.keys():
             self.targets.append(Target(macro, raw_targets[macro]))
-
-def optimize(instance: Instance):
-    # TODO implement optimizations
-    return instance
+    def optimize(self):
+        def affordable(ingredient: Ingredient) -> bool:
+            for target in self.targets:
+                macro = ingredient.macros[target.macro]
+                if macro > target.max:
+                    return False
+            return True
+        self.ingredients = list(filter(affordable, self.ingredients))
 
 def make_variable_name(meal: int, ingredient: int) -> str:
     return 'var_' + str(ingredient) + '/' + str(meal)
@@ -112,7 +116,7 @@ def unpack_diet(result: z3.Model, food: Dict[int, str]) -> Dict[str, List[str]]:
     return diet
 
 def solve(instance: Instance) -> Optional[Dict[str, List[str]]]:
-    optimize(instance)
+    instance.optimize()
     solver, food_indices = prepare_solver(instance)
     if solver.check() == z3.sat:
         return unpack_diet(solver.model(), food_indices)
