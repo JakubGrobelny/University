@@ -1,0 +1,27 @@
+{
+    "parametry": [
+        "kalorie"
+    ],
+    "składniki": [
+        {
+            "nazwa": "ziemniak",
+            "kalorie": 5.5
+        },
+        {
+            "nazwa": "czekolada",
+            "kalorie": 11
+        }
+    ],
+    "konflikty": [
+        {
+            "nazwa1": "ziemniak",
+            "nazwa2": "czekolada"
+        }
+    ],
+    "cel": {
+        "kalorie": {
+            "min": 99.0,
+            "max": 100
+        }
+    }
+}
