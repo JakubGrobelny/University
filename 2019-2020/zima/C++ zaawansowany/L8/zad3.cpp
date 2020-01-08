@@ -9,7 +9,7 @@ auto is_valid_city(const std::string& str) -> bool {
     std::regex city_regex(
         "^(" // assert the position is at the begining
             UPPER LOWER "{2,}" // single word
-            "(-" UPPER LOWER "{2,})?" // possibly another word after hyphen
+            "(-" UPPER LOWER "{2,})?" // possibly a second word after a hyphen
         "( +(?!$)|$)" // (non-trailing) space separators or last word
         ")+$" // one or more words
     );
