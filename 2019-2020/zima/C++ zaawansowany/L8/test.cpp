@@ -5,8 +5,8 @@
 void test_regex(bool(*predicate)(const std::string&)) {
     while (!std::cin.eof()) {
         std::string input;
-        std::cin >> input;
-
+        std::getline(std::cin, input);
+    
         if (input == "") {
             continue;
         }
