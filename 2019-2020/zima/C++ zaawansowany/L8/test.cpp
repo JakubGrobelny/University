@@ -6,9 +6,14 @@ void test_regex(bool(*predicate)(const std::string&)) {
     while (!std::cin.eof()) {
         std::string input;
         std::cin >> input;
+
+        if (input == "") {
+            continue;
+        }
+ 
         if (predicate(input)) {
             std::cout << "\033[92m" "Valid input" << std::endl;
-        } else if (input != "") {
+        } else {
             std::cout << "\033[91m" "Invalid input" << std::endl;
         }
 
