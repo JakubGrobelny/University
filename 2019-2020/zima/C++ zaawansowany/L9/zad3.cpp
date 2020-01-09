@@ -44,7 +44,7 @@ auto main(int argc, char* argv[]) -> int {
     for (int i = 1; i < argc; i++) {
         if (fs::exists(fs::path(argv[i]))) {
             auto path = fs::path(argv[i]);
-
+            
             std::cout << fs::canonical(path) << " | ";
             std::cout << file_type_string(path) << " | ";
 
