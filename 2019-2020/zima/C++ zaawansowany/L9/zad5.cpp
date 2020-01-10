@@ -1,3 +1,4 @@
+
 #include <filesystem>
 #include <iostream>
 #include <numeric>
@@ -9,7 +10,7 @@ namespace fs = std::filesystem;
 // alternative solution:
 auto directory_size(const fs::path& path) -> size_t {
     if (!fs::is_directory(path)) {
-        return fs::file_size(path);
+        return fs::is_regular_file(path) ? fs::file_size(path) : 0;
     }
 
     auto it_begin = fs::directory_iterator(path);
@@ -35,11 +36,12 @@ auto main(int argc, char* argv[]) -> int {
 
         size_t size = 0;
         for (auto& entry : fs::recursive_directory_iterator(dir)) {
-            if (!fs::is_directory(entry.path())) {
+            if (fs::is_regular_file(entry.path())) {
                 size += fs::file_size(entry.path());
             }
         }
 
         std::cout << fs::canonical(dir) << ": " << size << std::endl;
+        std::cout << fs::canonical(dir) << ": " << directory_size(dir) << std::endl;
     }
 }

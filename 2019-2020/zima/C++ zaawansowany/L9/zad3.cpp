@@ -48,7 +48,7 @@ auto main(int argc, char* argv[]) -> int {
             std::cout << fs::canonical(path) << " | ";
             std::cout << file_type_string(path) << " | ";
 
-            if (!fs::is_directory(path)) {
+            if (fs::is_regular_file(path)) {
                 std::cout << fs::file_size(path) << " bytes | ";
             }
 

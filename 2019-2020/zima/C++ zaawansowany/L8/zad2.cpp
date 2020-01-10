@@ -7,7 +7,7 @@ auto is_valid_date(const std::string& str) -> bool {
         "^(" // assert the position is at the begining
             "31-(01|03|07|08|10|12)" // months with 31 days
             "|"
-            "30-(04|06|09|11)" // months with 30 days
+            "30-(04|06|09|11|01|03|07|08|10|12)" // months with 30 days
             "|"
             "(0[1-9]|[1-2][0-9])-(?:0[1-9]|1[0-2])" // [01-29]-[01-12]
         ")-\\d{4,}$" // -YYYY

@@ -47,6 +47,6 @@ auto main() -> int {
     std::ostream_iterator<uint64_t> out(file, "; ");
 
     std::for_each(values.rbegin(), values.rend(), [&](uint64_t n) {
-        out = n;
+        *out = n;
     });
 }

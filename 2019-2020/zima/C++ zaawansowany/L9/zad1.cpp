@@ -16,7 +16,7 @@ auto main() -> int {
     std::ostream_iterator<float> out(std::cout, " ");
 
     std::for_each(numbers.rbegin(), numbers.rend(), [&](float x) {
-        out = x;
+        *out = x;
     });
 
     std::cout << std::endl;
