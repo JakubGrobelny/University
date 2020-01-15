@@ -63,5 +63,45 @@ Nieudana próba zapobiegania może doprowadzić do:
 - głodzenia: 2.2 proces może nigdy nie rozpocząć działania
 
 ***
+# Zadanie 2
+
+### W poniższym programie występuje <u>*sytuacja wyścigu*</u> (ang. race condition) dotycząca dostępów do współdzielonej zmiennej `tally`. Wyznacz jej najmniejszą i największą możliwą wartość.
+
+```C
+const int n = 50;
+shared int tally = 0;
+
+void total() {
+    for (int count = 1; count <= n; count++)
+        tally = tally + 1;
+}
+
+void main() { parbegin (total(), total()); }
+```
+
+W rzeczywistości instrukcja w pętli to tak naprawdę trzy instrukcje:
+```
+Ia: załaduj tally do rejestru
+Ib: dodaj 1 do rejestru
+Ic: zapisz wartość rejestru do tally
+```
+Dla dwóch procesów daje to nam sześć instrukcji:
+```
+Ia1: załaduj tally do rejestru procesu 1
+Ia2: załaduj tally do rejestru procesu 2
+Ib1: dodaj 1 do rejestru procesu 1
+Ib2: dodaj 1 do rejestru procesu 2
+Ic1: zapisz wartość rejestru procesu 1 do tally
+Ic2: zapisz wartość rejestru procesu 2 do tally
+```
 
 
+
+Dla uproszczenia nazwijmy rejestry r1 i r2.
+Mamy następujące własności:
+```
+{tally == X} Ia1 {r1 == X}
+```
+
+
+### Jak zmieni się przedział możliwych wartości zmiennej `tally`, gdy wystartujemy k procesów zamiast dwóch? Odpowiedź uzasadnij.
