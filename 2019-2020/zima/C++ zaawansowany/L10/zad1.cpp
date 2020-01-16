@@ -8,11 +8,9 @@
 struct person {
     std::string name;
     std::string surname;
-    int age;
-    int height;
-    int weight;
-
-    person(): age(0), height(0), weight(0) {};
+    int age = 0;
+    int height = 0;
+    int weight = 0;
 
     auto bmi() const -> double {
         double height_meters = this->height / 100.0;
@@ -22,11 +20,9 @@ struct person {
 
 
 auto operator>> (std::istream& in, person& dest) -> std::istream& {
-    in >> dest.name;
-    in >> dest.surname;
-    in >> dest.age;
-    in >> dest.height;
-    in >> dest.weight;
+    in >> dest.name >> dest.surname;
+    in >> dest.age >> dest.height >> dest.weight;
+
     return in;
 }
 
@@ -36,6 +32,7 @@ auto operator<< (std::ostream& out, const person& person) -> std::ostream& {
               << person.age << " years old, "
               << person.height << "cm, "
               << person.weight << "kg";
+
     return out;
 }
 
@@ -58,7 +55,7 @@ auto read_data(const char* filename) -> std::vector<person> {
 
 
 auto main(int argc, char* argv[]) -> int {
-    if (argc < 2) {
+    if (argc != 2) {
         std::cerr << "Usage: [filename]" << std::endl;
         return EXIT_FAILURE;
     }
