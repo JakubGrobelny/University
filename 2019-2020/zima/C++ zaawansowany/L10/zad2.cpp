@@ -97,18 +97,7 @@ auto main(int argc, char* argv[]) -> int {
         std::cout << std::endl;
     }
 
-    const point& brightest = *std::max_element(
-        data.begin(), 
-        data.end(), 
-        [](const point& p1, const point& p2) {
-            double avg_p1 = (p1.r + p1.g + p1.b) / 3;
-            double avg_p2 = (p2.r + p2.g + p2.b) / 3;
-            return avg_p1 < avg_p2;
-        }
-    );
-    std::cout << "Brightest: " << brightest << std::endl;
-
-    const point& darkest = *std::max_element(
+    auto brightest_darkest = std::minmax_element(
         data.begin(), 
         data.end(), 
         [](const point& p1, const point& p2) {
@@ -117,6 +106,9 @@ auto main(int argc, char* argv[]) -> int {
             return avg_p1 > avg_p2;
         }
     );
-    std::cout << "Darkest: " << darkest << std::endl;
+
+    std::cout << "Brightest: " << *brightest_darkest.first << std::endl;
+
+    std::cout << "Darkest: " << *brightest_darkest.second << std::endl;
 
 }
