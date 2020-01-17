@@ -9,8 +9,19 @@ public:
     }
 };
 
+
+template <>
+class binomial_coefficient<0, 0> {
+public:
+    constexpr auto operator() () const -> int {
+        return 0;
+    }
+
+};
+
+
 template <int N>
-class binomial_coefficient<N,N> {
+class binomial_coefficient<N, 0> {
 public:
     constexpr auto operator() () const -> int {
         return 1;
@@ -19,7 +30,7 @@ public:
 
 
 template <int N>
-class binomial_coefficient<N,0> {
+class binomial_coefficient<N, N> {
 public:
     constexpr auto operator() () const -> int {
         return 1;
@@ -27,8 +38,7 @@ public:
 };
 
 
-
-auto main(int argc, char* argv[]) -> int {
-    constexpr int coeff = binomial_coefficient<17,9>()();
+auto main() -> int {
+    constexpr int coeff = binomial_coefficient<19,7>()();
     std::cout << coeff << std::endl;
 }
