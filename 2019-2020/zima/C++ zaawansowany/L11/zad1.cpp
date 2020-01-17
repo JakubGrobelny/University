@@ -2,38 +2,30 @@
 
 
 template <int N>
-class lucas_number {
-    using prev = lucas_number<N-1>;
-    static const int prev_val = prev::val;
-    static const int val = prev::val + prev::prev_val;
-public:
+struct lucas_number {
+    static const int value = lucas_number<N-1>::value + 
+                             lucas_number<N-2>::value;
     constexpr auto operator() () const -> int {
-        return lucas_number<N>::val;
+        return lucas_number<N>::value;
     }
-    friend class lucas_number<N+1>;
 };
 
 
 template <>
-class lucas_number<0> {
-    static const int val = 2;
-public:
+struct lucas_number<0> {
+    static const int value = 2;
     constexpr auto operator() () const -> int {
-        return lucas_number<0>::val;
+        return lucas_number<0>::value;
     }
-    friend class lucas_number<1>;
 };
 
 
 template <>
-class lucas_number<1> {
-    static const int val = 1;
-    static const int prev_val = 2;
-public:
+struct lucas_number<1> {
+    static const int value = 1;
     constexpr auto operator() () const -> int {
-        return lucas_number<1>::val;
+        return lucas_number<1>::value;
     }
-    friend class lucas_number<2>;
 };
 
 
