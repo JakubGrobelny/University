@@ -3,7 +3,7 @@
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
-- Zadanie 4 – brak
+- [Zadanie 4](#zadanie-4)
 - Zadanie 5 – brak
 
 ***
@@ -40,6 +40,10 @@
 # Zadanie 2
 
 ### Podaj w pseudokodzie semantykę <u>*instrukcji atomowej*</u> `compare-and-swap` i z jej użyciem zaimplementuj <u>*blokadę wirującą*</u> (ang. *spin lock*) (§28.7). Zakładając, że typ `spin_t` jest równoważny `int`, podaj ciało procedur `void lock(spin_t *)` i `void unlock(spin_t *)`.
+
+**instrukcja atomowa** – instrukcja, która jest niepodzielna i wykonuje się w całości za jednym razem
+
+**blokada wirująca** – blokada polegająca na tym, że wątek, który próbuje uzyskać blokadę czeka w pętli na jej zwolnienie.
 
 ```
 compare-and-swap(&dest, val, new_val):
@@ -125,5 +129,9 @@ operacja **atomowa** – operacja, która jest niepodzielna i zawsze wykona się
 - producent wypełnia kolejkę $n$ elementami i dociera do *4* (kolejka jest pełna)
 - *12*: konsument zasypia
 - *5*: producent zasypia
+
+***
+
+# Zadanie 4
 
 ***
