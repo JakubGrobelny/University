@@ -1,14 +1,14 @@
-#Spis treści
+# Spis treści
 
 - [Zadanie 1](#zadanie-1)
-- Zadanie 2 – brak
+- [Zadanie 2](#zadanie-2)
 - Zadanie 3 – brak
 - Zadanie 4 – brak
 - Zadanie 5 – brak
 
 ***
 
-#Zadanie 1
+# Zadanie 1
 
 ### Podaj cztery warunki konieczne do zaistnienia zakleszczenia. 
 
@@ -34,7 +34,47 @@
     - eliminacja *hold-and-wait*: konieczność znajomości wszystkich zasobów, które będą potrzebne. Zasoby muszą być nabywane wcześnie, zamiast wtedy, gdy są faktycznie potrzebne. W przypadku, gdy zwalniamy wcześniej zdobyte blokady, możemy doprowadzić do *livelock*a.
     – eliminacja *mutual-exclusion*: w przypadku drukarek możliwe jest, że proces, dla którego rozpoczęto drukowanie nie dostarczył jeszcze wszystkich danych do bufora. Jeżeli oczekuje się na wszystkie dane przed rozpoczęciem drukowania, to możlliwe jest przepełnienie bufora.
     - eliminacja *no-preemption*: nie wszystkie zasoby dają się zwirtualizować.
-    
 
+***
+
+# Zadanie 2
+
+### Podaj w pseudokodzie semantykę <u>*instrukcji atomowej*</u> `compare-and-swap` i z jej użyciem zaimplementuj <u>*blokadę wirującą*</u> (ang. *spin lock*) (§28.7). Zakładając, że typ `spin_t` jest równoważny `int`, podaj ciało procedur `void lock(spin_t *)` i `void unlock(spin_t *)`.
+
+```
+compare-and-swap(&dest, val, new_val):
+    if *dest == val:
+        *dest := new_val
+        return True
+    return False
+```
+
+```C
+typedef int spin_t;
+
+void lock(spin_t* lock) {
+    while (!compare_and_swap(lock, 0, 1));
+}
+
+void unlock(spin_t* lock) {
+    *lock = 0;
+}
+
+```
+
+### Dlaczego użycie blokad wirujących ma sens tylko w oprogramowaniu uruchamianym na maszynach wieloprocesorowych?
+
+Użycie blokad wirujących ma sens tylko na maszynach wieloprocesorowych, gdyż jeżeli mamy do dyspozycji jedynie jeden procesor, to wątek, który próbuje dokonać blokady, marnuje czas procesora w pętli `while`. W przypadku maszyn wieloprocesorowych pętla może być wykonywana równolegle z innym kodem.
+
+###  Podaj główne różnice między blokadami wirującymi, a <u>*blokadami usypiającymi*</u> (§28.14).
+
+**blokady usypiające** – blokady, w ktorych proces oczekujący na blokadę zostaje uśpiony zamiast kręcić się w pętli i używać czasu procesora.
+
+| **wirujące** | **usypiające** |
+|--------------|----------------|
+| wątek oczekujący na blokadę <br> zużywa czas procesora | wątek oczekujący na blokadę <br>zostaje uśpiony |
+| brak przełączania kontekstu | przełączanie kontekstu przy <b4> każdym uśpieniu |
+| bardziej użyteczne gdy czasy <br> oczekiwania są krótkie | bardziej użyteczne gdy czas oczekiwania jest długi |
+| nie wymaga wywołań systemowych | wymaga wywołań systemowych |
 
 ***
