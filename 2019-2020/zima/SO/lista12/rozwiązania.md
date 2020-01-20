@@ -134,4 +134,21 @@ operacja **atomowa** – operacja, która jest niepodzielna i zawsze wykona się
 
 # Zadanie 4
 
+### Poniżej podano błędną implementację semafora zliczającego z użyciem semaforów binarnych. Dopuszczamy, żeby `count` był liczbą ujemną, w takim przypadku jej wartość bezwzględna oznacza liczbę uśpionych procesów. Znajdź kontrprzykład i zaprezentuj wszystkie warunki niezbędne do jego odtworzenia.
+
+![zad4](./zad4_kod.png)
+
+Przebieg zdarzeń:
+
+liczba zasobów: 2
+procesy: *A*, *B*, *C*, *D*
+
+- `count == 2`
+- *A*, *B*, *C*, *D* wywołują `P()`, *C*, *D* zostają wywłaszczone po linijce *17*, *A* i *B* wykonują `P()` do końca. `count == -2`
+- *A* wywołuje `V()`, `count == -1`, `delay == 1`
+- *B* wywołuje `V()`, `count == 0`, `delay == 1`
+- *C* wznawia działanie. `delay == 0`
+- *C* wywołuje `V()`. `count == 1`, `delay == 1`
+- *D* wznawia działanie. Wywołanie `P(delay)` w linijce *18* nigdy się nie skończy bo `delay == 0` (chyba, że nastąpią dwa wywołania `V()`).
+
 ***
