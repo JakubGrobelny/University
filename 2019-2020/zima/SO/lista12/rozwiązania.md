@@ -151,4 +151,6 @@ procesy: *A*, *B*, *C*, *D*
 - *C* wywołuje `V()`. `count == 1`, `delay == 1`
 - *D* wznawia działanie. Wywołanie `P(delay)` w linijce *18* nigdy się nie skończy bo `delay == 0` (chyba, że nastąpią dwa wywołania `V()`).
 
+Jest źle, bo `count == 1`. Znaczy to, że jest jeden wolny zasób i zero śpiących procesów a mimo to jeden pozostaje uśpiony.
+
 ***
