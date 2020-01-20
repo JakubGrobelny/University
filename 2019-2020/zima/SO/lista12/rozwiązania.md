@@ -2,7 +2,7 @@
 
 - [Zadanie 1](#zadanie-1)
 - [Zadanie 2](#zadanie-2)
-- Zadanie 3 – brak
+- [Zadanie 3](#zadanie-3)
 - Zadanie 4 – brak
 - Zadanie 5 – brak
 
@@ -76,5 +76,54 @@ Użycie blokad wirujących ma sens tylko na maszynach wieloprocesorowych, gdyż�
 | brak przełączania kontekstu | przełączanie kontekstu przy <b4> każdym uśpieniu |
 | bardziej użyteczne gdy czasy <br> oczekiwania są krótkie | bardziej użyteczne gdy czas oczekiwania jest długi |
 | nie wymaga wywołań systemowych | wymaga wywołań systemowych |
+
+***
+
+# Zadanie 3
+
+### Przeanalizuj poniższy pseudokod wadliwego rozwiązania problemu producent-konsument. Zakładamy, że kolejka `queue` przechowuje do $n$ elementów. Wszystkie operacje na kolejce są <u>*atomowe*</u> (ang. *atomic*). Startujemy po jednym wątku wykonującym kod procedury `producer` i `consumer`. Procedura `sleep` usypia wołający wątek, a `wakeup` budzi wątek wykonujący daną procedurę.
+
+```python
+1  def producer():
+2      while True:
+3          item = produce()
+4          if queue.full():
+5              sleep()
+6          queue.push(item)
+7          if not queue.empty():
+8              wakeup(consumer)
+
+9  def consumer():
+10     while True:
+11         if queue.empty():
+12             sleep()
+13         item = queue.pop()
+14         if not queue.full():
+15             wakeup(producer)
+16         consume(item)
+```
+
+operacja **atomowa** – operacja, która jest niepodzielna i zawsze wykona się w całości bez przerywania.
+
+### Wskaż przeplot instrukcji, który doprowadzi do:
+
+### (a) błędu wykonania w linii 6 i 13 
+
+- *6*: `push` do pełnej kolejki:
+    - *14*: konsument sprawdza, że kolejka nie jest pełna
+    - producent zapełnia kolejkę i dociera do *4* a potem *5*
+    - *15*: konsument wybudza producenta
+    - *6*: producent próbuje dodać coś do pełnej kolejki
+- *13*: `pop` z pustej kolejki:
+    - *7*: producent sprawdza, że kolejka nie jest pusta
+    - konsument opróżnia kolejkę i dociera do *11* a potem *12*
+    - *8*: producent wybudza konsumenta
+    - *13*: konsument próbuje usunąć coś z pustej kolejki
+
+### (b) zakleszczenia w liniach 5 i 12.
+- *11*: konsument sprawdza, że kolejka jest pusta
+- producent wypełnia kolejkę $n$ elementami i dociera do *4* (kolejka jest pełna)
+- *12*: konsument zasypia
+- *5*: producent zasypia
 
 ***
