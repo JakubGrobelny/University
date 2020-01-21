@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[polish]{babel}
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 \hypersetup{
     colorlinks=true,
@@ -27,7 +28,6 @@
 \end{titlepage}
 
 \noindent\rule{\textwidth}{1pt}
-
 
 \section*{Ogólna koncepcja gry}
 
@@ -54,6 +54,11 @@ bloków lub poprzez dodanie dodatkowych żyć.
      dzień), które zmieniają wygląd otoczenia.
 \end{description}
 
+\begin{figure}
+    \includegraphics[scale=0.4]{img/game.png}
+    \caption{Grafika koncepcyjna przedstawiająca grę.}
+\end{figure}
+
 \section*{Edytor poziomów}
 
 Do gry dołączony będzie edytor poziomów, który pozwala na umieszczanie 
@@ -62,6 +67,11 @@ formacie, który może zostać wczytany przez grę.
 
 Edytor operuje na kilku warstwach (np. tło, bloki z których zbudowane są 
 platformy, obiekty poruszające się), pomiędzy którymi można się przełączać.
+
+\begin{figure}
+    \includegraphics[scale=0.3]{img/editor.png}
+    \caption{Grafika koncepcyjna przedstawiająca edytor poziomów.}
+\end{figure}
 
 \section*{Najważniejsze używane biblioteki}
 
@@ -84,7 +94,8 @@ w założeniu 60 razy na sekundę) następuje aktualizacja tej struktury w oparc
 o wydarzenia, których dostarcza biblioteka \texttt{sdl2} (np. naciśnięcia 
 klawiszy) oraz dotychczasowego stanu gry. Po zaktualizowaniu stanu zostaje on w 
 odpowiedni sposób wyświetlony na ekranie.
+\newline
 
-Kod gry jest publicznie dostępny na \href{https://github.com/JakubGrobelny/mario-clone}{githubie}.
+Kod gry jest dostępny na publicznym repozytorium na \href{https://github.com/JakubGrobelny/mario-clone}{githubie}.
 
 \end{document}
