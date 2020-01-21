@@ -4,7 +4,7 @@
 - [Zadanie 2](#zadanie-2)
 - [Zadanie 3](#zadanie-3)
 - [Zadanie 4](#zadanie-4)
-- Zadanie 5 – brak
+- [Zadanie 5](#zadanie-5)
 
 ***
 
@@ -153,4 +153,19 @@ procesy: *A*, *B*, *C*, *D*
 
 Jest źle, bo `count == 1`. Znaczy to, że jest jeden wolny zasób i zero śpiących procesów a mimo to jeden pozostaje uśpiony.
 
+***
+
+# Zadanie 5
+
+### Poniżej podano jedno z rozwiązań <u>*problemu ucztujących filozofów* </u> Zakładamy, że istnieją tylko leworęczni i praworęczni filozofowie, którzy podnoszą odpowiednio lewą i prawą pałeczkę jako pierwszą. Pałeczki są ponumerowane zgodnie z ruchem wskazówek zegara. Udowodnij, że jakikolwiek układ $n \geq 5$ ucztujących filozofów z co najmniej jednym leworęcznym i praworęcznym zapobiega zakleszczeniom i głodzeniu.
+
+![zad5](./zad5_kod.png)
+
+**problem ucztujących filozofów** – pięciu filozofów siedzi dookoła stołu z miskami z jedzeniem. Pomiędzy każdą sąsiednią parą filozofów umieszczona jest pałeczka. Każdy filozof musi na zmianę myśleć i jeść. Do jedzenia potrzebuje obu pałeczek. Problem polega na opracowaniu algorytmu, który zapobiegnie zagłodzeniu i zakleszczeniu filozofów.
+
+<br>
+
+- zapobieganie zakleszczeniu:
+    - pokażemy, że zawsze będzie istniał taki filozof, który może jeść. Załóżmy **nie wprost**, że doszło do zakleszczenia. Każda pałeczka, która w tym momencie nie może zostać przez nikogo podniesiona może znajdować się jedynie pomiędzy (kolejno) leworęcznym i praworęcznym filozofem, bo w przeciwnym razie zawsze może zostać podniesiona (P | P, lewy podnosi; L | L, prawy podnosi; P | L, dowolny podnosi; w przypadku L | P pałeczkę może podnieść tylko ten z filozofów, który ma już jedną. Oznacza to, że nieużywana pałeczka pomiędzy L i P może istnieć tylko wtedy, gdy L i P nie mają żadnej pałeczki). Niech K = liczba nieużywanych pałeczek. Wówczas oczywiście jest N-2*K filozofów, którzy nie mają żadnej pałeczki. Wiemy, że K != 0, bo zawsze istnieje para L P, w której jeżeli żaden filozof nie je, to nie może używać pałeczki między nimi. Liczba używanych pałeczek > liczba filozofów używających pałeczki, więc z zasady szufladkowej wynika, że istnieje filozof, który ma dwie pałeczki, czyli je. **Sprzeczność**.
+- zapobieganie zagłodzeniu: TODO
 ***
