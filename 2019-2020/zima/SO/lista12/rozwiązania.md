@@ -167,5 +167,12 @@ Jest źle, bo `count == 1`. Znaczy to, że jest jeden wolny zasób i zero śpi�
 
 - zapobieganie zakleszczeniu:
     - pokażemy, że zawsze będzie istniał taki filozof, który może jeść. Załóżmy **nie wprost**, że doszło do zakleszczenia. Każda pałeczka, która w tym momencie nie może zostać przez nikogo podniesiona może znajdować się jedynie pomiędzy (kolejno) leworęcznym i praworęcznym filozofem, bo w przeciwnym razie zawsze może zostać podniesiona (P | P, lewy podnosi; L | L, prawy podnosi; P | L, dowolny podnosi; w przypadku L | P pałeczkę może podnieść tylko ten z filozofów, który ma już jedną. Oznacza to, że nieużywana pałeczka pomiędzy L i P może istnieć tylko wtedy, gdy L i P nie mają żadnej pałeczki). Niech K = liczba nieużywanych pałeczek. Wówczas oczywiście jest N-2*K filozofów, którzy nie mają żadnej pałeczki. Wiemy, że K != 0, bo zawsze istnieje para L P, w której jeżeli żaden filozof nie je, to nie może używać pałeczki między nimi. Liczba używanych pałeczek > liczba filozofów używających pałeczki, więc z zasady szufladkowej wynika, że istnieje filozof, który ma dwie pałeczki, czyli je. **Sprzeczność**.
-- zapobieganie zagłodzeniu: TODO
+- zapobieganie zagłodzeniu:
+    - pokażemy, że każdy filozof będzie miał kiedyś okazję jeść. Niech F będzie dowolnym filozofem, który nie może teraz jeść. Rozpatrzmy przypadki:
+        - F jest praworęczny:
+            - F trzyma tylko prawą pałeczkę i czeka na lewą. Niech L będzie lewym sąsiadem F. Jeżeli L je, to jak skończy, to odłoży swoją prawą pałeczkę i F będzie mógł jeść. W przeciwnym razie mamy dwa przypadki:
+                - L jest leworęczny: wówczas nie ma prawej pałeczki, więc F może ją wziąć i jeść.
+                - L jest praworęczny: wówczas trzyma prawą pałeczkę i czeka na lewą. Niech A będzie pierwszym leworęcznym filozofem na lewo od L. Jeżeli A je, to po odłożeniu pałeczki będzie mógł ją wziąć prawy sąsiad A, który po skończeniu przekaże prawą pałeczkę dalej itd. aż do L
+                Jeżeli A nie je, to znaczy, że czeka na swoją lewą pałeczkę, czyli prawy sąsiad A może jeść. Kiedy skończy, to odda swoją prawą pałeczkę dalej w prawo.
+        - F jest leworęczny: symetrycznie do poprzedniego przypadku
 ***
