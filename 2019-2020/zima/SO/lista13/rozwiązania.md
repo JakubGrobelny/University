@@ -2,7 +2,7 @@
 
 - [Zadanie 1](#zadanie-1)
 - Zadanie 2 – brak
-- Zadanie 3 (P) – brak
+- [Zadanie 3 (P)](#zadanie-3)
 - Zadanie 4 (P) – brak
 - Zadanie 5 (P) – brak
 - Zadanie 6 (P) – brak
@@ -66,5 +66,15 @@ Blokady nie są dobrym narzędziem do strukturyzowania współbieżnych program
 - *problem zagubionej pobudki* – łatwo jest zapomnieć o zasygnalizowaniu na zmiennej warunkowej (co spowoduje, że jakiś wątek się nie wybudzi), lub sprawdzić ponownie warunek po przebudzeniu.
 
 Blokady i zmienne warunkowe nie wspierają programowania modularnego bo nie pozwalają na łatwe składanie funkcji. Nie jest możliwe tworzenie zamkniętych abstrakcji, bo często trzeba znać ich dokładne implementacje aby zastosować blokowanie poprawnie.
+
+***
+
+# Zadanie 3
+
+### Program `philosophers` jest błędnym rozwiązaniem problemu „ucztujących filozofów”. Dla przypomnienia: każdy z filozofów przez pewien czas śpi, bierze odpowiednio prawą i lewą pałeczkę, je ryż z miski przez pewien czas i odkłada pałeczki. Twoim zadaniem jest poprawienie procedury `philosopher` tak by rozwiązania było wolne od zakleszczeń i głodzenia.
+### UWAGA! W rozwiązaniu studenta wszyscy filozofowie muszą być praworęczni!
+### Można wprowadzić dodatkowe semafory, a następnie zainicjować je na początku procedury `main`, oraz dodać linie do procedury `philosophers`. Inne modyfikacje programu są niedopuszczalne.
+
+- [philosophers.c](./programy/philosophers.c)
 
 ***
