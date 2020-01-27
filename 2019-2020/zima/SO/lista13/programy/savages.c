@@ -19,13 +19,17 @@ static void savage(void) {
     for (;;) {
         /* TODO Take a meal or wait for it to be prepared. */
         Sem_wait(&shared->full);
-        if (shared->portions == 0) {
-            Sem_post(&shared->empty);
-        } else {
+        if (shared->portions > 0) {
             shared->portions--;
-            printf("[%d] eating %d/%d\n", getpid(), shared->portions, M);
-            Sem_post(&shared->full);
+        } else {
+            Sem_post(&shared->empty);
+            Sem_wait(&shared->full);
+            shared->portions--;
         }
+
+        assert(shared->portions >= 0);
+        printf("[%d] eating %d/%d left\n", getpid(), shared->portions, M);
+        Sem_post(&shared->full);
 
         /* Sleep and digest. */
         usleep(rand() % 1000 + 1000);
@@ -39,8 +43,9 @@ static void cook(void) {
         /* TODO Cook is asleep as long as there are meals.
         * If woken up they cook exactly M meals. */
         Sem_wait(&shared->empty);
-        shared->portions = M;
+        assert(shared->portions == 0);
         printf("[%d] cooking\n", getpid());
+        shared->portions = M;
         Sem_post(&shared->full);
     }
 }
