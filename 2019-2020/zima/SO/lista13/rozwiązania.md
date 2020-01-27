@@ -3,9 +3,9 @@
 - [Zadanie 1](#zadanie-1)
 - Zadanie 2 – brak
 - [Zadanie 3 (P)](#zadanie-3)
-- Zadanie 4 (P) – brak
+- [Zadanie 4 (P)](#zadanie-4)
 - Zadanie 5 (P) – brak
-- Zadanie 6 (P) – brak
+- [Zadanie 6 (P)](#zadanie-6)
 
 ***
 
@@ -79,9 +79,20 @@ Blokady i zmienne warunkowe nie wspierają programowania modularnego bo nie poz
 
 ***
 
+# Zadanie 4 
+### Problem obiadujących dzikusów
+### Plemię n dzikusów biesiaduje przy wspólnym kociołku, który mieści w sobie m ≤ n porcji gulaszu z niefortunnego misjonarza. Kiedy dowolny dzikus chce zjeść, nabiera sobie porcję z kociołka własną łyżką do swojej miseczki i zaczyna jeść gawędząc ze współplemieńcami. Gdy dzikus nasyci się porcją gulaszu to zasypia. Po przebudzeniu znów głodnieje i wraca do biesiadowania. Może się jednak zdarzyć, że kociołek jest pusty. Jeśli kucharz śpi, to dzikus go budzi i czeka, aż kociołek napełni się strawą z następnego niespełnionego misjonarza. Po ugotowaniu gulaszu kucharz idzie spać.
+### W udostępnionym pliku źródłowym `savages.c` należy uzupełnić procedury realizujące programy kucharzai dzikusa. Rozwiązanie nie może dopuszczać zakleszczenia i musi budzić kucharza wyłącznie wtedy, gdy kociołek jest pusty. Do synchronizacji procesów można używać wyłącznie semaforów POSIX.1.
+
+- [savages.c](./programy/savages.c)
+
+***
+
 # Zadanie 6
 
-### Problem palaczy tytoniu Mamy trzy wątki palaczy i jeden wątek agenta. Zrobienie i zapalenie papierosa wymaga posiadania tytoniu, bibułki i zapałek. Każdy palacz posiada nieskończoną ilość wyłącznie jednego zasobu – tj. pierwszy ma tytoń, drugi bibułki, a trzeci zapałki. Agent kładzie na stole dwa wylosowane składniki. Palacz, który ma brakujący składnik podnosi ze stołu resztę, skręca papierosa i go zapala. Agent czeka, aż palacz zacznie palić, po czym powtarza wykładanie składników na stół. Palacz wypala papierosa i znów zaczyna odczuwać nikotynowy głód. Wykorzystując plik `smokers.c` rozwiąż problem palaczy tytoniu. Możesz wprowadzić dodatkowe zmienne globalne (w tym semafory) i nowe wątki, jeśli zajdzie taka potrzeba. Pamiętaj, że palacze mają być wybudzani tylko wtedy, gdy pojawią się dokładnie dwa zasoby, których dany palacz potrzebuje. UWAGA! Modyfikowanie kodu procedury `agent` jest zabronione!
+### Problem palaczy tytoniu 
+### Mamy trzy wątki palaczy i jeden wątek agenta. Zrobienie i zapalenie papierosa wymaga posiadania tytoniu, bibułki i zapałek. Każdy palacz posiada nieskończoną ilość wyłącznie jednego zasobu – tj. pierwszy ma tytoń, drugi bibułki, a trzeci zapałki. Agent kładzie na stole dwa wylosowane składniki. Palacz, który ma brakujący składnik podnosi ze stołu resztę, skręca papierosa i go zapala. Agent czeka, aż palacz zacznie palić, po czym powtarza wykładanie składników na stół. Palacz wypala papierosa i znów zaczyna odczuwać nikotynowy głód. 
+### Wykorzystując plik `smokers.c` rozwiąż problem palaczy tytoniu. Możesz wprowadzić dodatkowe zmienne globalne (w tym semafory) i nowe wątki, jeśli zajdzie taka potrzeba. Pamiętaj, że palacze mają być wybudzani tylko wtedy, gdy pojawią się dokładnie dwa zasoby, których dany palacz potrzebuje. UWAGA! Modyfikowanie kodu procedury `agent` jest zabronione!
 
 - Rozwiązanie jest [stąd](https://pdfs.semanticscholar.org/ca98/650fba1e06b4b4b119adc554c7d7bdd7f0fa.pdf?fbclid=IwAR1KHDwI68f7g4XTQr1FBRxQw9tKVerfi_rEYtH-YJc0sR-MrABVzosLVJ0)
 - [smokers.c](./programy/smokers.c)
