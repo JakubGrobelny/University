@@ -15,7 +15,7 @@ static sem_t forks[N];
 /* TODO: If you need extra shared state, define it here. */
 static sem_t waiter;
 static int free_count;
-#define WAITER(action) {Sem_wait(&waiter); action; Sem_post(&waiter);}
+#define WAITER(action) { Sem_wait(&waiter); action; Sem_post(&waiter); }
 
 void* philosopher(void* id) {
     int right = (intptr_t)id;

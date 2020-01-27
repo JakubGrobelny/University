@@ -8,41 +8,47 @@ static __unused void outc(char c) {
 #define M 100
 
 static struct {
-  /* TODO: Put semaphores and shared variables here. */
+    /* TODO: Put semaphores and shared variables here. */
+    sem_t empty;
+    sem_t amount;
 } *shared = NULL;
 
 
 static void savage(void) {
-  for (;;) {
+    for (;;) {
     /* TODO Take a meal or wait for it to be prepared. */
 
     /* Sleep and digest. */
-    usleep(rand() % 1000 + 1000);
-  }
+        usleep(rand() % 1000 + 1000);
+    }
 
-  exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }
 
 static void cook(void) {
-  for (;;) {
-    /* TODO Cook is asleep as long as there are meals.
-     * If woken up they cook exactly M meals. */
-  }
+    for (;;) {
+        /* TODO Cook is asleep as long as there are meals.
+        * If woken up they cook exactly M meals. */
+    }
 }
 
 /* Do not bother cleaning up after this process. Let's assume that controlling
  * terminal sends SIGINT to the process group on CTRL+C. */
 int main(void) {
-  shared = Mmap(NULL, getpagesize(), PROT_READ|PROT_WRITE, MAP_ANON|MAP_SHARED,
-                -1, 0);
+    shared = Mmap(
+        NULL, getpagesize(), 
+        PROT_READ | PROT_WRITE, 
+        MAP_ANON | MAP_SHARED,
+        -1, 0
+    );
 
-  /* TODO: Initialize semaphores and other shared state. */
+    /* TODO: Initialize semaphores and other shared state. */
 
-  for (int i = 0; i < N; i++)
-    if (Fork() == 0)
-      savage();
+    for (int i = 0; i < N; i++)
+        if (Fork() == 0)
+            savage();
 
-  cook();
+    cook();
 
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

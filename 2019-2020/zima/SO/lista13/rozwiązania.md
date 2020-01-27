@@ -78,3 +78,10 @@ Blokady i zmienne warunkowe nie wspierają programowania modularnego bo nie poz
 - [philosophers.c](./programy/philosophers.c)
 
 ***
+
+# Zadanie 6
+
+### Problem palaczy tytoniu Mamy trzy wątki palaczy i jeden wątek agenta. Zrobienie i zapalenie papierosa wymaga posiadania tytoniu, bibułki i zapałek. Każdy palacz posiada nieskończoną ilość wyłącznie jednego zasobu – tj. pierwszy ma tytoń, drugi bibułki, a trzeci zapałki. Agent kładzie na stole dwa wylosowane składniki. Palacz, który ma brakujący składnik podnosi ze stołu resztę, skręca papierosa i go zapala. Agent czeka, aż palacz zacznie palić, po czym powtarza wykładanie składników na stół. Palacz wypala papierosa i znów zaczyna odczuwać nikotynowy głód. Wykorzystując plik `smokers.c` rozwiąż problem palaczy tytoniu. Możesz wprowadzić dodatkowe zmienne globalne (w tym semafory) i nowe wątki, jeśli zajdzie taka potrzeba. Pamiętaj, że palacze mają być wybudzani tylko wtedy, gdy pojawią się dokładnie dwa zasoby, których dany palacz potrzebuje. UWAGA! Modyfikowanie kodu procedury `agent` jest zabronione!
+
+- Rozwiązanie jest [stąd](https://pdfs.semanticscholar.org/ca98/650fba1e06b4b4b119adc554c7d7bdd7f0fa.pdf?fbclid=IwAR1KHDwI68f7g4XTQr1FBRxQw9tKVerfi_rEYtH-YJc0sR-MrABVzosLVJ0)
+- [smokers.c](./programy/smokers.c)
