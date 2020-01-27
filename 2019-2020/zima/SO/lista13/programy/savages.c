@@ -11,6 +11,7 @@ static struct {
     /* TODO: Put semaphores and shared variables here. */
     sem_t full;
     sem_t empty;
+    sem_t lock;
     int portions;
 } *shared = NULL;
 
@@ -18,6 +19,7 @@ static struct {
 static void savage(void) {
     for (;;) {
         /* TODO Take a meal or wait for it to be prepared. */
+        Sem_wait(&shared->lock);
         Sem_wait(&shared->full);
         if (shared->portions > 0) {
             shared->portions--;
@@ -30,6 +32,7 @@ static void savage(void) {
         assert(shared->portions >= 0);
         printf("[%d] eating %d/%d left\n", getpid(), shared->portions, M);
         Sem_post(&shared->full);
+        Sem_post(&shared->lock);
 
         /* Sleep and digest. */
         usleep(rand() % 1000 + 1000);
@@ -63,6 +66,7 @@ int main(void) {
     /* TODO: Initialize semaphores and other shared state. */
     Sem_init(&shared->empty, 1, 0);
     Sem_init(&shared->full, 1, 1);
+    Sem_init(&shared->lock, 1, 1);
     shared->portions = M;
 
     for (int i = 0; i < N; i++)
