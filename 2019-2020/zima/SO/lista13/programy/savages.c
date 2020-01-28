@@ -13,7 +13,7 @@ static struct {
     sem_t empty;
     sem_t lock;
     int portions;
-} *shared = NULL;
+}* shared = NULL;
 
 
 static void savage(void) {
@@ -24,9 +24,8 @@ static void savage(void) {
             Sem_post(&shared->empty);
             Sem_wait(&shared->full);
         }
+        assert(shared->portions > 0);
         shared->portions--;
-
-        assert(shared->portions >= 0);
         printf("[%d] eating %d/%d left\n", getpid(), shared->portions, M);
         Sem_post(&shared->lock);
 
