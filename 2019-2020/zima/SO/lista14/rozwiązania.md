@@ -51,6 +51,7 @@ typedef struct sem_t {
 } sem_t;
 
 void sem_init(sem_t* s, int value) {
+    assert(value >= 0);
     s->count = value;
     pthread_mutex_init(&s->m, NULL);
     pthread_cond_init(&s->cv, NULL);
