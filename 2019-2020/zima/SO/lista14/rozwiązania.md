@@ -1,7 +1,7 @@
 # Spis treści
 
 - [Zadanie 1](#zadanie-1)
-- Zadanie 2 – brak
+- [Zadanie 2](#zadanie-2)
 - Zadanie 3 – brak
 - Zadanie 4 (bonus) – brak
 - Zadanie 5 (P) – brak
@@ -35,7 +35,43 @@ Pozostałe środki synchronizacji zapewniają sprawiedliwość poprzez usypiani
 
 *Zmienne warunkowe* (Mesa, nie Hoare) – proces o wysokim priorytecie nie traci blokady robiąc `signal`. *???*
 
+***
 
+# Zadanie 2
+
+### Podaj implementację (w języku C) <u>*semafora*</u> z operacjami `init`, `wait` oraz `post` używając wyłącznie muteksów i zmiennych warunkowych standardu `POSIX.1`. Pamiętaj, że wartość semafora musi być zawsze nieujemna.
+
+```C
+typedef struct sem_t {
+    int count;
+    pthread_mutex_t m;
+    pthread_condition_t cv;
+} sem_t;
+
+void sem_init(sem_t* s, int value) {
+    s->count = value;
+    pthread_mutex_init(&s->m, NULL);
+    pthread_cond_init(&s->cv, NULL);
+}
+
+void sem_post(sem_t *s) {
+    pthread_mutex_lock(&s->m);
+    s->count++;
+    pthread_cond_signal(*s->cv); // budzimy śpiący wątek
+    pthread_mutex_unlock(&s->m);
+}
+
+void sem_wait(sem_t* s) {
+    pthread_mutex_lock(&s->m);
+    while (s->count == 0) {
+        pthread_cond_wait(&s->cv, &s->m);
+    }
+    s->count--;
+    pthread_mutex_unlock(&s->m);
+}
+
+```
+***
 
 
 
