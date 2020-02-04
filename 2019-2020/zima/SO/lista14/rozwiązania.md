@@ -41,6 +41,8 @@ Pozostałe środki synchronizacji zapewniają sprawiedliwość poprzez usypiani
 
 ### Podaj implementację (w języku C) <u>*semafora*</u> z operacjami `init`, `wait` oraz `post` używając wyłącznie muteksów i zmiennych warunkowych standardu `POSIX.1`. Pamiętaj, że wartość semafora musi być zawsze nieujemna.
 
+**semafor** – zmienna używana do kontrolowania dostępu do zasobu dzielonego przez wiele procesów/wątków.
+
 ```C
 typedef struct sem_t {
     int count;
@@ -54,7 +56,7 @@ void sem_init(sem_t* s, int value) {
     pthread_cond_init(&s->cv, NULL);
 }
 
-void sem_post(sem_t *s) {
+void sem_post(sem_t* s) {
     pthread_mutex_lock(&s->m);
     s->count++;
     pthread_cond_signal(*s->cv); // budzimy śpiący wątek
