@@ -5,9 +5,15 @@ Lista 0, 02.03.2020
 Zadanie 3
 
 > import Prelude hiding (elem)
-> import Data.List (unfoldr, reverse, concatMap, delete, minimum)
-> import Data.Char (ord, chr)
-
+> import Data.List ( unfoldr
+>                  , reverse
+>                  , concatMap
+>                  , delete
+>                  , minimum
+>                  , partition
+>                  , insert
+>                  )
+> import Data.Char (isAlpha)
 
 > explode :: Integer -> [Integer]
 > explode = reverse . unfoldr aux
@@ -19,9 +25,21 @@ Zadanie 3
 > implode :: [Integer] -> Integer
 > implode = foldl (\acc digit -> acc * 10 + digit) 0
 
+> rot13 :: String -> String
+> rot13 = map $ shift 13
+>   where
+>     shift :: Int -> Char -> Char
+>     shift n c = iterate next c !! n
+>     next :: Char -> Char
+>     next c
+>         | c == 'z'  = 'a'
+>         | c == 'Z'  = 'A'
+>         | isAlpha c = succ c
+>         | otherwise = c
+
 > subsequences :: [a] -> [[a]]
 > subsequences [] = [[]]
-> subsequences (x:xs) = yss >>= \ys -> [ys, x : ys]
+> subsequences (x:xs) = concatMap (\ys -> [ys, x : ys]) yss
 >   where
 >     yss = subsequences xs
 
@@ -34,6 +52,12 @@ Zadanie 3
 > tails (x:xs) = (x : head tails') : tails'
 >   where
 >     tails' = tails xs
+
+> segments :: [a] -> [[a]]
+> segments [] = [[]]
+> segments (x:xs) = map (x :) ys ++ segments xs
+>   where
+>     ys = inits xs
 
 > permutations :: [a] -> [[a]]
 > permutations [] = [[]]
@@ -50,14 +74,21 @@ Zadanie 3
 >     | x <= y    = x : merge xs ys'
 >     | otherwise = y : merge xs' ys
 
+TODO: msortPrefix
+TODO: msort
+
+> qsort :: Ord a => [a] -> [a]
+> qsort [] = []
+> qsort (x:xs) = qsort lesser ++ x : qsort greater
+>   where
+>     (lesser, greater) = partition (< x) xs
+
 > isort :: Ord a => [a] -> [a]
 > isort = isort' []
 >   where
 >     isort' :: Ord a => [a] -> [a] -> [a]
 >     isort' acc [] = acc
 >     isort' acc (x:xs) = isort' (insert x acc) xs
->     insert :: Ord a => a -> [a] -> [a]
->     insert x ys = merge [x] ys
 
 > ssort :: Ord a => [a] -> [a]
 > ssort [] = []
