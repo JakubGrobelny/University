@@ -5,7 +5,7 @@ Lista 0, 02.03.2020
 Zadanie 3
 
 > import Prelude hiding (elem)
-> import Data.List (unfoldr, reverse, concatMap)
+> import Data.List (unfoldr, reverse, concatMap, delete, minimum)
 > import Data.Char (ord, chr)
 
 
@@ -35,12 +35,35 @@ Zadanie 3
 >   where
 >     tails' = tails xs
 
+> permutations :: [a] -> [[a]]
+> permutations [] = [[]]
+> permutations (x:xs) = concatMap (insert x) $ permutations xs
+>   where
+>     insert :: a -> [a] -> [[a]]
+>     insert x []     = [[x]]
+>     insert x (y:ys) = (x:y:ys) : map (y :) (insert x ys)
+
 > merge :: Ord a => [a] -> [a] -> [a]
 > merge [] xs = xs
 > merge xs [] = xs
 > merge xs'@(x:xs) ys'@(y:ys)
 >     | x <= y    = x : merge xs ys'
 >     | otherwise = y : merge xs' ys
+
+> isort :: Ord a => [a] -> [a]
+> isort = isort' []
+>   where
+>     isort' :: Ord a => [a] -> [a] -> [a]
+>     isort' acc [] = acc
+>     isort' acc (x:xs) = isort' (insert x acc) xs
+>     insert :: Ord a => a -> [a] -> [a]
+>     insert x ys = merge [x] ys
+
+> ssort :: Ord a => [a] -> [a]
+> ssort [] = []
+> ssort xs = min : ssort (delete min xs)
+>   where
+>     min = minimum xs
 
 > elem :: Eq a => a -> [a] -> Bool
 > elem = any . (==)
