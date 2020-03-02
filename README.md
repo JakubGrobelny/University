@@ -3,7 +3,7 @@
     - wykład: Marek Piotrów
     - pracownia: Marek Szykuła
 - Logika dla informatyków
-    - wyklad: Witold Charatonik
+    - wykład: Witold Charatonik
     - ćwiczenia: Jan Otop, Piotr Wieczorek, Filip Sieczkowski, Marek Piotrów
 - Analiza matematyczna:
     - wykład: Maciej Paluszyński
@@ -84,3 +84,18 @@
 - Podstawy i zastosowania złożoności obliczeniowej:
     - wykład: Jakub Michaliszyn
     - ćwiczenia: Jakub Michaliszyn
+
+# Semestr VI:
+- Algorytmy i struktury danych:
+    - wykład: Krzysztof Loryś
+- Sieci komputerowe:
+    - wykład: Marcin Bieńkowski
+    - pracownia: Tomasz Wierzbicki
+- Funkcyjny projekt programistyczny:
+    - pracownia: Filip Sieczkowski
+- Projektowanie obiektowe oprogramowania:
+    - wykład: Wiktor Zychla
+    - ćwiczenio-pracownia: Wiktor Zychla
+- Kurs języka Haskell:
+    - wykład: Tomasz Wierzbicki, Maciej Piróg
+    - pracownia: Tomasz Wierzbicki
