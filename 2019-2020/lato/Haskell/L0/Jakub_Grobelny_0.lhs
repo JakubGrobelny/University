@@ -16,7 +16,8 @@ Zadanie 3
 > import Data.Char (isAlpha)
 
 > explode :: Integer -> [Integer]
-> explode = reverse . unfoldr aux
+> explode 0 = [0]
+> explode n = reverse $ unfoldr aux n
 >   where
 >     aux :: Integer -> Maybe (Integer, Integer)
 >     aux 0 = Nothing
@@ -45,13 +46,11 @@ Zadanie 3
 
 > inits :: [a] -> [[a]]
 > inits [] = [[]]
-> inits (x:xs) = [] : (map (x :) $ inits xs)
+> inits (x:xs) = [] : map (x :) (inits xs)
 
 > tails :: [a] -> [[a]]
 > tails [] = [[]]
-> tails (x:xs) = (x : head tails') : tails'
->   where
->     tails' = tails xs
+> tails xs'@(x:xs) = xs' : tails xs
 
 > segments :: [a] -> [[a]]
 > segments [] = [[]]
@@ -75,16 +74,13 @@ Zadanie 3
 >     | otherwise = y : merge xs' ys
 
 > msortPrefix :: Ord a => Int -> [a] -> [a]
-> msortPrefix len xs
->     | len <= 1  = xs
->     | otherwise = merge xs' xs'' ++ rest
+> msortPrefix 0 _ = []
+> msortPrefix 1 (x:_) = [x]
+> msortPrefix n xs = ys `merge` zs
 >   where
->     rest = drop len xs
->     init = take len xs
->     fstHalf = len `div` 2
->     sndHalf = len - fstHalf
->     xs'  = msortPrefix fstHalf (take fstHalf init)
->     xs'' = msortPrefix sndHalf (drop fstHalf init)
+>     half = n `div` 2
+>     ys = msortPrefix half xs
+>     zs = msortPrefix (n - half) (drop half xs)
 
 > msort :: Ord a => [a] -> [a]
 > msort xs = msortPrefix (length xs) xs
@@ -96,11 +92,7 @@ Zadanie 3
 >     (lesser, greater) = partition (< x) xs
 
 > isort :: Ord a => [a] -> [a]
-> isort = isort' []
->   where
->     isort' :: Ord a => [a] -> [a] -> [a]
->     isort' acc [] = acc
->     isort' acc (x:xs) = isort' (insert x acc) xs
+> isort = foldr insert []
 
 > ssort :: Ord a => [a] -> [a]
 > ssort [] = []
