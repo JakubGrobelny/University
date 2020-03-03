@@ -74,8 +74,20 @@ Zadanie 3
 >     | x <= y    = x : merge xs ys'
 >     | otherwise = y : merge xs' ys
 
-TODO: msortPrefix
-TODO: msort
+> msortPrefix :: Ord a => Int -> [a] -> [a]
+> msortPrefix len xs
+>     | len <= 1  = xs
+>     | otherwise = merge xs' xs'' ++ rest
+>   where
+>     rest = drop len xs
+>     init = take len xs
+>     fstHalf = len `div` 2
+>     sndHalf = len - fstHalf
+>     xs'  = msortPrefix fstHalf (take fstHalf init)
+>     xs'' = msortPrefix sndHalf (drop fstHalf init)
+
+> msort :: Ord a => [a] -> [a]
+> msort xs = msortPrefix (length xs) xs
 
 > qsort :: Ord a => [a] -> [a]
 > qsort [] = []
