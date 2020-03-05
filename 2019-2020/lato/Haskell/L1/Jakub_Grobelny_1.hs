@@ -44,16 +44,50 @@ norm = sqrt . sum . fromVector
 
 scalarProd :: Num a => Vector a -> Vector a -> a
 scalarProd u v
-    | length ux /= length vx = error "Vector length mismatch!"
-    | otherwise = sum $ zipWith (*) ux vx
+    | length u' /= length v' = error "Vector length mismatch!"
+    | otherwise = sum $ zipWith (*) u' v'
   where
-    ux = fromVector u
-    vx = fromVector v
+    u' = fromVector u
+    v' = fromVector v
 
 sumV :: Num a => Vector a -> Vector a -> Vector a
 sumV u v
-    | length ux /= length vx = error "Vector length mismatch!"
-    | otherwise = Vector $ zipWith (+) ux vx
+    | length u' /= length v' = error "Vector length mismatch!"
+    | otherwise = Vector $ zipWith (+) u' v'
   where
-    ux = fromVector u
-    vx = fromVector v
+    u' = fromVector u
+    v' = fromVector v
+
+-- Zadanie 3
+newtype Matrix a = Matrix { fromMatrix :: [[a]] } deriving Show
+
+-- Pomocnicza funkcja do wyznaczania rozmiaru macierzy
+dimM :: Matrix a -> (Int, Int)
+dimM m = (rows, expectColumnLength colLengths)
+  where
+    m' = fromMatrix m
+    rows = length m'
+    colLengths = map length m'
+    expectColumnLength :: [Int] -> Int
+    expectColumnLength [] = error "Misshapen matrix!"
+    expectColumnLength (x:xs)
+        | all (== x) xs = x
+        | otherwise = error "Misshapen matrix!"
+
+sumM :: Num a => Matrix a -> Matrix a -> Matrix a
+sumM a b
+    | dimM a /= dimM b = error "Matrix size mismatch!"
+    | otherwise = Matrix $ map (uncurry $ zipWith (+)) $ zip a' b'
+  where
+    a' = fromMatrix a
+    b' = fromMatrix b
+
+prodM :: Num a => Matrix a -> Matrix a -> Matrix a
+prodM a b
+    | matching a b = undefined --TODO: finish
+    | otherwise    = error "Matrix size mismatch!"
+  where
+    matching :: Matrix a -> Matrix a -> Bool
+    matching a b = snd (dimM a) == fst (dimM b)
+    a' = fromMatrix a
+    b' = fromMatrix b
