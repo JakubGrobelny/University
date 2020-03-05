@@ -74,9 +74,7 @@ prodM a'@(Matrix a) b'@(Matrix b)
   where
     matchingDimensions :: Matrix a -> Matrix a -> Bool
     matchingDimensions a b = snd (dimM a) == fst (dimM b)
-    prod :: [[a]] -> [[a]] -> [[a]]
-    prod xss yss = undefined -- TODO: finish
-      where
-        yssT = map Vector $ transpose yss
-        xss' = map Vector xss
-    
+    prod :: Num a => [[a]] -> [[a]] -> [[a]]
+    prod xss yss = do
+        row <- Vector <$> xss
+        return $ scalarProd row . Vector <$> transpose yss
