@@ -3,6 +3,7 @@
 -- Lista 10.03.2020
 
 import Prelude hiding (concat, and, all, maximum)
+import Data.Char (digitToInt, isDigit)
 
 -- Zadanie 1
 intercalate :: [a] -> [[a]] -> [a]
@@ -84,6 +85,12 @@ det m@(Matrix xss)
     | isSquare m  = det' xss
     | otherwise   = error "Nonsquare matrix!"
   where
+    det' :: Num a => [[a]] -> a
+    det' [[a]] = a
+    det' xss = sum [signedElem xss col * minorDet col | col <- [1..n] ]
+      where
+        n        = length xss
+        minorDet = det' . minor xss
     isSquare :: Matrix a -> Bool
     isSquare = uncurry (==) . dimM
     minor :: [[a]] -> Int -> [[a]]
@@ -97,9 +104,12 @@ det m@(Matrix xss)
         without (x:xs) n = x : xs `without` (n-1)
     signedElem :: Num a => [[a]] -> Int -> a
     signedElem xss col = (-1) ^ (1 + col) * (head xss !! (col - 1))
-    det' :: Num a => [[a]] -> a
-    det' [[a]] = a
-    det' xss = sum [signedElem xss col * minorDet col | col <- [1..n] ]
-      where
-        n        = length xss
-        minorDet = det' . minor xss
+
+-- Zadanie 4
+
+isbn13Check :: String -> Bool
+isbn13Check = (== 0) . (`mod` 10) . sum . zipWith (*) weights . toDigits
+  where
+    toDigits :: String -> [Int]
+    toDigits = map digitToInt . filter isDigit
+    weights = cycle [1, 3]
