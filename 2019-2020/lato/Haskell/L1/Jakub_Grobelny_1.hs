@@ -113,3 +113,10 @@ isbn13Check = (== 0) . (`mod` 10) . sum . zipWith (*) weights . toDigits
     toDigits :: String -> [Int]
     toDigits = map digitToInt . filter isDigit
     weights = cycle [1, 3]
+
+-- Zadanie 5
+
+newtype Natural = Natural { fromNatural :: [Word] }
+
+base :: Word
+base = 1 + (floor . sqrt . (fromIntegral :: Word -> Double)) maxBound
