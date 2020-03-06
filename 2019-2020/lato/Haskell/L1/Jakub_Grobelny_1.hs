@@ -78,3 +78,28 @@ prodM a'@(Matrix a) b'@(Matrix b)
     prod xss yss = do
         row <- Vector <$> xss
         return $ scalarProd row . Vector <$> transpose yss
+
+det :: Num a => Matrix a -> a
+det m@(Matrix xss)
+    | isSquare m  = det' xss
+    | otherwise   = error "Nonsquare matrix!"
+  where
+    isSquare :: Matrix a -> Bool
+    isSquare = uncurry (==) . dimM
+    minor :: [[a]] -> Int -> [[a]]
+    minor xss colIndex = do
+        row <- tail xss
+        return $ row `without` (colIndex - 1)
+      where
+        without :: [a] -> Int -> [a]
+        without [] _ = error "'without' called on empty list!"
+        without (_:xs) 0 = xs
+        without (x:xs) n = x : xs `without` (n-1)
+    signedElem :: Num a => [[a]] -> Int -> a
+    signedElem xss col = (-1) ^ (1 + col) * (head xss !! (col - 1))
+    det' :: Num a => [[a]] -> a
+    det' [[a]] = a
+    det' xss = sum [signedElem xss col * minorDet col | col <- [1..n] ]
+      where
+        n        = length xss
+        minorDet = det' . minor xss
