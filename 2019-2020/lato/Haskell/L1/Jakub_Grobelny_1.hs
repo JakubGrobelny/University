@@ -123,8 +123,9 @@ base = 1 + (floor . sqrt . (fromIntegral :: Word -> Double)) maxBound
 
 -- Zadanie 6
 canonicalize :: Natural -> Natural
-canonicalize n@(Natural [0]) = n
-canonicalize (Natural xs) = Natural $ trimZeros xs
+canonicalize (Natural xs)
+    | all (== 0) xs = Natural [0]
+    | otherwise     = Natural $ trimZeros xs
   where
     trimZeros :: [Word] -> [Word]
     trimZeros [] = []
