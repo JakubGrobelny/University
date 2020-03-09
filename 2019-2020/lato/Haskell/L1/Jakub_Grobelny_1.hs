@@ -2,8 +2,11 @@
 -- Kurs języka Haskell
 -- Lista 10.03.2020
 
+{-# LANGUAGE LambdaCase #-}
+
 import Prelude hiding (concat, and, all, maximum)
 import Data.Char (digitToInt, isDigit)
+import Data.List (unfoldr)
 
 -- Zadanie 1
 intercalate :: [a] -> [[a]] -> [a]
@@ -106,7 +109,6 @@ det m@(Matrix xss)
     signedElem xss col = (-1) ^ (1 + col) * (head xss !! (col - 1))
 
 -- Zadanie 4
-
 isbn13Check :: String -> Bool
 isbn13Check = (== 0) . (`mod` 10) . sum . zipWith (*) weights . toDigits
   where
@@ -115,8 +117,102 @@ isbn13Check = (== 0) . (`mod` 10) . sum . zipWith (*) weights . toDigits
     weights = cycle [1, 3]
 
 -- Zadanie 5
-
 newtype Natural = Natural { fromNatural :: [Word] }
 
 base :: Word
 base = 1 + (floor . sqrt . (fromIntegral :: Word -> Double)) maxBound
+
+-- Zadanie 10
+-- Definicje są wykomentowane, ponieważ vscode podpowiadał sygnatury
+
+-- val1 = (.)(.)
+-- (.) :: (b -> c) -> (a -> b) -> a -> c
+-- po zaaplikowaniu (.) do (.):
+-- (b -> c) = (b1 -> c1) -> (a1 -> b1) -> a1 -> c1
+-- b = (b1 -> c1)
+-- c = (a1 -> b1) -> a1 -> c1
+-- (a -> (b1 -> c1)) -> a -> (a1 -> b1) -> a1 -> c1
+-- val1 :: (a -> b1 -> c1) -> a -> (a1 -> b1) -> a1 -> c1
+
+-- val2 = (.)($)
+-- ($) :: (a1 -> b1) -> a1 -> b1
+-- po zaaplikowaniu (.) do ($)
+-- b = (a1 -> b1) 
+-- c = (a1 -> b1)
+-- (a -> (a1 -> b1)) -> a -> (a1 -> b1)
+-- val2 :: (a -> a1 -> b1) -> a -> a1 -> b1
+
+-- val3 = ($)(.)
+-- val3 :: (b -> c) -> (a -> b) -> a -> c
+
+-- val4 = flip flip
+-- flip :: (a -> b -> c) -> b -> a -> c
+-- val4 :: b -> (a -> b -> c) -> a -> c
+
+-- val5 = (.)(.)(.)
+-- (.)(.) :: (a -> b1 -> c1) -> a -> (a1 -> b1) -> a1 -> c1
+-- (.) :: (b2 -> c2) -> (a2 -> b2) -> a2 -> c2
+-- a = (b2 -> c2)
+-- b1 = (a2 -> b2)
+-- c1 = (a2 -> c2)
+-- val5 :: (b2 -> c2) -> (a1 -> a2 -> b2) -> a1 -> a2 -> c2
+
+-- val6 = (.)($)(.)
+-- (.)($) :: (a -> a1 -> b1) -> a -> a1 -> b1
+-- (.) = (b2 -> c2) -> (a2 -> b2) -> a2 -> c2
+-- a  = (b2 -> c2)
+-- a1 = (a2 -> b2)
+-- b1 = (a2 -> c2)
+-- (b2 -> c2) -> (a2 -> b2) -> (a2 -> c2)
+-- val6 :: (b2 -> c2) -> (a2 -> b2) -> a2 -> c2
+
+-- val7 = ($)(.)(.)
+-- ($)(.) :: (b -> c) -> (a -> b) -> a -> c
+-- ^^^ to samo co typ (.) a (.)(.) już policzyliśmy
+-- val7 ::  (a -> b1 -> c1) -> a -> (a1 -> b1) -> a1 -> c1
+
+-- val8 = flip flip flip
+-- flip :: (a -> b -> c) -> b -> a -> c
+-- flip flip :: b1 -> (a1 -> b1 -> c1) -> a1 -> c1
+-- b1 = (a -> b -> c) -> b -> a -> c
+-- val8 :: (a1 -> ((a -> b -> c) -> b -> a -> c) -> c1) -> a1 -> c1
+
+-- val9 = tail $ map tail [[], ['a']]
+-- map :: (a -> b) -> [a] -> [b]
+-- tail :: [a] -> [a]
+-- [[], ['a']] :: [[Char]]
+-- map tail [[], ['a']] :: [[Char]]
+-- tail $ map tail [[], ['a']] :: [[Char]]
+-- val9 :: [[Char]]
+
+-- val10 = let x = x in x x
+-- x ma polimorficzny typ (? first-class polymorphism ?)
+-- val10 :: a
+
+-- val11 = (\_ -> 'a') (head [])
+-- head :: [a] -> a
+-- head [] :: a
+-- \_ -> 'a' :: a1 -> Char
+-- val11 :: Char
+
+-- val12 = (\(_,_) -> 'a') (head [])
+-- head [] :: a
+-- \(_,_) -> 'a' :: (a1, b) -> Char
+-- a = (a1, b)
+-- val12 :: Char
+
+-- val13 = map map
+-- map :: (a -> b) -> [a] -> [b]
+-- a = (a1 -> b1)
+-- b = [a1] -> [b1]
+-- val13 :: [a1 -> b1] -> [[a1] -> [b1]]
+
+-- val14 = map flip
+-- flip :: (a -> b -> c) -> b -> a -> c
+-- map :: (a1 -> b1) -> [a1] -> [b1]
+-- a1 = a -> b -> c
+-- b1 = b -> a -> c
+-- val14 :: [a -> b -> c] -> [b -> a -> c]
+
+-- val15 = flip map
+-- val15 :: [a] -> (a -> b) -> [b]
