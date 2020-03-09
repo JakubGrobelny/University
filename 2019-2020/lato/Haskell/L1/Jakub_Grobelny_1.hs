@@ -214,16 +214,18 @@ instance Enum Natural where
     fromEnum = fromIntegral . head . fromNatural
 
 naturalToInteger :: Natural -> Integer
-naturalToInteger = sum . zipWith ((*) `on` toInteger) powBase . fromNatural
+naturalToInteger = sum . zipWith (*) powBase . map toInteger . fromNatural
   where
-    powBase = iterate (* base) 1
+    powBase = iterate (* toInteger base) 1
 
 instance Real Natural where
     toRational = toRational . naturalToInteger
 
 instance Integral Natural where
     toInteger = naturalToInteger
-    quotRem = undefined
+    rem n m = n - n * quot n m
+    quot = undefined -- TODO: skończyć
+    quotRem n m = (quot n m, rem n m)
 
 -- Zadanie 10
 -- Definicje są wykomentowane, ponieważ vscode podpowiadał sygnatury
