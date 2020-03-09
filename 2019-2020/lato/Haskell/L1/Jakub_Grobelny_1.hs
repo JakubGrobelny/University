@@ -118,17 +118,50 @@ isbn13Check = (== 0) . (`mod` 10) . sum . zipWith (*) weights . toDigits
     weights = cycle [1, 3]
 
 -- Zadanie 5
-newtype Natural = Natural { fromNatural :: [Word] }
+newtype Natural = Natural { fromNatural :: [Word] } deriving Show
 
 base :: Word
 base = 1 + (floor . sqrt . (fromIntegral :: Word -> Double)) maxBound
+
+-- Zadanie 6
+instance Num Natural where
+    abs = id
+    signum (Natural [0]) = 0
+    signum _             = 1
+
+    fromInteger 0 = Natural [0]
+    fromInteger i = Natural $ unfoldr convert i
+      where
+        convert :: Integer -> Maybe (Word, Integer)
+        convert 0 = Nothing
+        convert i =
+            Just (fromIntegral $ i `mod` toInteger base, i `div` toInteger base)
+
+    (Natural xs) + (Natural ys) = Natural $ add 0 xs ys
+      where
+        add :: Word -> [Word] -> [Word] -> [Word]
+        add carry [] []
+            | carry == 0 = []
+            | otherwise  = [carry]
+        add carry xs [] = add 0 xs [carry]
+        add carry [] ys = add 0 [carry] ys
+        add carry (x:xs) (y:ys) = sum : add carry' xs ys
+          where
+            addBounded :: Word -> Word -> Word -> (Word, Word)
+            addBounded carry x y
+                | x + y + carry >= base = (x + y + carry - base, 1)
+                | otherwise             = (x + y + carry,        0)
+            (sum, carry') = addBounded carry x y
+
+    (Natural xs) * (Natural ys) = undefined
+    (Natural xs) - (Natural ys) = undefined
 
 -- Zadanie 7
 instance Eq Natural where
     (==) = (==) `on` fromNatural
 
 instance Ord Natural where
-    (Natural xs) <= (Natural ys) = aux xs ys
+    (Natural xs) <= (Natural ys) = aux (reverse xs) (reverse ys)
       where
         aux :: [Word] -> [Word] -> Bool
         aux [] _ = True
