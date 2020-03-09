@@ -7,6 +7,7 @@
 import Prelude hiding (concat, and, all, maximum)
 import Data.Char (digitToInt, isDigit)
 import Data.List (unfoldr)
+import Data.Function(on)
 
 -- Zadanie 1
 intercalate :: [a] -> [[a]] -> [a]
@@ -15,8 +16,8 @@ intercalate sep (xs:xss) = xs ++ (xss >>= (sep ++))
 
 transpose :: [[a]] -> [[a]]
 transpose []  = []
-transpose xss = [ head xs | xs     <- xss, notNull xs ]
-    : transpose [ ys      | (_:ys) <- xss, notNull ys ]
+transpose xss = [ xs | (xs:_) <- xss]
+    : transpose [ ys | (_:ys) <- xss, notNull ys ]
   where notNull = not . null
 
 concat :: [[a]] -> [a]
@@ -121,6 +122,18 @@ newtype Natural = Natural { fromNatural :: [Word] }
 
 base :: Word
 base = 1 + (floor . sqrt . (fromIntegral :: Word -> Double)) maxBound
+
+-- Zadanie 7
+instance Eq Natural where
+    (==) = (==) `on` fromNatural
+
+instance Ord Natural where
+    (Natural xs) <= (Natural ys) = aux xs ys
+      where
+        aux :: [Word] -> [Word] -> Bool
+        aux [] _ = True
+        aux _ [] = False
+        aux (x:xs) (y:ys) = x <= y && aux xs ys
 
 -- Zadanie 10
 -- Definicje są wykomentowane, ponieważ vscode podpowiadał sygnatury
