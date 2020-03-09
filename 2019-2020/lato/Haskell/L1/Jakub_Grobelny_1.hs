@@ -2,8 +2,6 @@
 -- Kurs języka Haskell
 -- Lista 10.03.2020
 
-{-# LANGUAGE LambdaCase #-}
-
 import Prelude hiding (concat, and, all, maximum)
 import Data.Char (digitToInt, isDigit)
 import Data.List (unfoldr)
@@ -70,7 +68,7 @@ dimM (Matrix m) = (rows, expectColumnLength colLengths)
 sumM :: Num a => Matrix a -> Matrix a -> Matrix a
 sumM a'@(Matrix a) b'@(Matrix b)
     | dimM a' /= dimM b' = error "Matrix size mismatch!"
-    | otherwise = Matrix $ map (uncurry $ zipWith (+)) $ zip a b
+    | otherwise = Matrix $ zipWith (zipWith (+)) a b
 
 prodM :: Num a => Matrix a -> Matrix a -> Matrix a
 prodM a'@(Matrix a) b'@(Matrix b)
@@ -124,6 +122,21 @@ base :: Word
 base = 1 + (floor . sqrt . (fromIntegral :: Word -> Double)) maxBound
 
 -- Zadanie 6
+canonicalize :: Natural -> Natural
+canonicalize n@(Natural [0]) = n
+canonicalize (Natural xs) = Natural $ trimZeros xs
+  where
+    trimZeros :: [Word] -> [Word]
+    trimZeros [] = []
+    trimZeros xs'@(0:xs) = case trimZeros xs of
+        [] -> []
+        xs  -> 0 : xs
+    trimZeros (x:xs) = x : trimZeros xs
+
+isZero :: Natural -> Bool
+isZero (Natural [0]) = True
+isZero _ = False
+
 instance Num Natural where
     abs = id
     signum (Natural [0]) = 0
@@ -137,12 +150,11 @@ instance Num Natural where
         convert i =
             Just (fromIntegral $ i `mod` toInteger base, i `div` toInteger base)
 
-    (Natural xs) + (Natural ys) = Natural $ add 0 xs ys
+    Natural xs + Natural ys = Natural $ add 0 xs ys
       where
         add :: Word -> [Word] -> [Word] -> [Word]
-        add carry [] []
-            | carry == 0 = []
-            | otherwise  = [carry]
+        add 0     [] [] = []
+        add carry [] [] = [carry]
         add carry xs [] = add 0 xs [carry]
         add carry [] ys = add 0 [carry] ys
         add carry (x:xs) (y:ys) = sum : add carry' xs ys
@@ -153,8 +165,35 @@ instance Num Natural where
                 | otherwise             = (x + y + carry,        0)
             (sum, carry') = addBounded carry x y
 
-    (Natural xs) * (Natural ys) = undefined
-    (Natural xs) - (Natural ys) = undefined
+    Natural xs - Natural ys = canonicalize . Natural $ sub 0 xs ys
+      where 
+        sub :: Word -> [Word] -> [Word] -> [Word]
+        sub 0      [] [] = []
+        sub borrow [] [] = error "Natural underflow!"
+        sub borrow xs [] = sub 0 xs [borrow]
+        sub borrow [] xs = sub 0 [borrow] xs
+        sub borrow (x:xs) (y:ys) = diff : sub borrow' xs ys
+          where
+            subBounded :: Word -> Word -> Word -> (Word, Word)
+            subBounded borrow x y
+                | x < y + borrow = (base + x - borrow - y, 1)
+                | otherwise      = (x - y - borrow,        0)
+            (diff, borrow') = subBounded borrow x y
+
+    Natural xs * Natural ys = canonicalize $ mult xs ys
+      where
+        mult :: [Word] -> [Word] -> Natural
+        mult xs ys = addResults $ map (multiplyByDigit ys 0) xs
+        addResults :: [[Word]] -> Natural
+        addResults [xs] = Natural xs
+        addResults (xs:xss) = Natural xs + addResults [0 : xs | xs <- xss]
+        multiplyByDigit :: [Word] -> Word -> Word -> [Word]
+        multiplyByDigit [] 0 digit         = []
+        multiplyByDigit [] carry digit     = [carry]
+        multiplyByDigit (x:xs) carry digit = 
+            snd result : multiplyByDigit xs (fst result) digit 
+          where 
+            result = (digit * x + carry) `divMod` base
 
 -- Zadanie 7
 instance Eq Natural where
