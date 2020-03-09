@@ -208,6 +208,23 @@ instance Ord Natural where
         aux _ [] = False
         aux (x:xs) (y:ys) = x <= y && aux xs ys
 
+-- Zadanie 8
+instance Enum Natural where
+    toEnum = Natural . (: []) . fromIntegral
+    fromEnum = fromIntegral . head . fromNatural
+
+naturalToInteger :: Natural -> Integer
+naturalToInteger = sum . zipWith ((*) `on` toInteger) powBase . fromNatural
+  where
+    powBase = iterate (* base) 1
+
+instance Real Natural where
+    toRational = toRational . naturalToInteger
+
+instance Integral Natural where
+    toInteger = naturalToInteger
+    quotRem = undefined
+
 -- Zadanie 10
 -- Definicje są wykomentowane, ponieważ vscode podpowiadał sygnatury
 
