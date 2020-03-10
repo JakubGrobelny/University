@@ -5,7 +5,8 @@
 import Prelude hiding (concat, and, all, maximum)
 import Data.Char (digitToInt, isDigit)
 import Data.List (unfoldr)
-import Data.Function(on)
+import Data.Function (on)
+import Control.Monad.State.Lazy
 
 -- Zadanie 1
 intercalate :: [a] -> [[a]] -> [a]
@@ -25,7 +26,7 @@ and :: [Bool] -> Bool
 and = foldr (&&) True
 
 all :: (a -> Bool) -> [a] -> Bool
-all pred = foldr ((&&) . pred) True
+all pred = and . map pred
 
 maximum :: [Integer] -> Integer
 maximum [] = undefined
@@ -138,6 +139,9 @@ isZero :: Natural -> Bool
 isZero (Natural [0]) = True
 isZero _ = False
 
+zero :: Natural
+zero = Natural [0]
+
 instance Num Natural where
     abs = id
     signum (Natural [0]) = 0
@@ -221,11 +225,39 @@ naturalToInteger = sum . zipWith (*) powBase . map toInteger . fromNatural
 instance Real Natural where
     toRational = toRational . naturalToInteger
 
+type DivisionComputation a = State DivisionState a
+type DivisionResult = (Natural, Natural)
+type DivisionState = (Natural, Natural)
+
+mapNatural :: ([Word] -> [Word]) -> Natural -> Natural
+mapNatural f = Natural . f . fromNatural
+
 instance Integral Natural where
     toInteger = naturalToInteger
-    rem n m = n - n * quot n m
-    quot = undefined -- TODO: skończyć
-    quotRem n m = (quot n m, rem n m)
+        
+    quotRem n divisor
+        | isZero divisor = error "Division by zero!"
+        | otherwise  = evalState division (n, zero)
+      where
+        division :: DivisionComputation DivisionResult
+        division = do
+            (dividend, quotient) <- get
+            if dividend < divisor
+                then return (quotient, dividend)
+                else do 
+                    divisionStep
+                    division
+        divisionStep :: DivisionComputation ()
+        divisionStep = do
+            (dividend, quotient) <- get
+            let (partialQuot, divRest) = singleDivision dividend divisor
+                newQuot = mapNatural (fromNatural partialQuot ++) quotient
+            put (divRest, newQuot)
+        singleDivision :: Natural -> Natural -> (Natural, Natural)
+        singleDivision dividend divisor = undefined
+          where
+            splitDividend :: Natural -> (Natural, Natural)
+            splitDividend = undefined
 
 -- Zadanie 10
 -- Definicje są wykomentowane, ponieważ vscode podpowiadał sygnatury
