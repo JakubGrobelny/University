@@ -31,3 +31,17 @@ qsortC (x:xs) = [y | y <- xs, y < x] ++ [x] ++ [y | y <- xs, y >= x]
 
 zipC :: [a] -> [b] -> [(a,b)]
 zipC xs ys = [(x, y) | x <- xs | y <- ys]
+
+-- Zadanie 3
+data Combinator 
+    = S 
+    | K 
+    | Combinator :$ Combinator
+
+infixl :$
+
+instance Show Combinator where
+    show S = "S"
+    show K = "K"
+    show (lhs :$ rhs@(_:$_)) = show lhs ++ "(" ++ show rhs ++ ")"
+    show (lhs :$ rhs) = show lhs ++ show rhs
