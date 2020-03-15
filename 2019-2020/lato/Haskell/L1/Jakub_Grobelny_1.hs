@@ -1,6 +1,6 @@
 -- Jakub Grobelny
 -- Kurs języka Haskell
--- Lista 10.03.2020
+-- Lista 1, 10.03.2020
 
 import Prelude hiding (concat, and, all, maximum)
 import Data.Char (digitToInt, isDigit)
