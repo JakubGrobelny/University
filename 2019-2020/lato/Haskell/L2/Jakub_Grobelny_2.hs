@@ -44,4 +44,14 @@ instance Show Combinator where
     show S = "S"
     show K = "K"
     show (lhs :$ rhs@(_:$_)) = show lhs ++ "(" ++ show rhs ++ ")"
-    show (lhs :$ rhs) = show lhs ++ show rhs
+    show (lhs :$ rhs)        = show lhs ++ show rhs
+
+-- Zadanie 4
+evalC :: Combinator -> Combinator
+evalC S = S
+evalC K = K
+evalC (K :$ x :$ _) = evalC x
+evalC (S :$ x :$ y :$ z) = evalC $ x' :$ z' :$ evalC (y :$ z)
+  where
+    x' = evalC x
+    z' = evalC z
