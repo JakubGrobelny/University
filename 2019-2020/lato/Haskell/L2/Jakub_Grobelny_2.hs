@@ -82,3 +82,22 @@ deleteBST a (NodeBST left val right)
     | otherwise = case left of
         EmptyBST -> right
         _        -> uncurry NodeBST (deleteMaxBST left) right
+
+-- Zadanie 7
+data Tree23 a 
+    = Node2 (Tree23 a) a (Tree23 a)
+    | Node3 (Tree23 a) a (Tree23 a) a (Tree23 a)
+    | Empty23
+    deriving Show
+
+search23 :: Ord a => a -> Tree23 a -> Maybe a
+search23 _ Empty23 = Nothing
+search23 a (Node2 left val right)
+    | a == val  = Just a
+    | a <  val  = search23 a left
+    | otherwise = search23 a right
+search23 a (Node3 left val1 mid val2 right)
+    | a == val1 || a == val2 = Just a
+    | a < val1  = search23 a left
+    | a < val2  = search23 a mid
+    | otherwise = search23 a right
