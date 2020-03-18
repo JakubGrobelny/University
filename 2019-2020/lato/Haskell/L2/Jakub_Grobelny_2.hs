@@ -73,15 +73,11 @@ deleteMaxBST (NodeBST left val EmptyBST) = (left, val)
 deleteMaxBST (NodeBST left val right) = (NodeBST left val right', max)
   where
     (right', max) = deleteMaxBST right
-
 deleteBST :: Ord a => a -> BST a -> BST a
 deleteBST _ EmptyBST = EmptyBST
-deleteBST a (NodeBST EmptyBST val right)
-    | a == val  = right
-    | otherwise = NodeBST EmptyBST val $ deleteBST a right
 deleteBST a (NodeBST left val right)
     | a < val   = NodeBST (deleteBST a left) val right
     | a > val   = NodeBST left val (deleteBST a right)
-    | otherwise = NodeBST left' max right
-  where
-    (left', max) = deleteMaxBST left
+    | otherwise = case left of
+        EmptyBST -> right
+        _        -> uncurry NodeBST (deleteMaxBST left) right
