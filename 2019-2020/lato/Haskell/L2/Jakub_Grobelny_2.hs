@@ -2,8 +2,13 @@
 -- Kurs języka Haskell
 -- Lista 2, 20.03.2020
 
--- Zadanie 1
 {-# LANGUAGE ParallelListComp #-}
+
+import Data.Bool (bool)
+import Data.Function (on)
+import Control.Monad (join)
+
+-- Zadanie 1
 
 subseqC :: [a] -> [[a]]
 subseqC [] = [[]]
@@ -27,10 +32,39 @@ spermC xs = [y:zs | (y, ys) <- select xs, zs <- spermC ys]
 
 qsortC :: Ord a => [a] -> [a]
 qsortC [] = []
-qsortC (x:xs) = [y | y <- xs, y < x] ++ [x] ++ [y | y <- xs, y >= x]
+qsortC (x:xs) = qsortC [y | y <- xs, y < x] 
+             ++ [x] 
+             ++ qsortC [y | y <- xs, y >= x]
 
 zipC :: [a] -> [b] -> [(a,b)]
 zipC xs ys = [(x, y) | x <- xs | y <- ys]
+
+-- Zadanie 2
+
+subseqP :: [a] -> [[a]]
+subseqP = undefined
+
+ipermP :: [a] -> [[a]]
+ipermP = undefined
+
+spermP :: [a] -> [[a]]
+spermP = undefined
+
+zipP :: [a] -> [b] -> [(a,b)]
+zipP = undefined
+
+qsortP :: Ord a => [a] -> [a]
+qsortP = join $ bool sort id . null
+  where
+    sort  = join . (split <*>) . pure
+    split = [ qsortP . extract (>)
+            ,          extract (==)
+            , qsortP . extract (<)
+            ]
+    extract = (>>= filter) . (. head)
+
+(<++>) :: Ord a => [a] -> [a] -> [a]
+(<++>) = undefined
 
 -- Zadanie 3
 data Combinator 
