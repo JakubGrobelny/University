@@ -46,12 +46,42 @@ instance Show Combinator where
     show (lhs :$ rhs@(_:$_)) = show lhs ++ "(" ++ show rhs ++ ")"
     show (lhs :$ rhs)        = show lhs ++ show rhs
 
--- Zadanie 4
-evalC :: Combinator -> Combinator
-evalC S = S
-evalC K = K
-evalC (K :$ x :$ _) = evalC x
-evalC (S :$ x :$ y :$ z) = evalC $ x' :$ z' :$ evalC (y :$ z)
+-- Zadanie 5
+data BST a
+    = NodeBST (BST a) a (BST a)
+    | EmptyBST
+    deriving Show
+
+searchBST :: Ord a => a -> BST a -> Maybe a
+searchBST _ EmptyBST = Nothing
+searchBST a (NodeBST left val right)
+    | a == val  = Just a
+    | a <  val  = searchBST a left
+    | otherwise = searchBST a right
+
+insertBST :: Ord a => a -> BST a -> BST a
+insertBST a EmptyBST = NodeBST EmptyBST a EmptyBST
+insertBST a tree@(NodeBST left val right)
+    | a == val  = tree
+    | a <  val  = NodeBST (insertBST a left) val right
+    | otherwise = NodeBST left val (insertBST a right)
+
+-- Zadanie 6
+deleteMaxBST :: Ord a => BST a -> (BST a, a)
+deleteMaxBST EmptyBST = error "deleteMaxBST: empty tree!"
+deleteMaxBST (NodeBST left val EmptyBST) = (left, val)
+deleteMaxBST (NodeBST left val right) = (NodeBST left val right', max)
   where
-    x' = evalC x
-    z' = evalC z
+    (right', max) = deleteMaxBST right
+
+deleteBST :: Ord a => a -> BST a -> BST a
+deleteBST _ EmptyBST = EmptyBST
+deleteBST a (NodeBST EmptyBST val right)
+    | a == val  = right
+    | otherwise = NodeBST EmptyBST val $ deleteBST a right
+deleteBST a (NodeBST left val right)
+    | a < val   = NodeBST (deleteBST a left) val right
+    | a > val   = NodeBST left val (deleteBST a right)
+    | otherwise = NodeBST left' max right
+  where
+    (left', max) = deleteMaxBST left
