@@ -190,18 +190,18 @@ listTo23Tree :: Ord a => [a] -> Tree23 a
 listTo23Tree [] = Empty23
 listTo23Tree (x:xs) = insert23 x $! listTo23Tree xs
 
-pathLengths :: Tree23 a -> Maybe Int
-pathLengths Empty23 = Just 0
-pathLengths (Node2 l _ r) = do
-    llen <- pathLengths l
-    rlen <- pathLengths r
+pathLength :: Tree23 a -> Maybe Int
+pathLength Empty23 = Just 0
+pathLength (Node2 l _ r) = do
+    llen <- pathLength l
+    rlen <- pathLength r
     if llen == rlen
         then return $! llen + 1
         else Nothing
-pathLengths (Node3 l _ m _ r) = do
-    llen <- pathLengths l
-    mlen <- pathLengths m
-    rlen <- pathLengths r
+pathLength (Node3 l _ m _ r) = do
+    llen <- pathLength l
+    mlen <- pathLength m
+    rlen <- pathLength r
     if llen == mlen && mlen == rlen
         then return $! llen + 1
         else Nothing
