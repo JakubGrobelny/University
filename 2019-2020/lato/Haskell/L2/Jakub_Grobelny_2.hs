@@ -48,12 +48,6 @@ subseqP = join $ bool subseq pure . null
     subseq = uncurry append . (head &&& subseqP . tail)
     append = join . ((++) .) . map . (:)
 
-ipermP :: [a] -> [[a]]
-ipermP = undefined
-
-spermP :: [a] -> [[a]]
-spermP = undefined
-
 -- uwaga: działa tylko dla list o równej długości (tak jak zipF z listy zadań)
 zipP :: [a] -> [b] -> [(a,b)]
 zipP = (join . join) $ bool zipOnce (const $ const []) .: bothNull
@@ -74,8 +68,14 @@ qsortP = join $ bool sort id . null
             ]
     extract = (>>= filter) . (. head)
 
+ipermP :: [a] -> [[a]]
+ipermP = undefined -- brak
+
+spermP :: [a] -> [[a]]
+spermP = undefined -- brak
+
 (<++>) :: Ord a => [a] -> [a] -> [a]
-(<++>) = undefined
+(<++>) = undefined -- brak
 
 -- Zadanie 3
 data Combinator 
@@ -205,3 +205,36 @@ pathLengths (Node3 l _ m _ r) = do
     if llen == mlen && mlen == rlen
         then return $! llen + 1
         else Nothing
+
+-- Zadanie 10
+
+data Tree234 a
+    = N2 (Tree234 a) a (Tree234 a)
+    | N3 (Tree234 a) a (Tree234 a) a (Tree234 a)
+    | N4 (Tree234 a) a (Tree234 a) a (Tree234 a) a (Tree234 a)
+    | E234
+    deriving Show
+
+data RBTree a
+    = Black (RBTree a) a (RBTree a)
+    | Red   (RBTree a) a (RBTree a)
+    | RBTEmpty
+    deriving Show
+
+from234 :: Tree234 a -> RBTree a
+from234 E234 = RBTEmpty
+from234 (N2 l v r) = 
+    Black (from234 l) v (from234 r)
+from234 (N3 l v1 m v2 r) = 
+    Black (from234 l) v1 (Red (from234 m) v2 (from234 r))
+from234 (N4 l v1 m1 v2 m2 v3 r) = 
+    Black (Red (from234 l) v1 (from234 m1)) v2 (Red (from234 m2) v3 (from234 r))
+
+-- (to samo ale w drugą stronę)
+to234 :: RBTree a -> Tree234 a
+to234 RBTEmpty = E234
+to234 (Black (Red ll lv lr) v (Red rl rv rr)) =
+    N4 (to234 ll) lv (to234 lr) v (to234 rl) rv (to234 rr)
+to234 (Black (Red ll lv lr) v r) = N3 (to234 ll) lv (to234 lr) v (to234 r)
+to234 (Black l v (Red rl rv rr)) = N3 (to234 l) v (to234 rl) rv (to234 rr)
+to234 (Black l v r) = N2 (to234 l) v (to234 r)
