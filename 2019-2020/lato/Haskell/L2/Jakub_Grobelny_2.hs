@@ -7,7 +7,7 @@
 import Data.Bool (bool)
 import Data.Function (on)
 import Control.Monad (join)
-import Control.Arrow ((&&&))
+import Control.Arrow ((&&&), (***))
 
 -- Zadanie 1
 
@@ -55,7 +55,13 @@ spermP :: [a] -> [[a]]
 spermP = undefined
 
 zipP :: [a] -> [b] -> [(a,b)]
-zipP = undefined
+zipP = join . join $ bool zipOnce (const $ const []) .: bothNull
+  where
+    bothNull = (uncurry (||) . (null *** null)) .: (,)
+    heads = (head *** head)
+    tails = (tail *** tail)
+    zipOnce = uncurry (:) .: ((heads &&& (uncurry zipP . tails)) .: (,))
+    (.:) = (.) . (.)
 
 qsortP :: Ord a => [a] -> [a]
 qsortP = join $ bool sort id . null
