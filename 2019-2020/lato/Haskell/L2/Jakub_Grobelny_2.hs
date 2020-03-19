@@ -7,6 +7,7 @@
 import Data.Bool (bool)
 import Data.Function (on)
 import Control.Monad (join)
+import Control.Arrow ((&&&), (***))
 
 -- Zadanie 1
 
@@ -42,7 +43,10 @@ zipC xs ys = [(x, y) | x <- xs | y <- ys]
 -- Zadanie 2
 
 subseqP :: [a] -> [[a]]
-subseqP = undefined
+subseqP = join $ bool subseq pure . null
+  where
+    subseq = uncurry append . (head &&& subseqP . tail)
+    append = join . ((++) .) . map . (:)
 
 ipermP :: [a] -> [[a]]
 ipermP = undefined
