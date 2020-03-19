@@ -54,10 +54,11 @@ ipermP = undefined
 spermP :: [a] -> [[a]]
 spermP = undefined
 
+-- uwaga: działa tylko dla list o równej długości, tak jak zipF z listy zadań
 zipP :: [a] -> [b] -> [(a,b)]
 zipP = join . join $ bool zipOnce (const $ const []) .: bothNull
   where
-    bothNull = (uncurry (||) . (null *** null)) .: (,)
+    bothNull = uncurry (&&) .: curry (null *** null)
     heads = (head *** head)
     tails = (tail *** tail)
     zipOnce = uncurry (:) .: ((heads &&& (uncurry zipP . tails)) .: (,))
