@@ -7,7 +7,7 @@
 import Data.Bool (bool)
 import Data.Function (on)
 import Control.Monad (join)
-import Control.Arrow ((&&&), (***))
+import Control.Arrow ((&&&))
 
 -- Zadanie 1
 
