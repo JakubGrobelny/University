@@ -78,6 +78,7 @@ spermP = undefined -- brak
 (<++>) = undefined -- brak
 
 -- Zadanie 3
+
 data Combinator 
     = S 
     | K 
@@ -91,7 +92,20 @@ instance Show Combinator where
     show (lhs :$ rhs@(_:$_)) = show lhs ++ "(" ++ show rhs ++ ")"
     show (lhs :$ rhs)        = show lhs ++ show rhs
 
+-- Zadanie 4
+
+evalC :: Combinator -> Combinator
+evalC S = S
+evalC K = K
+evalC (K :$ x) = K :$ evalC x
+evalC (S :$ x) = S :$ evalC x
+evalC (S :$ x :$ y) = S :$ evalC x :$ evalC y
+evalC (K :$ x :$ _) = evalC x
+evalC (S :$ x :$ y :$ z) = evalC (x :$ z :$ (y :$ z))
+evalC (lhs :$ rhs) = evalC $ evalC lhs :$ rhs
+
 -- Zadanie 5
+
 data BST a
     = NodeBST (BST a) a (BST a)
     | EmptyBST
@@ -130,6 +144,7 @@ deleteBST a (NodeBST left val right)
         _        -> uncurry NodeBST (deleteMaxBST left) right
 
 -- Zadanie 7
+
 data Tree23 a 
     = Node2 (Tree23 a) a (Tree23 a)
     | Node3 (Tree23 a) a (Tree23 a) a (Tree23 a)
