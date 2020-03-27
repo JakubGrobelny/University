@@ -7,6 +7,8 @@
 {-# LANGUAGE IncoherentInstances  #-}
 {-# LANGUAGE UndecidableInstances #-}
 
+import Data.Function (on)
+
 data BTree t a
     = Node (t a) a (t a)
     | Leaf
@@ -143,8 +145,8 @@ instance BT WBTree where
 wbNode' :: WBTree a -> a -> WBTree a -> WBTree a
 wbNode' l v r = WBNode l v (wbsize l + wbsize r + 1) r
 
-rotateLeft :: WBTree a -> a -> WBTree a -> WBTree a
-rotateLeft left val right@(WBNode rleft rval _ rright)
+wbRotateLeft :: WBTree a -> a -> WBTree a -> WBTree a
+wbRotateLeft left val right@(WBNode rleft _ _ rright)
     | wbsize rleft < wbsize rright = singleLeft left val right
     | otherwise                    = doubleLeft left val right
   where
@@ -152,8 +154,8 @@ rotateLeft left val right@(WBNode rleft rval _ rright)
     doubleLeft x a (WBNode (WBNode y1 b _ y2) c _ z) =
         wbNode' (wbNode' x a y1) b (wbNode' y2 c z)
 
-rotateRight :: WBTree a -> a -> WBTree a -> WBTree a
-rotateRight left@(WBNode lleft lval _ lright) val right
+wbRotateRight :: WBTree a -> a -> WBTree a -> WBTree a
+wbRotateRight left@(WBNode lleft _ _ lright) val right
     | wbsize lright < wbsize lleft = singleRight left val right
     | otherwise                    = doubleRight left val right
   where
@@ -165,8 +167,8 @@ instance BST WBTree where
     leaf = WBLeaf
     node l a r
         | lSize + rSize < 2 = wbNode' l a r
-        | rSize > ratio * lSize = rotateLeft l a r
-        | lSize > ratio * rSize = rotateRight l a r
+        | rSize > ratio * lSize = wbRotateLeft l a r
+        | lSize > ratio * rSize = wbRotateRight l a r
         | otherwise = wbNode' l a r
       where
         ratio = 5
@@ -180,7 +182,56 @@ instance BST WBTree where
 listToBST :: (Ord a, BST t) => [a] -> (t a)
 listToBST = foldr insert leaf
 
-bstToList :: (BST t) => (t a) -> [a]
-bstToList = treeFold (\l v r -> l ++ v : r) []
+listFromBST :: (BST t) => (t a) -> [a]
+listFromBST = treeFold (\l v r -> l ++ v : r) []
 
 --------------------------------------------------------------------------------
+
+-- Zadanie 8
+
+data HBTree a
+    = HBNode (HBTree a) a Int (HBTree a)
+    | HBLeaf
+
+instance BT HBTree where
+    toTree HBLeaf = Leaf
+    toTree (HBNode l v _ r) = Node l v r
+
+hbheight :: HBTree a -> Int 
+hbheight HBLeaf = 0
+hbheight (HBNode _ _ h _) = h
+
+hbNode' :: HBTree a -> a -> HBTree a -> HBTree a
+hbNode' l v r = HBNode l v (1 + (max `on` hbheight) l r) r
+
+-- rotacje takie jak w drzewach AVL
+hbFixLeft :: HBTree a -> a -> HBTree a -> HBTree a
+hbFixLeft left@(HBNode ll _ _ lr) val right
+    | hbheight ll > hbheight lr = leftLeft left val right
+    | otherwise                 = leftRight left val right
+  where
+    leftLeft (HBNode (HBNode t1 x _ t2) y _ t3) z t4 =
+        hbNode' (hbNode' t1 x t2) y (hbNode' t3 z t4)
+    leftRight (HBNode t1 y _ (HBNode t2 x _ t3)) z t4 =
+        hbNode' (hbNode' t1 y t2) x (hbNode' t3 z t4)
+
+hbFixRight :: HBTree a -> a -> HBTree a -> HBTree a
+hbFixRight left val right@(HBNode rl _ _ rr)
+    | hbheight rl > hbheight rr = rightLeft left val right
+    | otherwise                 = rightRight left val right
+  where
+    rightLeft t1 z (HBNode t2 y _ (HBNode t3 x _ t4)) =
+        hbNode' (hbNode' t1 z t2) y (hbNode' t3 x t4)
+    rightRight t1 z (HBNode (HBNode t2 x _ t3) y _ t4) =
+        hbNode' (hbNode' t1 z t2) x (hbNode' t3 y t4)
+
+instance BST HBTree where
+    leaf = HBLeaf
+    node l a r
+        | lh <= 1 && rh <= 1 = hbNode' l a r
+        | lh > rh + 1 = hbFixLeft l a r
+        | rh > lh + 1 = hbFixRight l a r
+        | otherwise   = hbNode' l a r
+      where
+          lh = hbheight l
+          rh = hbheight r
