@@ -2,9 +2,9 @@
 -- Kurs języka Haskell
 -- Lista 3, 27.03.2020
 
-{-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE IncoherentInstances #-}
+{-# LANGUAGE ViewPatterns         #-}
+{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE IncoherentInstances  #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 data BTree t a
@@ -101,6 +101,7 @@ class Set s where
 
 instance BST s => Set s where
     empty  = leaf
+
     search = searchBT
     
     insert a (toTree -> Leaf) = node leaf a leaf
@@ -123,3 +124,63 @@ instance BST s => Set s where
             Just (max, l) -> node l max r
             Nothing       -> r
 
+--------------------------------------------------------------------------------
+
+data WBTree a
+    = WBNode (WBTree a) a Int (WBTree a)
+    | WBLeaf
+
+wbsize :: WBTree a -> Int
+wbsize (WBNode _ _ n _) = n
+wbsize WBLeaf = 0
+
+-- Zadanie 7
+
+instance BT WBTree where
+    toTree WBLeaf = Leaf
+    toTree (WBNode l v _ r) = Node l v r
+
+wbNode' :: WBTree a -> a -> WBTree a -> WBTree a
+wbNode' l v r = WBNode l v (wbsize l + wbsize r + 1) r
+
+rotateLeft :: WBTree a -> a -> WBTree a -> WBTree a
+rotateLeft left val right@(WBNode rleft rval _ rright)
+    | wbsize rleft < wbsize rright = singleLeft left val right
+    | otherwise                    = doubleLeft left val right
+  where
+    singleLeft x a (WBNode y b _ z) = wbNode' (wbNode' x a y) b z
+    doubleLeft x a (WBNode (WBNode y1 b _ y2) c _ z) =
+        wbNode' (wbNode' x a y1) b (wbNode' y2 c z)
+
+rotateRight :: WBTree a -> a -> WBTree a -> WBTree a
+rotateRight left@(WBNode lleft lval _ lright) val right
+    | wbsize lright < wbsize lleft = singleRight left val right
+    | otherwise                    = doubleRight left val right
+  where
+    singleRight (WBNode x a _ y) b z = wbNode' x a (wbNode' y b z)
+    doubleRight (WBNode x a _ (WBNode y1 b _ y2)) c z =
+        wbNode' (wbNode' x a y1) b (wbNode' y2 c z)
+
+instance BST WBTree where
+    leaf = WBLeaf
+    node l a r
+        | lSize + rSize < 2 = wbNode' l a r
+        | rSize > ratio * lSize = rotateLeft l a r
+        | lSize > ratio * rSize = rotateRight l a r
+        | otherwise = wbNode' l a r
+      where
+        ratio = 5
+        lSize = wbsize l
+        rSize = wbsize r
+
+--------------------------------------------------------------------------------
+
+-- pomocnicze funkcje do testowania drzew
+
+listToBST :: (Ord a, BST t) => [a] -> (t a)
+listToBST = foldr insert leaf
+
+bstToList :: (BST t) => (t a) -> [a]
+bstToList = treeFold (\l v r -> l ++ v : r) []
+
+--------------------------------------------------------------------------------
