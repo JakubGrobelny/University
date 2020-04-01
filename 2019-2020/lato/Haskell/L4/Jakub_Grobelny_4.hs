@@ -40,6 +40,7 @@ queens maxN = queens' maxN
             then return (q:qs)
             else []
     safe _ [] _ = True
-    safe q' (q:qs) col = q' /= q && 
-                         abs (q - q') /= col && 
-                         safe q' qs (col + 1)
+    safe q' (q:qs) col = q' /= q
+                      && abs (q - q') /= col
+                      && safe q' qs (col + 1)
+
