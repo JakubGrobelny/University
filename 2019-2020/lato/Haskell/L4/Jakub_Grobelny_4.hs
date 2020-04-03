@@ -226,7 +226,7 @@ label (Elem _ a _) = a
 enumInts :: Cyclist Integer
 enumInts = Elem (genNeg enumInts (-1)) 0 (genPos enumInts 1)
   where
-    genNeg next n =
+    genNeg next n = this
       where
         this = Elem prev n next
         prev = genNeg this $ n - 1
