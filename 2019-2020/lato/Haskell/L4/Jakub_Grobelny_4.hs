@@ -131,3 +131,25 @@ xs'@(x:xs) <+> ys'@(y:ys)
 
 d235 :: [Integer]
 d235 = 1 : map (* 2) d235 <+> map (* 3) d235 <+> map (* 5) d235
+
+-- Zadanie 9
+
+instance Functor BTree where
+    fmap _ BLeaf = BLeaf
+    fmap f (BNode l v r) = BNode (fmap f l) (f v) (fmap f r)
+
+natTree :: BTree Int
+natTree = BNode ((* 2) <$> natTree) 1 ((+ 1) . (* 2) <$> natTree)
+
+-- pomocnicza funkcja do testowania
+-- takeDepth natTree n == [1 .. 2^n - 1]
+takeDepth :: Int -> BTree a -> [a]
+takeDepth 0 _ = []
+takeDepth _ BLeaf = error "empty tree"
+takeDepth n (BNode l v r) = 
+    v : takeDepth (n - 1) l `interleave` takeDepth (n - 1) r
+  where
+    interleave [] ys = ys
+    interleave xs [] = xs
+    interleave (x:xs) (y:ys) = x : y : interleave xs ys
+
