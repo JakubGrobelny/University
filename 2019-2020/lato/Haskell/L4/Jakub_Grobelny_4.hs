@@ -77,6 +77,22 @@ binTree n
 
 --------------------------------------------------------------------------------
 
+-- Zadanie 4
+
+binTreeLeaves :: Int -> BinTree
+binTreeLeaves n = binTree (n - 1) BinTreeLeaf BinTreeLeaf
+  where
+    binTree :: Int -> BinTree -> BinTree -> BinTree
+    binTree 0 acc t = acc
+    binTree n acc t
+        | n `mod` 2 == 1 = binTree n' (t :/\: acc) t'
+        | otherwise      = binTree n' acc t'
+      where
+        t' = t :/\: t
+        n' = n `div` 2
+
+--------------------------------------------------------------------------------
+
 class Queue q where
     emptyQ   :: q a
     isEmptyQ :: q a -> Bool 
