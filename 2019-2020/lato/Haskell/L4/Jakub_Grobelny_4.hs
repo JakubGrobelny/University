@@ -224,6 +224,15 @@ label (Elem _ a _) = a
 -- Zadanie 13
 
 enumInts :: Cyclist Integer
-enumInts = fromList [0..]
+enumInts = Elem (genNeg enumInts (-1)) 0 (genPos enumInts 1)
+  where
+    genNeg next n =
+      where
+        this = Elem prev n next
+        prev = genNeg this $ n - 1
+    genPos prev n = this
+      where
+        this = Elem prev n next
+        next = genPos this $ n + 1
 
 --------------------------------------------------------------------------------
