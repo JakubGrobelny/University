@@ -88,6 +88,8 @@ class Queue q where
     top = fst . get
     pop = snd . get
 
+--------------------------------------------------------------------------------
+
 -- Zadanie 5
 
 data SimpleQueue a = SimpleQueue
@@ -107,6 +109,8 @@ instance Queue SimpleQueue where
     get q@(SimpleQueue (x:xs) _) = (x, q { front = xs })
     get (SimpleQueue [] rear)    = get (SimpleQueue (reverse rear) [])
 
+--------------------------------------------------------------------------------
+
 -- Zadanie 6
 
 primes :: [Integer]
@@ -114,10 +118,14 @@ primes =
     2 : [ p | p <- [3..], 
               and [ p `mod` q /= 0 | q <- takeWhile (\q -> q * q <= p) primes]]
 
+--------------------------------------------------------------------------------
+
 -- Zadanie 7
 
 fib :: [Integer]
 fib = 1 : 1 : zipWith (+) fib (tail fib)
+
+--------------------------------------------------------------------------------
 
 -- Zadanie 8
 
@@ -131,6 +139,8 @@ xs'@(x:xs) <+> ys'@(y:ys)
 
 d235 :: [Integer]
 d235 = 1 : map (* 2) d235 <+> map (* 3) d235 <+> map (* 5) d235
+
+--------------------------------------------------------------------------------
 
 -- Zadanie 9
 
@@ -153,6 +163,8 @@ takeDepth n (BNode l v r) =
     interleave xs [] = xs
     interleave (x:xs) (y:ys) = x : y : interleave xs ys
 
+--------------------------------------------------------------------------------
+
 -- Zadanie 10
 
 data RoseTree a = RNode a [RoseTree a] deriving Show
@@ -165,3 +177,4 @@ onesRoseTree = RNode 1 xs
   where
     xs = onesRoseTree : xs
 
+--------------------------------------------------------------------------------
