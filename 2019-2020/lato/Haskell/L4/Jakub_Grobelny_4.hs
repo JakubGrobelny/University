@@ -142,7 +142,7 @@ natTree :: BTree Int
 natTree = BNode ((* 2) <$> natTree) 1 ((+ 1) . (* 2) <$> natTree)
 
 -- pomocnicza funkcja do testowania
--- takeDepth natTree n == [1 .. 2^n - 1]
+-- ∀ n, takeDepth natTree n == [1 .. 2^n - 1]
 takeDepth :: Int -> BTree a -> [a]
 takeDepth 0 _ = []
 takeDepth _ BLeaf = error "empty tree"
@@ -152,4 +152,16 @@ takeDepth n (BNode l v r) =
     interleave [] ys = ys
     interleave xs [] = xs
     interleave (x:xs) (y:ys) = x : y : interleave xs ys
+
+-- Zadanie 10
+
+data RoseTree a = RNode a [RoseTree a] deriving Show
+
+onesBTree :: BTree Int
+onesBTree = BNode onesBTree 1 onesBTree
+
+onesRoseTree :: RoseTree Int
+onesRoseTree = RNode 1 xs
+  where
+    xs = onesRoseTree : xs
 
