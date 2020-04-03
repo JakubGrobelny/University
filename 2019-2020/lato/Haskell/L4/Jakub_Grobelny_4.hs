@@ -209,7 +209,7 @@ fromList xs = first
     aux [x] prev = let cycle = Elem prev x first in (cycle, cycle)
     aux (x:xs) prev = (this, last)
       where
-        this = Elem prev x next
+        this         = Elem prev x next
         (next, last) = aux xs this
 
 forward :: Cyclist a -> Cyclist a
@@ -221,3 +221,11 @@ backward (Elem prev _ _) = prev
 label :: Cyclist a -> a
 label (Elem _ a _) = a
 
+--------------------------------------------------------------------------------
+
+-- Zadanie 13
+
+enumInts :: Cyclist Integer
+enumInts = fromList [0..]
+
+--------------------------------------------------------------------------------
