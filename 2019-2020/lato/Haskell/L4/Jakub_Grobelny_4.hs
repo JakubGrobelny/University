@@ -2,7 +2,7 @@
 -- Kurs języka Haskell
 -- Lista 4, 3.04.2020
 
-import Control.Monad (forM)
+--------------------------------------------------------------------------------
 
 -- Zadanie 1
 
@@ -27,6 +27,8 @@ qsort = qsort' []
       where
         rs = qsort' acc [x | x <- xs, x >= pivot]
 
+--------------------------------------------------------------------------------
+
 -- Zadanie 2
 
 queens :: Int -> [[Int]]
@@ -44,12 +46,14 @@ queens maxN = queens' maxN
                       && abs (q - q') /= col
                       && safe q' qs (col + 1)
 
--- Zadanie 3    
+--------------------------------------------------------------------------------
 
 data BinTree
     = BinTreeLeaf
     | BinTree :/\: BinTree
   deriving Show
+
+-- Zadanie 3    
 
 binTree :: Int -> BinTree
 binTree 0 = BinTreeLeaf
@@ -71,3 +75,34 @@ binTree n
       where
         (t1, t2) = create2 $ (m - 1) `div` 2
 
+--------------------------------------------------------------------------------
+
+class Queue q where
+    emptyQ   :: q a
+    isEmptyQ :: q a -> Bool 
+    put      :: a -> q a -> q a
+    get      :: q a -> (a, q a)
+    top      :: q a -> a
+    pop      :: q a -> q a
+    get q = (top q, pop q)
+    top = fst . get
+    pop = snd . get
+
+-- Zadanie 5
+
+data SimpleQueue a = SimpleQueue
+    { front :: [a]
+    , rear  :: [a]
+    }
+  deriving Show
+
+instance Queue SimpleQueue where
+    emptyQ = SimpleQueue [] []
+    
+    isEmptyQ (SimpleQueue [] []) = True
+    isEmptyQ _ = False
+
+    put x q = q { rear = x : rear q }
+
+    get q@(SimpleQueue (x:xs) _) = (x, q { front = xs })
+    get (SimpleQueue [] rear)    = get (SimpleQueue (reverse rear) [])
