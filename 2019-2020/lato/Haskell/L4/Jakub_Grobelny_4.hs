@@ -106,3 +106,15 @@ instance Queue SimpleQueue where
 
     get q@(SimpleQueue (x:xs) _) = (x, q { front = xs })
     get (SimpleQueue [] rear)    = get (SimpleQueue (reverse rear) [])
+
+-- Zadanie 6
+
+primes :: [Integer]
+primes = 
+    2 : [ p | p <- [3..], 
+              and [ p `mod` q /= 0 | q <- takeWhile (\q -> q * q <= p) primes]]
+
+-- Zadanie 7
+
+fib :: [Integer]
+fib = 1 : 1 : zipWith (+) fib (tail fib)
