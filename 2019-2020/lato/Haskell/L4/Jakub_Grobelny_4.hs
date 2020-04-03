@@ -2,6 +2,8 @@
 -- Kurs języka Haskell
 -- Lista 4, 3.04.2020
 
+{-# LANGUAGE ViewPatterns #-}
+
 --------------------------------------------------------------------------------
 
 -- Zadanie 1
@@ -194,3 +196,28 @@ onesRoseTree = RNode 1 xs
     xs = onesRoseTree : xs
 
 --------------------------------------------------------------------------------
+
+-- Zadanie 12
+
+data Cyclist a = Elem (Cyclist a) a (Cyclist a)
+
+fromList :: [a] -> Cyclist a
+fromList [] = error "fromList: empty list"
+fromList xs = first
+  where
+    (first, last) = aux xs last
+    aux [x] prev = let cycle = Elem prev x first in (cycle, cycle)
+    aux (x:xs) prev = (this, last)
+      where
+        this = Elem prev x next
+        (next, last) = aux xs this
+
+forward :: Cyclist a -> Cyclist a
+forward (Elem _ _ next) = next
+
+backward :: Cyclist a -> Cyclist a
+backward (Elem prev _ _) = prev
+
+label :: Cyclist a -> a
+label (Elem _ a _) = a
+
