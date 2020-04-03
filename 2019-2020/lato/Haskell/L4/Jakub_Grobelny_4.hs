@@ -118,3 +118,16 @@ primes =
 
 fib :: [Integer]
 fib = 1 : 1 : zipWith (+) fib (tail fib)
+
+-- Zadanie 8
+
+(<+>) :: Ord a => [a] -> [a] -> [a]
+xs <+> [] = xs
+[] <+> ys = ys
+xs'@(x:xs) <+> ys'@(y:ys)
+    | x < y = x : xs  <+> ys'
+    | x > y = y : xs' <+> ys
+    | otherwise = x : xs <+> ys
+
+d235 :: [Integer]
+d235 = 1 : map (* 2) d235 <+> map (* 3) d235 <+> map (* 5) d235
