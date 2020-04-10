@@ -66,3 +66,5 @@ spermM xs = do
         (y, ys) <- select xs
         return (y, x:ys)
 
+-- Zadanie 6
+
