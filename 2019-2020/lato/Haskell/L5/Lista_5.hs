@@ -96,6 +96,7 @@ data CList a
     = CList a :++: CList a
     | CSingle a
     | CNil
+  deriving Show
 
 instance ListView CList where
     viewList (CSingle a) = Cons a CNil
@@ -142,7 +143,7 @@ instance Foldable CList where
 instance Traversable CList where
     traverse f CNil = pure CNil
     traverse f (CSingle x) = CSingle <$> f x
-    traverse f (xs :++: ys) = pure (:++:) <*> traverse f xs <*> traverse f ys
+    traverse f (xs :++: ys) = liftA2 (:++:) (traverse f xs) (traverse f ys)
 
 fromList :: [a] -> CList a
 fromList [] = CNil
@@ -150,3 +151,47 @@ fromList (x:xs) = CSingle x :++: fromList xs
 
 
 -------------------------------------------------------------------------------- 
+
+-- Zadanie 7
+
+newtype DList a = DList { fromDList :: [a] -> [a] }
+
+dappend :: DList a -> DList a -> DList a 
+dappend xs ys = DList $ \tl -> fromDList xs (fromDList ys tl)
+
+instance ListView DList where
+    cons x xs = DList $ \tl -> x : fromDList xs tl
+    nil = DList id
+    viewList (flip fromDList [] -> []) = Nil
+    viewList xs@(flip fromDList [] -> (h:_)) = Cons h xs'
+      where
+        xs' = DList $ \tl -> tail $ fromDList xs tl
+    toList = flip fromDList []
+
+instance Functor DList where
+    fmap f (DList xs) = DList $ \tl -> (f <$> xs []) ++ tl
+
+instance Applicative DList where
+    pure x = DList $ \tl -> x : tl
+    (DList xs) <*> (DList ys) = DList $ \tl -> (xs [] <*> ys []) ++ tl
+
+instance Monad DList where
+    return = pure
+    (DList xs) >>= f = DList $ \tl -> 
+        fromDList (foldr dappend (DList id) xss) $ tl
+      where
+        xss = f <$> xs []
+
+instance Alternative DList where
+    empty = nil
+    (<|>) = dappend
+
+instance MonadPlus DList where
+    mzero = nil
+    mplus = dappend
+
+instance Foldable DList where
+    foldr f n (DList xs) = foldr f n $ xs []
+
+instance Traversable DList where
+    traverse f (DList xs) = DList . (++) <$> traverse f (xs [])
