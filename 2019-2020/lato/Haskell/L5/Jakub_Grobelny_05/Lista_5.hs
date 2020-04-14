@@ -1,6 +1,6 @@
 {-|
-Module      : Lista_5.hs
-Copyright   : Jakub Grobelny
+Module      : Lista_5
+Copyright   : (c) Jakub Grobelny
 -}
 
 -------------------------------------------------------------------------------- 
@@ -45,13 +45,13 @@ deepseq !a !b = rnf a `seq` b
 -- Zadanie 2
 
 subseqM :: MonadPlus m => [a] -> m [a]
-subseqM [] = return mzero
+subseqM []     = return mzero
 subseqM (x:xs) = do
     ys <- subseqM xs
     return (x:ys) `mplus` return ys
 
 ipermM :: MonadPlus m => [a] -> m [a]
-ipermM [] = return mzero
+ipermM []     = return mzero
 ipermM (x:xs) = ipermM xs >>= insert x
   where
     insert :: MonadPlus m => a -> [a] -> m [a]
@@ -64,7 +64,7 @@ spermM :: MonadPlus m => [a] -> m [a]
 spermM [] = return mzero
 spermM xs = do
     (y,ys) <- select xs
-    zs <- spermM ys
+    zs     <- spermM ys
     return (y:zs)
   where
     select :: MonadPlus m => [a] -> m (a, [a])
@@ -127,6 +127,7 @@ instance Monad CList where
     (CSingle x)  >>= f = f x
     (xs :++: ys) >>= f = (xs >>= f) :++: (ys >>= f)
 
+-- Bez instancji Alternative kompilator narzeka gdy implementuje się MonadPlus
 instance Alternative CList where
     empty = CNil
     (<|>) = (:++:)
@@ -141,14 +142,9 @@ instance Foldable CList where
     foldr f n (xs :++: ys) = foldr f (foldr f n ys) xs
 
 instance Traversable CList where
-    traverse f CNil = pure CNil
+    traverse _ CNil = pure CNil
     traverse f (CSingle x) = CSingle <$> f x
     traverse f (xs :++: ys) = liftA2 (:++:) (traverse f xs) (traverse f ys)
-
-fromList :: [a] -> CList a
-fromList [] = CNil
-fromList (x:xs) = CSingle x :++: fromList xs
-
 
 -------------------------------------------------------------------------------- 
 
@@ -162,7 +158,7 @@ dappend xs ys = DList $ \tl -> fromDList xs (fromDList ys tl)
 instance ListView DList where
     cons x xs = DList $ \tl -> x : fromDList xs tl
     nil = DList id
-    viewList (flip fromDList [] -> []) = Nil
+    viewList    (flip fromDList [] -> [])    = Nil
     viewList xs@(flip fromDList [] -> (h:_)) = Cons h xs'
       where
         xs' = DList $ \tl -> tail $ fromDList xs tl
@@ -195,3 +191,5 @@ instance Foldable DList where
 
 instance Traversable DList where
     traverse f (DList xs) = DList . (++) <$> traverse f (xs [])
+
+-------------------------------------------------------------------------------- 
