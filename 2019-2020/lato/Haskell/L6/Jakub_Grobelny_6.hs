@@ -152,7 +152,7 @@ rec f g = snd . iter (\(n, x) -> (S n, f n x)) (Z, g)
 -- Zadanie 6
 
 tail :: [a] -> [a]
-tail xs = foldr (\(_:tl) _ -> tl) [] [xs]
+tail = fst . foldr (\x (_, tl) -> (tl, x : tl)) ([], [])
 
 reverse :: [a] -> [a]
 reverse = foldr (\x ys -> ys ++ [x]) []
