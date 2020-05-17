@@ -22,10 +22,9 @@ bucketSort xs = runST $ do
         bucket <- readArray buckets i
         writeArray buckets i (e : bucket)
     buckets' <- getAssocs buckets
-    return $ concatMap appendBuckets buckets'
+    return $ concatMap (\(i, elems) -> (i ,) <$> reverse elems) buckets'
   where
     minKey = fst $ minimumBy (compare `on` fst) xs
     maxKey = fst $ maximumBy (compare `on` fst) xs
-    appendBuckets :: (Int, [a]) -> [(Int, a)]
-    appendBuckets (i, elems) = (i ,) <$> reverse elems
+
 
