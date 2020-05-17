@@ -11,6 +11,7 @@ import Data.Array.ST
 import Control.Monad (forM_)
 import Data.Function (on)
 import Data.Foldable (maximumBy, minimumBy)
+import Data.List (sortBy)
 
 -- Zadanie 2
 
@@ -27,4 +28,12 @@ bucketSort xs = runST $ do
     minKey = fst $ minimumBy (compare `on` fst) xs
     maxKey = fst $ maximumBy (compare `on` fst) xs
 
-
+-- Sortowanie 1000000 elementów:
+-- bucketSort:
+--    real    0m7,482s
+--    user    0m7,171s
+--    sys     0m0,296s
+-- sortBy (compare `on` fst):
+--    real    0m10,580s
+--    user    0m10,195s
+--    sys     0m0,293s
