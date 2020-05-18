@@ -96,10 +96,33 @@ type Weight = Int
 
 type Vertex = Int
 
+-- Uwaga: poprawny graf nieskierowany musi zawierać krawędzie w obie strony.
 newtype Graph = Graph (Array Vertex [(Vertex, Weight)]) deriving Show
 
-graphFromList :: (Int, Int) -> [(Vertex, [(Vertex, Weight)])] -> Graph
-graphFromList bounds edges = Graph $ array bounds edges
+-- Funkcja tworząca graf nieskierowany
+graphFromList :: (Int, Int) -> [(Vertex, Vertex, Weight)] -> Graph
+graphFromList bounds edges = runST $ do
+    array <- newArray bounds []
+    forM_ edges $ \(v1, v2, w) -> do
+        v1Edges <- readArray array v1
+        v2Edges <- readArray array v2
+        writeArray array v1 ((v2, w) : v1Edges)
+        writeArray array v2 ((v1, w) : v2Edges)
+    array <- freezeSTArray array
+    return $ Graph array
+
+-- np:
+g = graphFromList (0,6) --
+        [ (0,2,1)       --   (0)---1---(2)---2---(4)---9---(6)
+        , (0,1,5)       --   |\                  |
+        , (2,3,3)       --   | \                 |
+        , (0,3,4)       --   5  \                7
+        , (1,5,6)       --   |   4               |
+        , (3,5,8)       --   |    \              |
+        , (5,4,7)       --   |     (3)---8--\   /
+        , (2,4,2)       --   |               \ /
+        , (4,6,9) ]     --   (1)-------6-----(5)
+
 
 preprocessEdges :: Graph -> ST s [(Element s Vertex, Element s Vertex, Weight)]
 preprocessEdges (Graph graph) = do
@@ -137,13 +160,21 @@ minSpanningTree graph = runST $ minSpanningTreeST graph
         minSpanningTree' graph [] = return graph
         minSpanningTree' graph ((from, to, weight) : edges) = do
             reprFrom <- find from
-            reprTo <- find to
+            reprTo   <- find to
             when (reprFrom /= reprTo) $ do
                 union from to
                 fromVal <- ufVal from
-                edges' <- readArray graph fromVal
-                toVal <- ufVal to
-                writeArray graph fromVal ((toVal, weight) : edges')
+                toVal   <- ufVal to
+                edgesFrom <- readArray graph fromVal
+                edgesTo   <- readArray graph toVal
+                writeArray graph fromVal ((toVal, weight) : edgesFrom)
+                writeArray graph toVal ((fromVal, weight) : edgesTo)
             minSpanningTree' graph edges
 
 --------------------------------------------------------------------------------
+
+
+
+
+
+
