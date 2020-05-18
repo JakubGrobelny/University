@@ -8,10 +8,16 @@
 
 import Control.Monad.ST
 import Data.Array.ST
-import Control.Monad (forM_)
+import Control.Monad (forM_, forM, when)
 import Data.Function (on)
 import Data.Foldable (maximumBy, minimumBy)
 import Data.List (sortBy)
+import Data.STRef
+import Data.Array
+import qualified Data.Map as Map
+import GHC.Arr (freezeSTArray)
+
+--------------------------------------------------------------------------------
 
 -- Zadanie 2
 
@@ -37,3 +43,112 @@ bucketSort xs = runST $ do
 --    real    0m10,580s
 --    user    0m10,195s
 --    sys     0m0,293s
+
+--------------------------------------------------------------------------------
+
+-- Zadanie 3
+
+newtype Element s a = Element (STRef s (UFTree s a)) deriving Eq
+
+data UFTree s a
+    = Root (STRef s (Int, a))
+    | Link a (Element s a)
+
+makeSet :: a -> ST s (Element s a)
+makeSet x = newSTRef . Root <$> newSTRef (0, x) >>= (Element <$>)
+
+ufVal :: Element s a -> ST s a
+ufVal (Element link) = do
+    uftree <- readSTRef link
+    case uftree of
+        Root link -> do
+            (_, val) <- readSTRef link
+            return val
+        Link val _ -> return val
+
+find :: Element s a -> ST s (Element s a)
+find element@(Element parentLink) = do
+    parent <- readSTRef parentLink
+    case parent of
+        Root _ -> return element
+        Link val parent' -> do
+            representative <- find parent'
+            writeSTRef parentLink (Link val representative)
+            return representative
+
+union :: Element s a -> Element s a -> ST s ()
+union elem1 elem2 = do
+    representative1@(Element link1) <- find elem1
+    representative2@(Element link2) <- find elem2
+    when (representative1 /= representative2) $ do
+        Root reprLink1 <- readSTRef link1
+        (rank1, val1) <- readSTRef reprLink1
+        Root reprLink2 <- readSTRef link2
+        (rank2, val2) <- readSTRef reprLink2
+        if rank1 > rank2
+            then do
+                writeSTRef link2 (Link val2 elem1)
+                writeSTRef reprLink1 (rank1 + 1, val1)
+            else do
+                writeSTRef link1 (Link val1 elem2)
+                writeSTRef reprLink2 (rank2 + 1, val2)
+
+type Weight = Int
+
+type Vertex = Int
+
+newtype Graph = Graph (Array Vertex [(Vertex, Weight)]) deriving Show
+
+graphFromList :: (Int, Int) -> [(Vertex, [(Vertex, Weight)])] -> Graph
+graphFromList bounds edges = Graph $ array bounds edges
+
+graphUnionFindEdges :: Graph 
+                    -> ST s [(Element s Vertex, Element s Vertex, Weight)]
+graphUnionFindEdges (Graph graph) = do
+    ufVertices <- newSTRef Map.empty
+    edgesFrom  <- forM (assocs graph) $ \(vertex, edges) -> do
+        ufVertices' <- readSTRef ufVertices
+        ufVertex    <- makeSet vertex
+        writeSTRef ufVertices (Map.insert vertex ufVertex ufVertices')
+        return (ufVertex, edges)
+    ufVertices' <- readSTRef ufVertices
+    let edges = concatMap (splitEdges ufVertices') edgesFrom
+    return $ sortBy (compare `on` weight) edges
+  where
+    weight (_, _, w) = w
+    splitEdges :: Map.Map Vertex (Element s Vertex)
+               -> (Element s Vertex, [(Vertex, Weight)])
+               -> [(Element s Vertex, Element s Vertex, Weight)]
+    splitEdges ufVertices (vertex, edges) = do
+        (to, w) <- edges
+        case Map.lookup to ufVertices of
+            Nothing   -> []
+            Just to' -> return (vertex, to', w)
+
+minSpanningTree :: Graph -> Graph
+minSpanningTree graph = runST $ minSpanningTreeST graph
+  where
+    minSpanningTreeST :: Graph -> ST s Graph
+    minSpanningTreeST graph@(Graph g) = do
+        edges <- graphUnionFindEdges graph
+        array <- newArray (bounds g) []
+        spanningTree <- minSpanningTree' array edges
+        spanningTree' <- freezeSTArray spanningTree
+        return . Graph $ spanningTree'
+      where
+        minSpanningTree' :: STArray s Vertex [(Vertex, Weight)]
+                        -> [(Element s Vertex, Element s Vertex, Weight)] 
+                        -> ST s (STArray s Vertex [(Vertex, Weight)])
+        minSpanningTree' graph [] = return graph
+        minSpanningTree' graph ((from, to, weight) : edges) = do
+            reprFrom <- find from
+            reprTo <- find to
+            when (reprFrom /= reprTo) $ do
+                union from to
+                fromVal <- ufVal from
+                edges' <- readArray graph fromVal
+                toVal <- ufVal to
+                writeArray graph fromVal ((toVal, weight) : edges')
+            minSpanningTree' graph edges
+
+--------------------------------------------------------------------------------
