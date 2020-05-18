@@ -14,7 +14,6 @@ import Data.Foldable (maximumBy, minimumBy)
 import Data.List (sortBy)
 import Data.STRef
 import Data.Array
-import qualified Data.Map as Map
 import GHC.Arr (freezeSTArray)
 
 --------------------------------------------------------------------------------
@@ -102,35 +101,32 @@ newtype Graph = Graph (Array Vertex [(Vertex, Weight)]) deriving Show
 graphFromList :: (Int, Int) -> [(Vertex, [(Vertex, Weight)])] -> Graph
 graphFromList bounds edges = Graph $ array bounds edges
 
-graphUnionFindEdges :: Graph 
-                    -> ST s [(Element s Vertex, Element s Vertex, Weight)]
-graphUnionFindEdges (Graph graph) = do
-    ufVertices <- newSTRef Map.empty
-    edgesFrom  <- forM (assocs graph) $ \(vertex, edges) -> do
-        ufVertices' <- readSTRef ufVertices
-        ufVertex    <- makeSet vertex
-        writeSTRef ufVertices (Map.insert vertex ufVertex ufVertices')
-        return (ufVertex, edges)
-    ufVertices' <- readSTRef ufVertices
-    let edges = concatMap (splitEdges ufVertices') edgesFrom
+preprocessEdges :: Graph -> ST s [(Element s Vertex, Element s Vertex, Weight)]
+preprocessEdges (Graph graph) = do
+    elemMapAssocs <- forM (assocs graph) $ \(vertex, _) -> do
+        ufVertex <- makeSet vertex
+        return (vertex, ufVertex)
+    let elemArray  = array (bounds graph) elemMapAssocs
+        ufVertices = assocs graph
+    let edges = concatMap (splitEdges elemArray) ufVertices
     return $ sortBy (compare `on` weight) edges
   where
     weight (_, _, w) = w
-    splitEdges :: Map.Map Vertex (Element s Vertex)
-               -> (Element s Vertex, [(Vertex, Weight)])
+    splitEdges :: Array Vertex (Element s Vertex)
+               -> (Vertex, [(Vertex, Weight)])
                -> [(Element s Vertex, Element s Vertex, Weight)]
     splitEdges ufVertices (vertex, edges) = do
         (to, w) <- edges
-        case Map.lookup to ufVertices of
-            Nothing   -> []
-            Just to' -> return (vertex, to', w)
+        let to' = ufVertices ! to
+            vertex' = ufVertices ! vertex
+        return (vertex', to', w)
 
 minSpanningTree :: Graph -> Graph
 minSpanningTree graph = runST $ minSpanningTreeST graph
   where
     minSpanningTreeST :: Graph -> ST s Graph
     minSpanningTreeST graph@(Graph g) = do
-        edges <- graphUnionFindEdges graph
+        edges <- preprocessEdges graph
         array <- newArray (bounds g) []
         spanningTree <- minSpanningTree' array edges
         spanningTree' <- freezeSTArray spanningTree
