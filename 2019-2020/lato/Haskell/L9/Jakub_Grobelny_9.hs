@@ -106,9 +106,8 @@ preprocessEdges (Graph graph) = do
     elemMapAssocs <- forM (assocs graph) $ \(vertex, _) -> do
         ufVertex <- makeSet vertex
         return (vertex, ufVertex)
-    let elemArray  = array (bounds graph) elemMapAssocs
-        ufVertices = assocs graph
-    let edges = concatMap (splitEdges elemArray) ufVertices
+    let elemArray = array (bounds graph) elemMapAssocs
+        edges     = concatMap (splitEdges elemArray) (assocs graph)
     return $ sortBy (compare `on` weight) edges
   where
     weight (_, _, w) = w
