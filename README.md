@@ -97,3 +97,15 @@
 - [Kurs języka Haskell](https://github.com/JakubGrobelny/University/tree/master/2019-2020/lato/Haskell):
     - wykład: Tomasz Wierzbicki, Maciej Piróg
     - pracownia: Tomasz Wierzbicki
+
+# Semestr VII:
+- [Konstrukcja Kompilatorów](https://github.com/JakubGrobelny/University/tree/master/2020-2021/zima/Kompilatory):
+    - wykład: Witold Charatonik, Krystian Bacławski, Piotr Polesiuk
+    - ćwiczenia: Piotr Polesiuk, Krystian Bacławski
+    - pracownia: Piotr Polesiuk
+- [Scala in Practice](https://github.com/JakubGrobelny/University/tree/master/2020-2021/zima/Scala):
+    - wykład: Michał Kowalczykiewicz
+    - pracownia: Michał Kowalczykiewicz
+- [Wybrane elementy praktyki projektowania oprogramowania](https://github.com/JakubGrobelny/University/tree/master/2020-2021/zima/WEPPO):
+    - wykład: Wiktor Zychla
+    - pracownia: Wiktor Zychla
