@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <% options.forEach(box=> { %>
+        <div>
+            <input type="checkbox" id=<%=box.name%> name=<%=box.name%>>
+                <label for=<%=box.name%>><%=box.text%></label>
+        </div>
+    <% }) %>
+</body>
+
+</html>
