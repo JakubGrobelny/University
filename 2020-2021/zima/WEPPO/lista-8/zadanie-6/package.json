@@ -1,0 +1,17 @@
+{
+  "name": "zadanie-6",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "node generatePeople.js"
+  },
+  "author": "Jakub Grobelny",
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^8.5.1"
+  }
+}
