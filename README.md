@@ -109,3 +109,11 @@
 - [Wybrane elementy praktyki projektowania oprogramowania](https://github.com/JakubGrobelny/University/tree/master/2020-2021/zima/WEPPO):
     - wykład: Wiktor Zychla
     - pracownia: Wiktor Zychla
+
+# Semestr VIII:
+- [Algorytmy i struktury danych (trzecie podejście xD)](https://github.com/JakubGrobelny/University/tree/master/2020-2021/lato/AiSD/):
+    - wykład: Krzysztof Loryś
+    - ćwiczenia: Szymon Dudycz
+    - pracownia: Marcin Bieńkowski
+- Formalizacja języków programowania w systemie Coq:
+    - wykład i pracownia: Dariusz Biernacki, Małgorzata Biernacka
